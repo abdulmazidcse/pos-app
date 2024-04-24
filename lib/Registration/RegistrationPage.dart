@@ -121,7 +121,7 @@ class _RegistrationState extends State<RegistrationPage> {
                     ),
                     SizedBox(height: 20.0),
                     TextField(
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         hintText: 'Email',
                         hintStyle: TextStyle(color: Colors.black),
@@ -135,7 +135,7 @@ class _RegistrationState extends State<RegistrationPage> {
                     ),
                     SizedBox(height: 20.0),
                     TextField(
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         hintText: 'Password',
                         hintStyle: TextStyle(color: Colors.black),
@@ -150,7 +150,7 @@ class _RegistrationState extends State<RegistrationPage> {
                     ),
                     SizedBox(height: 20.0),
                     TextField(
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         hintText: 'Confirm Password',
                         hintStyle: TextStyle(color: Colors.black),
