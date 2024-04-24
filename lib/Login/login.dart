@@ -1,5 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import '../HomePage/HomePage.dart';
+import '../Registration/RegistrationPage.dart';
 
 class LogIn extends StatefulWidget {
   @override
@@ -7,8 +9,57 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
+  String username = '';
+  String password = '';
+
   void initState() {
     super.initState();
+  }
+
+  bool checkAuth() {
+    bool checkUsername = false;
+    bool checkPassword = false;
+    if (username == 'mazid') {
+      checkUsername = true;
+    }
+    if (password == '12345') {
+      checkPassword = true;
+    }
+    if (checkUsername && checkPassword) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void login() {
+    // Call your authentication service to verify the credentials
+    // For example:
+    bool isLoggedIn = checkAuth();
+
+    // bool isLoggedIn = true; // Dummy value for demonstration
+    if (isLoggedIn) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } else {
+      // Handle failed login
+      // For example, show an error message
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Login Failed'),
+          content: Text('Invalid username or password.'),
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
   @override
@@ -29,13 +80,12 @@ class _LogInState extends State<LogIn> {
           // Glassy login card
           Center(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
-                  color: Colors.white
-                      .withOpacity(0.4),
+                  color: Colors.white.withOpacity(0.4),
                   borderRadius: BorderRadius.circular(20.0),
                   boxShadow: [
                     BoxShadow(
@@ -66,18 +116,28 @@ class _LogInState extends State<LogIn> {
                       style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         hintText: 'Email',
-                        hintStyle: TextStyle(color: Colors.white),
-                        icon: Icon(Icons.email, color: Colors.white),
+                        hintStyle: TextStyle(color: Colors.black),
+                        icon: Icon(Icons.email, color: Colors.black),
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          username = value;
+                        });
+                      },
                     ),
                     SizedBox(height: 20.0),
                     TextField(
                       style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         hintText: 'Password',
-                        hintStyle: TextStyle(color: Colors.white),
-                        icon: Icon(Icons.email, color: Colors.white),
+                        hintStyle: TextStyle(color: Colors.black),
+                        icon: Icon(Icons.lock, color: Colors.black),
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          password = value;
+                        });
+                      },
                       obscureText: true,
                     ),
                     SizedBox(height: 20.0),
@@ -94,14 +154,13 @@ class _LogInState extends State<LogIn> {
                                   fontSize: 13,
                                   color: Colors.white),
                             ),
-                            onPressed: () {},
+                            onPressed: login,
                             style: ElevatedButton.styleFrom(
                                 elevation: 9.0,
                                 primary: Colors.green,
                                 fixedSize: const Size(300, 50),
                                 shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(75))),
+                                    borderRadius: BorderRadius.circular(75))),
                           ),
                         ],
                       ),
@@ -110,7 +169,13 @@ class _LogInState extends State<LogIn> {
                     Container(
                         padding: EdgeInsets.all(20),
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RegistrationPage()),
+                            );
+                          },
                           child: Align(
                             alignment: Alignment.bottomCenter,
                             child: Text(

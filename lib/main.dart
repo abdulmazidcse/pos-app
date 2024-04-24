@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 import 'Login/login.dart';
+import 'HomePage/HomePage.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MyApp(false));
 }
 
 class MyApp extends StatelessWidget {
+  bool isUserLogin;
+  MyApp(this.isUserLogin);
 
-// This widget is the root of your application.
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    var defaultRoot = isUserLogin ? HomePage() : LogIn();
+
+    final material = MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LogIn(),
+      home: defaultRoot,
     );
+    return material;
   }
 }
