@@ -1,5 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../Login/Login.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -61,13 +63,27 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     SizedBox(height: 20.0),
-                    TextField(
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        hintText: 'Logout',
-                        hintStyle: TextStyle(color: Colors.black),
-                        icon: Icon(Icons.logout, color: Colors.black),
+                    ElevatedButton(
+                      child: Text(
+                        'Logout',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            color: Colors.white),
                       ),
+                      onPressed: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        await prefs.clear();
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => LogIn()));
+                      },
+                      style: ElevatedButton.styleFrom(
+                          elevation: 9.0,
+                          primary: Colors.green,
+                          fixedSize: const Size(300, 50),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(75))),
                     ),
                     SizedBox(height: 20.0),
                   ],

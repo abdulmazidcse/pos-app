@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import '../HomePage/HomePage.dart';
 import '../Registration/RegistrationPage.dart';
+import '../utils/Api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LogIn extends StatefulWidget {
   @override
@@ -16,50 +20,72 @@ class _LogInState extends State<LogIn> {
     super.initState();
   }
 
-  bool checkAuth() {
-    bool checkUsername = false;
-    bool checkPassword = false;
-    if (username == 'mazid') {
-      checkUsername = true;
-    }
-    if (password == '12345') {
-      checkPassword = true;
-    }
-    if (checkUsername && checkPassword) {
-      return true;
+  void storeUserDataAndToken(Map<String, dynamic> body) async {
+    var user = body['data']['user'];
+    var token = body['data']['access_token'];
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+
+    localStorage.setString('user_id', user['id'].toString());
+    localStorage.setString('user', json.encode(user));
+    localStorage.setString('token', token);
+  }
+
+  fetchData(data) async {
+    var res = await Api().login(data, 'auth/login');
+    if (res.statusCode == 200) {
+      var body = json.decode(res.body);
+      storeUserDataAndToken(body);
     } else {
-      return false;
+      errorMessage('Login Failed', 'Invalid username or password.');
+      // var errorBody = json.decode(res.body); // var errorMessage = errorBody['message']; // var errorDetails = errorBody['errors'];
     }
   }
 
-  void login() {
-    // Call your authentication service to verify the credentials
-    // For example:
-    bool isLoggedIn = checkAuth();
+  checkAuth() async {
+    var isLoggedIn = '';
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    isLoggedIn = localStorage.getString('token').toString();
+    if ((isLoggedIn == 'null') || (isLoggedIn.isEmpty)) {
+      return false; // User is logged in
+    } else {
+      return true; // User is not logged in
+    }
+  }
 
-    // bool isLoggedIn = true; // Dummy value for demonstration
+  void login() async {
+    bool isLoggedIn = false;
+    if ((username == '') || (password == '')) {
+      errorMessage('Login Failed', 'Username & Password required field.');
+    } else {
+      var data = {'email': username, 'password': password};
+      await fetchData(data);
+      isLoggedIn = await checkAuth();
+    }
+
     if (isLoggedIn) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
       );
     } else {
-      // Handle failed login
-      // For example, show an error message
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Login Failed'),
-          content: Text('Invalid username or password.'),
-          actions: <Widget>[
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
+      // errorMessage('Login Failed', 'Invalid username or password.');
     }
+  }
+
+  errorMessage(title, msg) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title ?? 'Failed'),
+        content: Text(msg ?? 'Invalid'),
+        actions: <Widget>[
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
