@@ -21,7 +21,6 @@ class Api {
 
   postData(data, apiUrl) async {
     var fullUrl;
-    // fullUrl = _url + apiUrl + await _getToken();
     fullUrl = _url + apiUrl;
     return await http
         .post(Uri.parse(fullUrl), body: jsonEncode(data), headers: {

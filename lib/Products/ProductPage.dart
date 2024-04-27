@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../utils/Api.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import '../utils/Helper.dart';
 
 class ProductPage extends StatefulWidget {
   @override
@@ -11,7 +12,8 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  String _scanBarcode = '';
+  Helper helper = Helper(); // Create an instance of the Helper class
+  // String _scanBarcode = '';
 
   // get productCodeController => null;
   final TextEditingController productCodeController = TextEditingController();
@@ -65,13 +67,28 @@ class _ProductPageState extends State<ProductPage> {
     final response = await Api().postData(product, apiUrl);
 
     if (response.statusCode == 200) {
-      // Product created successfully
-      print('Product created successfully');
+      helper.successToast('Product created successfully');
     } else {
-      // Error creating product
-      print('Failed to create product. Error: ${response.statusCode}');
-      var body = json.decode(response.body);
-      print('Error: ${body}');
+      if (response.statusCode == 422) {
+        final responseData = json.decode(response.body);
+        final errors = responseData['errors'];
+        String productNameError =
+            errors['product_name'] != null ? errors['product_name'][0] : '';
+        String productNativeNameError = errors['product_native_name'] != null
+            ? errors['product_native_name'][0]
+            : '';
+        String productCodeError =
+            errors['product_code'] != null ? errors['product_code'][0] : '';
+        if (productNameError != '') {
+          helper.errorToast(productNameError);
+        }
+        if (productNativeNameError != '') {
+          helper.errorToast(productNativeNameError);
+        }
+        if (productCodeError != '') {
+          helper.errorToast(productCodeError);
+        }
+      }
     }
   }
 
