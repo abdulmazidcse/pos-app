@@ -15,15 +15,20 @@ class Api {
     return await http.get(Uri.parse(fullUrl), headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer ' + token
+      'Authorization': 'Bearer $token'
     });
   }
 
   postData(data, apiUrl) async {
     var fullUrl;
-    fullUrl = _url + apiUrl + await _getToken();
-    return await http.post(Uri.parse(fullUrl),
-        body: jsonEncode(data), headers: _setHeaders());
+    // fullUrl = _url + apiUrl + await _getToken();
+    fullUrl = _url + apiUrl;
+    return await http
+        .post(Uri.parse(fullUrl), body: jsonEncode(data), headers: {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + await _getToken()
+    });
   }
 
   login(data, apiUrl) async {
@@ -36,7 +41,6 @@ class Api {
   _getToken() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token').toString();
-    print(token);
     return token;
   }
 
@@ -45,6 +49,6 @@ class Api {
   _setHeaders() => {
         'Content-type': 'application/json',
         'Accept': 'application/json',
-        // 'Authorization': 'Bearer ' +  _getToken(),
+        'Authorization': 'Bearer ' + _getToken(),
       };
 }

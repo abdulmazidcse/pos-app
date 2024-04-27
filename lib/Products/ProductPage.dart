@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import '../utils/Api.dart';
@@ -41,7 +42,7 @@ class _ProductPageState extends State<ProductPage> {
     if (!mounted) return;
     setState(() {
       // _scanBarcode = barcodeScanRes;
-      // productCode = barcodeScanRes;
+      productCode = barcodeScanRes;
       productCodeController.text = barcodeScanRes;
     });
   }
@@ -69,6 +70,8 @@ class _ProductPageState extends State<ProductPage> {
     } else {
       // Error creating product
       print('Failed to create product. Error: ${response.statusCode}');
+      var body = json.decode(response.body);
+      print('Error: ${body}');
     }
   }
 
