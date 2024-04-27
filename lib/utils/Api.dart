@@ -19,8 +19,7 @@ class Api {
     });
   }
 
-  _POST(data, apiUrl) async {
-    // print(_url);
+  postData(data, apiUrl) async {
     var fullUrl;
     fullUrl = _url + apiUrl + await _getToken();
     return await http.post(Uri.parse(fullUrl),

@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Login/Login.dart';
+import '../Products/ProductPage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -77,6 +78,26 @@ class _HomePageState extends State<HomePage> {
                         await prefs.clear();
                         Navigator.of(context).pushReplacement(
                             MaterialPageRoute(builder: (context) => LogIn()));
+                      },
+                      style: ElevatedButton.styleFrom(
+                          elevation: 9.0,
+                          primary: Colors.green,
+                          fixedSize: const Size(300, 50),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(75))),
+                    ),
+                    SizedBox(height: 20.0),
+                    ElevatedButton(
+                      child: Text(
+                        'Products',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            color: Colors.white),
+                      ),
+                      onPressed: () async {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => ProductPage()));
                       },
                       style: ElevatedButton.styleFrom(
                           elevation: 9.0,
