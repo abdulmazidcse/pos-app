@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../HomePage/HomePage.dart';
 import '../Registration/RegistrationPage.dart';
 import '../utils/Api.dart';
+import '../utils/Helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LogIn extends StatefulWidget {
@@ -15,6 +16,8 @@ class LogIn extends StatefulWidget {
 class _LogInState extends State<LogIn> {
   String username = '';
   String password = '';
+
+  Helper helper = Helper(); // Create an instance of the Helper class
 
   void initState() {
     super.initState();
@@ -36,8 +39,10 @@ class _LogInState extends State<LogIn> {
       var body = json.decode(res.body);
       storeUserDataAndToken(body);
     } else {
-      errorMessage('Login Failed', 'Invalid username or password.');
-      // var errorBody = json.decode(res.body); // var errorMessage = errorBody['message']; // var errorDetails = errorBody['errors'];
+      helper.errorToast('Invalid username or password');
+      // helper.dialogBox(
+      //     context, 'Login Failed', 'Invalid username or password.');
+      // var errorBody = json.decode(res.body); // var dialogBox = errorBody['message']; // var errorDetails = errorBody['errors'];
     }
   }
 
@@ -55,7 +60,9 @@ class _LogInState extends State<LogIn> {
   void login() async {
     bool isLoggedIn = false;
     if ((username == '') || (password == '')) {
-      errorMessage('Login Failed', 'Username & Password required field.');
+      helper.errorToast('Username & Password required field');
+      // helper.dialogBox(
+      //     context, 'Login Failed', 'Username & Password required field.');
     } else {
       var data = {'email': username, 'password': password};
       await fetchData(data);
@@ -63,29 +70,14 @@ class _LogInState extends State<LogIn> {
     }
 
     if (isLoggedIn) {
+      helper.successToast('Login Success');
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
       );
     } else {
-      // errorMessage('Login Failed', 'Invalid username or password.');
+      // dialogBox('Login Failed', 'Invalid username or password.');
     }
-  }
-
-  errorMessage(title, msg) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title ?? 'Failed'),
-        content: Text(msg ?? 'Invalid'),
-        actions: <Widget>[
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('OK'),
-          ),
-        ],
-      ),
-    );
   }
 
   @override
