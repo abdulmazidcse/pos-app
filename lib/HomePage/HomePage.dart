@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home),
+              leading: Icon(Icons.home_outlined),
               title: Text("Home"),
               onTap: () {
                 Navigator.pushReplacement(
@@ -58,9 +58,37 @@ class _HomePageState extends State<HomePage> {
                 );
               }
             ),
+            SizedBox(height: 10.0),
             ListTile(
-              leading: Icon(Icons.grid_3x3_outlined),
-              title: Text("Products"),
+              leading: Icon(Icons.production_quantity_limits),
+              title: Text("POS"),
+              onTap: () async {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => ProductPage()));
+              },
+            ),
+            SizedBox(height: 10.0),
+            ListTile(
+              leading: Icon(Icons.production_quantity_limits),
+              title: Text("Products List"),
+              onTap: () async {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => ProductPage()));
+              },
+            ),
+            SizedBox(height: 10.0),
+            ListTile(
+              leading: Icon(Icons.production_quantity_limits),
+              title: Text("Create Products"),
+              onTap: () async {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => ProductPage()));
+              },
+            ),
+            SizedBox(height: 100.0),
+            ListTile(
+              leading: Icon(Icons.production_quantity_limits),
+              title: Text("Logout"),
               onTap: () async {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (context) => ProductPage()));
