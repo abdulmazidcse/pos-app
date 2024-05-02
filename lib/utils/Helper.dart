@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter/material.dart';
-import 'dart:convert';
 
 class Helper {
   dialogBox(context, title, msg) {

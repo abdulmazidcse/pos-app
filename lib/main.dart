@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'Login/login.dart';
+import 'package:provider/provider.dart';
 import 'HomePage/HomePage.dart';
+import 'Pos/CartProvider.dart';
+import 'package:pos/Login/login.dart';
+import 'Pos/PosPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -20,6 +23,9 @@ class MyApp extends StatelessWidget {
     if ((isLoggedIn == 'null') || (isLoggedIn.isEmpty)) {
       return isUserLogin = false; // User is logged in
     } else {
+      // setState(() {
+      //   isUserLogin = true;
+      // });
       return isUserLogin = true; // User is not logged in
     }
   }
@@ -29,13 +35,25 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     var defaultRoot = isUserLogin ? HomePage() : LogIn();
 
-    final material = MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    final material = MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => CartProvider()),
+        // Add other providers if needed
+      ],
+      child: MaterialApp(
+        title: 'My App',
+        home: defaultRoot, // Assuming HomePage is your initial screen
       ),
-      home: defaultRoot,
     );
     return material;
+
+    // final material = MaterialApp(
+    //   debugShowCheckedModeBanner: false,
+    //   theme: ThemeData(
+    //     primarySwatch: Colors.blue,
+    //   ),
+    //   home: defaultRoot,
+    // );
+    // return material;
   }
 }

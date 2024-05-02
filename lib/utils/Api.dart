@@ -2,10 +2,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:pos/Pos/Product.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Api {
   final String _url = 'https://inventory.kathergolpo.com/backend/api/';
+  final String url = 'https://inventory.kathergolpo.com/backend/api/';
 
   _dGET(apiUrl) async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -17,6 +20,26 @@ class Api {
       'Accept': 'application/json',
       'Authorization': 'Bearer $token'
     });
+  }
+
+  Future<ApiResponse> productSearchFetchData(String searchTerm) async {
+    var apiUrl = 'product/list?search=$searchTerm&column=0&dir=desc';
+    var fullUrl = _url + apiUrl;
+
+    final response = await http.get(Uri.parse(fullUrl), headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer ' + await _getToken()
+    });
+
+    if (response.statusCode == 200) {
+      // If the server returns a 200 OK response, parse the JSON
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      // print('ApiResponse.fromJson(jsonResponse)');
+      return ApiResponse.fromJson(jsonResponse);
+    } else {
+      // If the server did not return a 200 OK response, throw an exception.
+      throw Exception('Failed to load data');
+    }
   }
 
   postData(data, apiUrl) async {

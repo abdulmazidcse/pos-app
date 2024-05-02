@@ -5,6 +5,7 @@ import '../utils/Api.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import '../utils/Helper.dart';
+import '../utils/Drawer.dart';
 
 class ProductPage extends StatefulWidget {
   @override
@@ -95,6 +96,7 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MyDrawer(),
       body: Stack(
         children: [
           // Background image
