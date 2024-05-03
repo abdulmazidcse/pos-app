@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:pos/Pos/CartItem.dart';
-import 'package:pos/Pos/Product.dart';
+import 'package:pos/Pos/ProductModel.dart';
 
 class CartProvider with ChangeNotifier {
   List<CartItem> _cartItems = [];
@@ -10,8 +10,8 @@ class CartProvider with ChangeNotifier {
   double get netAmount => _netAmount;
 
   void addToCart(Product product) {
-    final existingItemIndex =
-        _cartItems.indexWhere((item) => item.product.id == product.id);
+    final existingItemIndex = _cartItems
+        .indexWhere((item) => item.product.productId == product.productId);
 
     if (existingItemIndex != -1) {
       _cartItems[existingItemIndex].qty++;
@@ -38,10 +38,10 @@ class CartProvider with ChangeNotifier {
 
   void _calculateNetAmount() {
     _netAmount = 0.00;
-    for (var item in _cartItems) {
-      final price = double.tryParse(item.product.mrpPrice) ??
-          0.0; // Handle potential conversion failure
-      _netAmount += price * item.qty;
-    }
+    // for (var item in _cartItems) {
+    //   final price = double.tryParse(item.product.mrpPrice) ??
+    //       0.0; // Handle potential conversion failure
+    //   _netAmount += price * item.qty;
+    // }
   }
 }

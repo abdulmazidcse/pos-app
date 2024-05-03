@@ -15,7 +15,6 @@ class CartItemList extends StatelessWidget {
           final cartItem = cartItems[index];
           return ListTile(
             title: Text(cartItem.product.productName),
-            // Display quantity and editable price
             subtitle: Row(
               children: [
                 Text('Qty: ${cartItem.qty}'),
@@ -46,6 +45,7 @@ class CartItemList extends StatelessWidget {
                 Text('Subtotal: ${cartItem.newPrice * cartItem.qty}'),
               ],
             ),
+            tileColor: Colors.lightGreenAccent,
           );
         },
       ),

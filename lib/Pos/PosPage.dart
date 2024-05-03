@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pos/Pos/CartProvider.dart';
-import 'package:pos/Pos/Product.dart';
+import 'package:pos/Pos/ProductModel.dart';
+import 'package:pos/Pos/ProductController.dart';
 import 'package:pos/Pos/CartItemList.dart';
-// import 'package:pos/Pos/SearchResultItem.dart';
 import 'package:provider/provider.dart';
 import '../utils/Drawer.dart';
 
@@ -26,7 +26,7 @@ class _PosPageState extends State<PosPage> {
       _filteredProducts =
           []; //fetchProducts(''); // Show all products on empty search
     } else if (searchTerm.length >= 3) {
-      final productsData = await fetchProducts(searchTerm);
+      final productsData = await ProductController().fetchProducts(searchTerm);
       _filteredProducts = productsData
           .where((product) => product.productName
               .toLowerCase()
@@ -37,9 +37,13 @@ class _PosPageState extends State<PosPage> {
   }
 
   void _addToCartAndClearResults(Product product) {
-    // print('Product Name: ${product.productName}');
     // print('Product Code: ${product.productCode}');
-    Provider.of<CartProvider>(context, listen: false).addToCart(product);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${product.productName} added to cart'),
+        duration: Duration(seconds: 2),
+      ),
+    );
     // Clear the search results
     _productSearchController.clear();
     setState(() {
@@ -57,7 +61,7 @@ class _PosPageState extends State<PosPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              // Product search field
+              SizedBox(width: 10),
               TextField(
                 controller: _productSearchController,
                 onChanged: (value) => _filterProducts(value),
@@ -72,6 +76,7 @@ class _PosPageState extends State<PosPage> {
                   ),
                 ),
               ),
+              CartItemList(),
 
               Flexible(
                 child: ListView.builder(
@@ -79,26 +84,20 @@ class _PosPageState extends State<PosPage> {
                   itemBuilder: (context, index) {
                     final product = _filteredProducts[index];
                     return ListTile(
-                      title: Text(product.productName),
+                      title: Text(product.productName,
+                          style: TextStyle(color: Colors.black87)),
                       onTap: () {
                         // Handle adding product to cart
                         _addToCartAndClearResults(product);
                         Provider.of<CartProvider>(context, listen: false)
                             .addToCart(product);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content:
-                                Text('${product.productName} added to cart'),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
                       },
+                      tileColor: Colors.lightBlueAccent,
                     );
                   },
                 ),
               ),
               // Cart item list with quantity and subtotal
-              CartItemList(),
 
               ElevatedButton(
                 onPressed: () {

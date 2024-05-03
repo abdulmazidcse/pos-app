@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:pos/Pos/Product.dart';
+// import 'package:http/http.dart';
+import 'package:pos/Products/Product.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Api {
@@ -23,7 +22,8 @@ class Api {
   }
 
   Future<ApiResponse> productSearchFetchData(String searchTerm) async {
-    var apiUrl = 'product/list?search=$searchTerm&column=0&dir=desc';
+    // var apiUrl = 'product/list?search=$searchTerm&column=0&dir=desc';
+    var apiUrl = 'posproducts?search=$searchTerm';
     var fullUrl = _url + apiUrl;
 
     final response = await http.get(Uri.parse(fullUrl), headers: {

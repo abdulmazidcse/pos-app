@@ -1,4 +1,4 @@
-import 'package:pos/Pos/Product.dart';
+import 'package:pos/Pos/ProductModel.dart';
 
 class CartItem {
   final Product product;

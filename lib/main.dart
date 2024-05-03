@@ -33,12 +33,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    var defaultRoot = isUserLogin ? HomePage() : LogIn();
+    var defaultRoot = isUserLogin ? HomePage() : PosPage();
 
     final material = MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => CartProvider()),
-        // Add other providers if needed
       ],
       child: MaterialApp(
         title: 'My App',
