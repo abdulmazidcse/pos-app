@@ -24,6 +24,9 @@ class Product {
   final dynamic expiresDate;
   final Map<String, dynamic> disArray;
 
+  // Price that can be changed
+  double newPrice;
+
   Product({
     required this.productId,
     required this.productStockId,
@@ -49,7 +52,19 @@ class Product {
     required this.stockQuantity,
     required this.expiresDate,
     required this.disArray,
+    required this.newPrice,
   });
+
+  // Setter for mrpPrice
+  // Method to change the price
+  void changePrice(double price) {
+    // mrpPrice = price;
+    newPrice = price; // Update the new price property
+  }
+
+  // set mrpPrice(double price) {
+  //   mrpPrice = price;
+  // }
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -77,6 +92,7 @@ class Product {
       stockQuantity: json['stock_quantity'],
       expiresDate: json['expires_date'],
       disArray: json['dis_array'],
+      newPrice: double.parse(json['mrp_price']),
     );
   }
 }

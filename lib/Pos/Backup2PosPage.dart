@@ -1,7 +1,9 @@
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
 import 'package:pos/Pos/CartProvider.dart';
 import 'package:pos/Pos/ProductModel.dart';
 import 'package:pos/Pos/ProductController.dart';
+import 'package:pos/Pos/CartItemList.dart';
 import 'package:provider/provider.dart';
 import '../utils/Drawer.dart';
 
@@ -31,12 +33,16 @@ class _PosPageState extends State<PosPage> {
   }
 
   void _addToCartAndClearResults(Product product) {
+    // print('Product Code: ${product.productCode}');
+    // Provider.of<CartProvider>(context, listen: false).addToCart(product);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('${product.productName} added to cart'),
         duration: Duration(seconds: 2),
       ),
     );
+    // Clear the search results
+    _productSearchController.clear();
     setState(() {
       _filteredProducts = [];
     });
@@ -45,6 +51,8 @@ class _PosPageState extends State<PosPage> {
   @override
   Widget build(BuildContext context) {
     final selectedCartItems = Provider.of<CartProvider>(context).cartItems;
+    final cartProvider = Provider.of<CartProvider>(context);
+    TextEditingController fieldTextEditingController = TextEditingController();
 
     return Scaffold(
       drawer: MyDrawer(),
@@ -60,7 +68,6 @@ class _PosPageState extends State<PosPage> {
                   return <String>[];
                 } else if (textEditingValue.text.length >= 3) {
                   // Fetch products based on the search term
-                  // _productSearchController.clear();
                   return ProductController()
                       .fetchProducts(textEditingValue.text)
                       .then((productsData) {
@@ -76,52 +83,18 @@ class _PosPageState extends State<PosPage> {
                 return <String>[];
               },
               onSelected: (String selectedProduct) {
-                // Find the selected product from the list of filtered products
-                Product selectedProductObj = _filteredProducts.firstWhere(
-                  (product) => product.productName == selectedProduct,
-                  orElse: () => Product(
-                      productId: 0,
-                      productStockId: '',
-                      outletId: '',
-                      productType: '',
-                      productName: '',
-                      productNativeName: '',
-                      productCode: '',
-                      categoryId: '',
-                      barcodeSymbology: '',
-                      minOrderQty: '',
-                      costPrice: 0,
-                      depoPrice: 0,
-                      mrpPrice: 0,
-                      taxMethod: 0,
-                      productTax: 0,
-                      measuringUnit: 0,
-                      weight: 0,
-                      itemDiscount: 0,
-                      discount: 0,
-                      tax: 0,
-                      quantity: '',
-                      stockQuantity: '',
-                      expiresDate: '',
-                      disArray: {},
-                      newPrice: 0), // Default empty product
-                  // Return null if product is not found
-                );
-
-                // Check if the selected product is found
+                // Handle selecting a product from the autocomplete options
+                final selectedProductObj = _filteredProducts.firstWhere(
+                    (product) => product.productName == selectedProduct);
                 if (selectedProductObj != null) {
-                  // Add the selected product to the cart and show a message
                   _addToCartAndClearResults(selectedProductObj);
                   Provider.of<CartProvider>(context, listen: false)
                       .addToCart(selectedProductObj);
-                } else {
-                  // Handle case when product is not found
-                  print('Product not found');
-                  // You can show a message or perform any other action here
+                  // Clear the text field after selecting a product
                 }
-
-                // Clear the search field after selecting a product or if no product is found
-                _productSearchController.clear();
+                setState(() {
+                  fieldTextEditingController.clear();
+                });
               },
               fieldViewBuilder: (BuildContext context,
                   TextEditingController fieldTextEditingController,
@@ -211,6 +184,12 @@ class _PosPageState extends State<PosPage> {
                 },
               ),
             ),
+
+            Text(
+              'Net Amount: ${cartProvider.netAmount.toString()}', // Display net amount
+              style: TextStyle(fontSize: 24),
+            ),
+
             // Cart item list with quantity and subtotal
 
             ElevatedButton(
