@@ -4,7 +4,7 @@ import 'package:pos/Pos/ProductModel.dart';
 
 class CartProvider with ChangeNotifier {
   List<CartItem> _cartItems = [];
-  double _netAmount = 0.00;
+  double _netAmount = 2.00;
 
   List<CartItem> get cartItems => _cartItems;
   double get netAmount => _netAmount;
@@ -12,7 +12,7 @@ class CartProvider with ChangeNotifier {
   void addToCart(Product product) {
     final existingItemIndex = _cartItems
         .indexWhere((item) => item.product.productId == product.productId);
-
+    // print(_cartItems.length);
     if (existingItemIndex != -1) {
       _cartItems[existingItemIndex].qty++;
     } else {
@@ -38,10 +38,21 @@ class CartProvider with ChangeNotifier {
 
   void _calculateNetAmount() {
     _netAmount = 0.00;
-    // for (var item in _cartItems) {
-    //   final price = double.tryParse(item.product.mrpPrice) ??
-    //       0.0; // Handle potential conversion failure
-    //   _netAmount += price * item.qty;
-    // }
+    for (var item in _cartItems) {
+      final price = double.tryParse(item.product.mrpPrice.toString()) ??
+          0.0; // Handle potential conversion failure
+      final subtotal = price * item.qty;
+      item.subtotal = subtotal; // Update the subtotal for the current item
+      _netAmount += subtotal;
+    }
+  }
+
+  void calculateNetAmount() {
+    _netAmount = 2.00;
+    for (var item in _cartItems) {
+      final price = double.tryParse(item.product.mrpPrice.toString()) ??
+          0.0; // Handle potential conversion failure
+      _netAmount += price * item.qty;
+    }
   }
 }
