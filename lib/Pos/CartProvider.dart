@@ -25,6 +25,7 @@ class CartProvider with ChangeNotifier {
   void updateCartItemPrice(CartItem item, double newPrice) {
     // Update the price of the specified cart item
     item.product.newPrice = newPrice;
+    item.subtotal = item.qty * newPrice;
     // Recalculate the net amount after updating the price
     _calculateNetAmount();
   }
@@ -35,9 +36,10 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void updateCartItemQuantity(CartItem item, int newQuantity, double newPrice) {
+  void updateCartItemQuantity(CartItem item, int newQuantity) {
     if (newQuantity > 0) {
       item.qty = newQuantity;
+      // item.product.newPrice = newPrice; // Update the price as well
       _calculateNetAmount();
       notifyListeners();
     }

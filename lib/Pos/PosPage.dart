@@ -48,8 +48,8 @@ class _PosPageState extends State<PosPage> {
 
     return Scaffold(
       drawer: MyDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(6.0),
         child: Column(
           children: [
             SizedBox(width: 10),
@@ -147,72 +147,208 @@ class _PosPageState extends State<PosPage> {
                 );
               },
             ),
-            // CartItemList(),
-
-            Expanded(
+            Container(
+              height: 600, // Adjust the height as needed
               child: ListView.builder(
+                padding: EdgeInsets.only(
+                  top: 5.0,
+                ),
                 itemCount: selectedCartItems.length,
                 itemBuilder: (context, index) {
                   final cartItem = selectedCartItems[index];
-                  return Padding(
-                    padding:
-                        EdgeInsets.all(2.0), // Add padding of 5px on all sides
-                    child: ListTile(
-                      title: Text('Name ${cartItem.product.productCode}'),
-                      subtitle: Row(
-                        children: [
-                          Text('Qty: ${cartItem.qty}'),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: Container(
-                              height: 35, // Set the desired height
-                              width: 50, // Set the desired width
-                              child: TextField(
-                                keyboardType: TextInputType.number,
-                                onChanged: (value) {
-                                  setState(() {
-                                    final newPrice =
-                                        double.tryParse(value) ?? 0;
-                                    // Update the price directly in the cartItem
-                                    cartItem.product.newPrice = newPrice;
-                                    // Call the method in CartProvider to update the item's price and recalculate netAmount
-                                    Provider.of<CartProvider>(context,
-                                            listen: false)
-                                        .updateCartItemPrice(
-                                            cartItem, newPrice);
-                                  });
-                                },
-                                decoration: InputDecoration(
-                                  labelText: 'Price',
-                                  hintText: 'Enter price',
-                                  border: OutlineInputBorder(),
+                  return Container(
+                    padding: EdgeInsets.only(
+                      top: 2.0,
+                      bottom: 2.0,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: Colors.black26,
+                          width: 1.0,
+                        ), // Green 1px bottom border
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 11,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 8),
+                                color: Colors.black12,
+                                height: 80, // Adjust the height as needed
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: 5),
+                                    Text(
+                                      'Name ${cartItem.product.productName}',
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                      ), // Adjust the font size of the item name
+                                    ),
+                                    SizedBox(height: 5),
+                                    Container(
+                                      height:
+                                          40, // Set the height of the container
+                                      width:
+                                          100, // Set the width of the container
+                                      child: TextField(
+                                        keyboardType: TextInputType.number,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            final newPrice =
+                                                double.tryParse(value) ?? 0;
+                                            // Update the price directly in the cartItem
+                                            cartItem.product.newPrice =
+                                                newPrice;
+                                            // Call the method in CartProvider to update the item's price and recalculate netAmount
+                                            Provider.of<CartProvider>(
+                                              context,
+                                              listen: false,
+                                            ).updateCartItemPrice(
+                                              cartItem,
+                                              newPrice,
+                                            );
+                                          });
+                                        },
+                                        decoration: InputDecoration(
+                                          labelText: 'Price',
+                                          hintText: 'Enter price',
+                                          border: OutlineInputBorder(),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                              'Subtotal: ${double.tryParse(cartItem.product.newPrice.toString())}'),
-                        ],
-                      ),
-                      tileColor: Colors.lightGreenAccent,
+                            Expanded(
+                              flex: 4,
+                              child: Container(
+                                padding: EdgeInsets.only(right: 8),
+                                color: Colors.black12,
+                                height: 80, // Adjust the height as needed
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      SizedBox(height: 5),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .end, // Align buttons to the right
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                if (cartItem.qty > 0) {
+                                                  cartItem.qty--;
+                                                  // Call method to update cart quantity
+                                                  Provider.of<CartProvider>(
+                                                    context,
+                                                    listen: false,
+                                                  ).updateCartItemQuantity(
+                                                    cartItem,
+                                                    cartItem.qty,
+                                                  );
+                                                }
+                                              });
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                  color: Colors.green,
+                                                ), // Green border
+                                              ),
+                                              child: Icon(
+                                                Icons.remove,
+                                                color: Colors.red,
+                                                size: 9,
+                                              ), // Set the icon color to red and adjust size
+                                              padding: EdgeInsets.all(
+                                                6,
+                                              ), // Adjust padding as needed
+                                            ),
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text(
+                                            'Qty: ${cartItem.qty}',
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            ), // Adjust the font size of the quantity text
+                                          ),
+                                          SizedBox(width: 5),
+                                          InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                cartItem.qty++;
+                                                // Call method to update cart quantity
+                                                Provider.of<CartProvider>(
+                                                  context,
+                                                  listen: false,
+                                                ).updateCartItemQuantity(
+                                                  cartItem,
+                                                  cartItem.qty,
+                                                );
+                                              });
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                  color: Colors.green,
+                                                ), // Green border
+                                              ),
+                                              child: Icon(
+                                                Icons.add,
+                                                color: Colors.green,
+                                                size: 9,
+                                              ), // Set the icon color to green and adjust size
+                                              padding: EdgeInsets.all(
+                                                6,
+                                              ), // Adjust padding as needed
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(height: 20),
+                                      Text(
+                                        'Subtotal: ${double.tryParse(cartItem.subtotal.toString())}',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ), // Adjust the font size of the subtotal text
+                                      ),
+                                    ]),
+                              ),
+                            ),
+                          ],
+                        ),
+                        // You can add more widgets here as needed
+                      ],
                     ),
                   );
                 },
               ),
             ),
-            Center(
-              child: Consumer<CartProvider>(
-                builder: (context, cartProvider, child) {
-                  return Text(
-                    'Net Amount: ${cartProvider.netAmount.toString()}',
-                    style: TextStyle(fontSize: 24),
-                  );
-                },
-              ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Consumer<CartProvider>(
+              builder: (context, cartProvider, child) {
+                return Text(
+                  'Net Amount: ${cartProvider.netAmount.toString()}',
+                  style: TextStyle(fontSize: 14),
+                );
+              },
             ),
-            // Cart item list with quantity and subtotal
-
             ElevatedButton(
               onPressed: () {
                 print('Order submitted! Net amount: Tk  ');

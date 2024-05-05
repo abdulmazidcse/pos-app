@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    var defaultRoot = isUserLogin ? HomePage() : PosPage();
+    var defaultRoot = isUserLogin ? HomePage() : LogIn();
 
     final material = MultiProvider(
       providers: [
