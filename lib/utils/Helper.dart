@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/foundation.dart';
 
 class Helper {
   dialogBox(context, title, msg) {
@@ -39,5 +40,17 @@ class Helper {
         backgroundColor: Color(0xFFDDFFDD),
         textColor: Colors.black,
         fontSize: 16.0);
+  }
+
+  printArrayOrObject(dynamic data) {
+    if (data is List) {
+      debugPrint('List:');
+      data.forEach((element) => debugPrint(element.toString()));
+    } else if (data is Map) {
+      debugPrint('Map:');
+      data.forEach((key, value) => debugPrint('$key: $value'));
+    } else {
+      debugPrint(data.toString());
+    }
   }
 }
