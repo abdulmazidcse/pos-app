@@ -11,9 +11,13 @@ class PosPage extends StatefulWidget {
 }
 
 class _PosPageState extends State<PosPage> {
-  final TextEditingController _productSearchController =
-      TextEditingController();
+  final _productSearchController = TextEditingController();
+
+  TextEditingController _searchController = TextEditingController();
+  List<Product> _products = []; // Assuming Product is your model class
   List<Product> _filteredProducts = [];
+
+  bool? _selectedOption = false;
 
   void _filterProducts(String searchTerm) async {
     if (searchTerm.isEmpty) {
@@ -42,6 +46,35 @@ class _PosPageState extends State<PosPage> {
     });
   }
 
+  proModel() {
+    return Product(
+        productId: 0,
+        productStockId: '',
+        outletId: '',
+        productType: '',
+        productName: '',
+        productNativeName: '',
+        productCode: '',
+        categoryId: '',
+        barcodeSymbology: '',
+        minOrderQty: '',
+        costPrice: 0,
+        depoPrice: 0,
+        mrpPrice: 0,
+        taxMethod: 0,
+        productTax: 0,
+        measuringUnit: 0,
+        weight: 0,
+        itemDiscount: 0,
+        discount: 0,
+        tax: 0,
+        quantity: '',
+        stockQuantity: '',
+        expiresDate: '',
+        disArray: {},
+        newPrice: 0);
+  }
+
   @override
   Widget build(BuildContext context) {
     final selectedCartItems = Provider.of<CartProvider>(context).cartItems;
@@ -52,7 +85,7 @@ class _PosPageState extends State<PosPage> {
         padding: const EdgeInsets.all(6.0),
         child: Column(
           children: [
-            SizedBox(width: 10),
+            SizedBox(height: 10),
             Autocomplete<String>(
               optionsBuilder: (TextEditingValue textEditingValue) {
                 if (textEditingValue.text.isEmpty) {
@@ -60,7 +93,6 @@ class _PosPageState extends State<PosPage> {
                   return <String>[];
                 } else if (textEditingValue.text.length >= 3) {
                   // Fetch products based on the search term
-                  // _productSearchController.clear();
                   return ProductController()
                       .fetchProducts(textEditingValue.text)
                       .then((productsData) {
@@ -72,67 +104,49 @@ class _PosPageState extends State<PosPage> {
                         .toList();
                   });
                 }
+                // if (_selectedOption == true) {
+                //   TextEditingValue = '';
+                // }
                 // Return an empty list when the search term is less than 3 characters
                 return <String>[];
               },
               onSelected: (String selectedProduct) {
-                // Find the selected product from the list of filtered products
                 Product selectedProductObj = _filteredProducts.firstWhere(
-                  (product) => product.productName == selectedProduct,
-                  orElse: () => Product(
-                      productId: 0,
-                      productStockId: '',
-                      outletId: '',
-                      productType: '',
-                      productName: '',
-                      productNativeName: '',
-                      productCode: '',
-                      categoryId: '',
-                      barcodeSymbology: '',
-                      minOrderQty: '',
-                      costPrice: 0,
-                      depoPrice: 0,
-                      mrpPrice: 0,
-                      taxMethod: 0,
-                      productTax: 0,
-                      measuringUnit: 0,
-                      weight: 0,
-                      itemDiscount: 0,
-                      discount: 0,
-                      tax: 0,
-                      quantity: '',
-                      stockQuantity: '',
-                      expiresDate: '',
-                      disArray: {},
-                      newPrice: 0), // Default empty product
-                  // Return null if product is not found
-                );
+                    (product) => product.productName == selectedProduct,
+                    orElse: () => proModel());
 
-                // Check if the selected product is found
                 if (selectedProductObj != null) {
-                  // Add the selected product to the cart and show a message
-                  _addToCartAndClearResults(selectedProductObj);
-                  Provider.of<CartProvider>(context, listen: false)
-                      .addToCart(selectedProductObj);
-                } else {
-                  // Handle case when product is not found
-                  print('Product not found');
-                  // You can show a message or perform any other action here
+                  if (selectedProductObj.productCode.length > 0) {
+                    _addToCartAndClearResults(selectedProductObj);
+                    Provider.of<CartProvider>(context, listen: false)
+                        .addToCart(selectedProductObj);
+                  }
+                  selectedProduct = '';
                 }
-
-                // Clear the search field after selecting a product or if no product is found
-                _productSearchController.clear();
+                setState(() {
+                  _selectedOption = true;
+                });
               },
               fieldViewBuilder: (BuildContext context,
                   TextEditingController fieldTextEditingController,
                   FocusNode fieldFocusNode,
                   VoidCallback onFieldSubmitted) {
+                if (_selectedOption == true) {
+                  fieldTextEditingController.clear();
+                  _selectedOption = false;
+                }
                 return TextField(
                   controller: fieldTextEditingController,
                   focusNode: fieldFocusNode,
                   onChanged: (String value) {
                     // Update the autocomplete options when the text field value changes
                     _filterProducts(value);
+                    if (_selectedOption == true) {
+                      setState(() {
+                        fieldTextEditingController.clear();
+                        fieldTextEditingController.text = '';
+                      });
+                    }
                   },
                   decoration: InputDecoration(
                     hintText: 'Search Products...',
