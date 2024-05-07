@@ -7,53 +7,47 @@ import 'Pos/PosPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  // MyApp myApp = MyApp(false);
-  // bool isUserLoggedIn = myApp.checkAuth();
-  runApp(MyApp(false));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  bool isUserLogin;
-  MyApp(this.isUserLogin);
-
-  checkAuth() async {
-    var isLoggedIn = '';
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    isLoggedIn = localStorage.getString('token').toString();
-    if ((isLoggedIn == 'null') || (isLoggedIn.isEmpty)) {
-      return isUserLogin = false; // User is logged in
-    } else {
-      // setState(() {
-      //   isUserLogin = true;
-      // });
-      return isUserLogin = true; // User is not logged in
-    }
-  }
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    var defaultRoot = isUserLogin ? HomePage() : PosPage();
+    return FutureBuilder<bool>(
+      future: checkAuth(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(); // Or any loading indicator
+        } else {
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            bool isUserLogin = snapshot.data!;
+            var defaultRoot = isUserLogin ? HomePage() : LogIn();
 
-    final material = MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => CartProvider()),
-      ],
-      child: MaterialApp(
-        title: 'My App',
-        debugShowCheckedModeBanner: false,
-        home: defaultRoot, // Assuming HomePage is your initial screen
-      ),
+            return MultiProvider(
+              providers: [
+                ChangeNotifierProvider(create: (context) => CartProvider()),
+              ],
+              child: MaterialApp(
+                title: 'My App',
+                debugShowCheckedModeBanner: false,
+                home: defaultRoot, // Assuming HomePage is your initial screen
+                theme: ThemeData(
+                  primarySwatch: Colors.blue,
+                ),
+              ),
+            );
+          }
+        }
+      },
     );
-    return material;
+  }
 
-    // final material = MaterialApp(
-    //   debugShowCheckedModeBanner: false,
-    //   theme: ThemeData(
-    //     primarySwatch: Colors.blue,
-    //   ),
-    //   home: defaultRoot,
-    // );
-    // return material;
+  Future<bool> checkAuth() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var isLoggedIn = localStorage.getString('token') ?? '';
+    return isLoggedIn.isNotEmpty;
   }
 }

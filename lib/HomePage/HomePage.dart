@@ -63,49 +63,29 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     SizedBox(height: 20.0),
-                    // ElevatedButton(
-                    //   child: Text(
-                    //     'Logout',
-                    //     style: TextStyle(
-                    //         fontWeight: FontWeight.bold,
-                    //         fontSize: 13,
-                    //         color: Colors.white),
-                    //   ),
-                    //   onPressed: () async {
-                    //     SharedPreferences prefs =
-                    //         await SharedPreferences.getInstance();
-                    //     await prefs.clear();
-                    //     Navigator.of(context).pushReplacement(
-                    //         MaterialPageRoute(builder: (context) => LogIn()));
-                    //   },
-                    //   style: ElevatedButton.styleFrom(
-                    //       elevation: 9.0,
-                    //       primary: Colors.green,
-                    //       fixedSize: const Size(300, 50),
-                    //       shape: RoundedRectangleBorder(
-                    //           borderRadius: BorderRadius.circular(75))),
-                    // ),
-                    // SizedBox(height: 20.0),
-                    // ElevatedButton(
-                    //   child: Text(
-                    //     'Products',
-                    //     style: TextStyle(
-                    //         fontWeight: FontWeight.bold,
-                    //         fontSize: 13,
-                    //         color: Colors.white),
-                    //   ),
-                    //   onPressed: () async {
-                    //     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    //         builder: (context) => ProductPage()));
-                    //   },
-                    //   style: ElevatedButton.styleFrom(
-                    //       elevation: 9.0,
-                    //       primary: Colors.green,
-                    //       fixedSize: const Size(300, 50),
-                    //       shape: RoundedRectangleBorder(
-                    //           borderRadius: BorderRadius.circular(75))),
-                    // ),
-                    // SizedBox(height: 20.0),
+                    ElevatedButton(
+                      child: Text(
+                        'Logout',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            color: Colors.white),
+                      ),
+                      onPressed: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        await prefs.clear();
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => LogIn()));
+                      },
+                      style: ElevatedButton.styleFrom(
+                          elevation: 9.0,
+                          primary: Colors.green,
+                          fixedSize: const Size(300, 50),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(75))),
+                    ),
+                    SizedBox(height: 20.0),
                   ],
                 ),
               ),
