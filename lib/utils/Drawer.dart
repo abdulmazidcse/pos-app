@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pos/HomePage/HomePage.dart';
 import 'package:pos/Pos/PosPage.dart';
 import 'package:pos/Products/ProductPage.dart';
+import 'package:pos/Login/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyDrawer extends StatelessWidget {
   // Use a named class for clarity
@@ -76,15 +78,18 @@ class MyDrawer extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => ProductPage()));
             },
           ),
-          SizedBox(height: 100.0),
+          SizedBox(height: 10.0),
           ListTile(
-            leading: Icon(Icons.production_quantity_limits),
+            leading: Icon(Icons.logout),
             title: Text("Logout"),
             onTap: () async {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => ProductPage()));
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.clear();
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => LogIn(),
+              ));
             },
-          ),
+          )
         ],
       ),
     );

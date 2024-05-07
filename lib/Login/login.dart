@@ -14,6 +14,7 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
+  bool _isLoading = false;
   String username = '';
   String password = '';
 
@@ -34,15 +35,18 @@ class _LogInState extends State<LogIn> {
   }
 
   fetchData(data) async {
+    setState(() {
+      _isLoading = true; // Show loading indicator
+    });
     var res = await Api().login(data, 'auth/login');
+    setState(() {
+      _isLoading = false; // Hide loading indicator
+    });
     if (res.statusCode == 200) {
       var body = json.decode(res.body);
       storeUserDataAndToken(body);
     } else {
       helper.errorToast('Invalid username or password');
-      // helper.dialogBox(
-      //     context, 'Login Failed', 'Invalid username or password.');
-      // var errorBody = json.decode(res.body); // var dialogBox = errorBody['message']; // var errorDetails = errorBody['errors'];
     }
   }
 
@@ -61,8 +65,6 @@ class _LogInState extends State<LogIn> {
     bool isLoggedIn = false;
     if ((username == '') || (password == '')) {
       helper.errorToast('Username & Password required field');
-      // helper.dialogBox(
-      //     context, 'Login Failed', 'Username & Password required field.');
     } else {
       var data = {'email': username, 'password': password};
       await fetchData(data);
@@ -75,8 +77,6 @@ class _LogInState extends State<LogIn> {
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
       );
-    } else {
-      // dialogBox('Login Failed', 'Invalid username or password.');
     }
   }
 
@@ -164,22 +164,25 @@ class _LogInState extends State<LogIn> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Padding(padding: EdgeInsets.only(top: 10.0)),
-                          ElevatedButton(
-                            child: Text(
-                              'Sign In',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                  color: Colors.white),
-                            ),
-                            onPressed: login,
-                            style: ElevatedButton.styleFrom(
-                                elevation: 9.0,
-                                primary: Colors.green,
-                                fixedSize: const Size(300, 50),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(75))),
-                          ),
+                          _isLoading // Check the _isLoading flag
+                              ? CircularProgressIndicator()
+                              : ElevatedButton(
+                                  child: Text(
+                                    'Sign In',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13,
+                                        color: Colors.white),
+                                  ),
+                                  onPressed: login,
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 9.0,
+                                      primary: Colors.green,
+                                      fixedSize: const Size(300, 50),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(75))),
+                                ),
                         ],
                       ),
                     ),

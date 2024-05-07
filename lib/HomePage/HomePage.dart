@@ -1,9 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../Login/Login.dart';
-import '../Products/ProductPage.dart';
 import '../utils/Drawer.dart';
+import '../utils/ManuPage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -65,18 +64,15 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(height: 20.0),
                     ElevatedButton(
                       child: Text(
-                        'Logout',
+                        'Manu Page',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 13,
                             color: Colors.white),
                       ),
                       onPressed: () async {
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        await prefs.clear();
-                        Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => LogIn()));
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => ManuPage()));
                       },
                       style: ElevatedButton.styleFrom(
                           elevation: 9.0,
@@ -85,7 +81,6 @@ class _HomePageState extends State<HomePage> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(75))),
                     ),
-                    SizedBox(height: 20.0),
                   ],
                 ),
               ),
