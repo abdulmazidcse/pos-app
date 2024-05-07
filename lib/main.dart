@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'My App',
+        debugShowCheckedModeBanner: false,
         home: defaultRoot, // Assuming HomePage is your initial screen
       ),
     );
