@@ -4,6 +4,7 @@ import 'HomePage/HomePage.dart';
 import 'Pos/CartProvider.dart';
 import 'package:pos/Login/login.dart';
 import 'Pos/PosPage.dart';
+import 'Pos/PosPageGlassy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -11,7 +12,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
@@ -24,16 +24,23 @@ class MyApp extends StatelessWidget {
             return Text('Error: ${snapshot.error}');
           } else {
             bool isUserLogin = snapshot.data!;
-            var defaultRoot = isUserLogin ? HomePage() : LogIn();
+            var myPageWidget = isUserLogin ? HomePage() : PosPageGlassy();
 
             return MultiProvider(
               providers: [
                 ChangeNotifierProvider(create: (context) => CartProvider()),
               ],
               child: MaterialApp(
-                title: 'My App',
                 debugShowCheckedModeBanner: false,
-                home: defaultRoot, // Assuming HomePage is your initial screen
+                home: Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/imageedit.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: myPageWidget,
+                ),
                 theme: ThemeData(
                   primarySwatch: Colors.blue,
                 ),

@@ -4,6 +4,7 @@ import 'package:pos/Login/login.dart';
 import '../Products/ProductPage.dart';
 import '../HomePage/HomePage.dart';
 import '../Pos/PosPage.dart';
+import '../Pos/PosPageGlassy.dart';
 
 void navigateToSettings(BuildContext context) {
   Navigator.push(
@@ -96,6 +97,30 @@ class ManuPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20.0),
+            ElevatedButton(
+              child: Text(
+                'Pos Page 2',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => PosPageGlassy(),
+                ));
+              },
+              style: ElevatedButton.styleFrom(
+                elevation: 9.0,
+                primary: Colors.green,
+                fixedSize: const Size(300, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(75),
+                ),
+              ),
+            ),
+            SizedBox(height: 20.0)
           ],
         ),
       ),
