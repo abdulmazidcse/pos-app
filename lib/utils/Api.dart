@@ -105,6 +105,12 @@ class Api {
     return token;
   }
 
+  userInfo() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    final user_info = localStorage.getString('user').toString();
+    return user_info;
+  }
+
   _setHeadersWithout() =>
       {'Content-type': 'application/json', 'Accept': 'application/json'};
   _setHeaders() => {

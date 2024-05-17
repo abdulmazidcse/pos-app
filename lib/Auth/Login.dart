@@ -47,7 +47,7 @@ class _LogInState extends State<LogIn> {
       var body = json.decode(res.body);
       storeUserDataAndToken(body);
     } else {
-      helper.errorToast('Invalid username or password');
+      helper.validationToast(true, 'Invalid username or password');
     }
   }
 
@@ -65,7 +65,7 @@ class _LogInState extends State<LogIn> {
   void login() async {
     bool isLoggedIn = false;
     if ((username == '') || (password == '')) {
-      helper.errorToast('Username & Password required field');
+      helper.validationToast(true, 'Username & Password required field');
     } else {
       var data = {'email': username, 'password': password};
       await fetchData(data);
@@ -121,7 +121,7 @@ class _LogInState extends State<LogIn> {
                       child: Container(
                         margin: EdgeInsets.only(top: 20.0),
                         child: new AutoSizeText(
-                          'Welcome to IMS Software fff',
+                          'Welcome to IMS Software',
                           style: TextStyle(
                             fontSize: 20.0,
                             color: Colors.black,

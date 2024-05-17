@@ -2,11 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:pos/HomePage/HomePage.dart';
 import 'package:pos/Pos/PosPage.dart';
 import 'package:pos/Products/ProductPage.dart';
-import 'package:pos/Login/login.dart';
+import 'package:pos/Auth/login.dart';
+import 'package:pos/utils/Api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
-class MyDrawer extends StatelessWidget {
-  // Use a named class for clarity
+class MyDrawer extends StatefulWidget {
+  @override
+  _MyDrawerState createState() => _MyDrawerState();
+}
+
+class _MyDrawerState extends State<MyDrawer> {
+  dynamic userName = '';
+  dynamic userEmail = '';
+  dynamic userId = '';
+  bool isLogin = false;
+
+  void initState() {
+    super.initState();
+    userData(); // Call userData in initState
+  }
+
+  void userData() async {
+    final userInfo = await Api().userInfo();
+    var decodeInfo = jsonDecode(userInfo);
+    if (decodeInfo != null) {
+      setState(() {
+        userName = decodeInfo['name'];
+        userEmail = decodeInfo['email'];
+        userId = decodeInfo['id'];
+        isLogin = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -14,7 +43,7 @@ class MyDrawer extends StatelessWidget {
         children: [
           UserAccountsDrawerHeader(
             accountName: Text(
-              "Pos",
+              userName,
               style: TextStyle(
                 fontSize: 15.0,
                 color: Colors.black,
@@ -22,7 +51,7 @@ class MyDrawer extends StatelessWidget {
               ),
             ),
             accountEmail: Text(
-              "smd.tanjib@gmail.com",
+              userEmail,
               style: TextStyle(
                 fontSize: 12.0,
                 color: Colors.black,
@@ -30,14 +59,11 @@ class MyDrawer extends StatelessWidget {
               ),
             ),
             currentAccountPicture: CircleAvatar(
-              backgroundImage: NetworkImage(
-                  "https://appmaking.co/wp-content/uploads/2021/08/appmaking-logo-colored.png"),
+              backgroundImage: AssetImage('assets/images/logo.png'),
             ),
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(
-                  "https://appmaking.co/wp-content/uploads/2021/08/android-drawer-bg.jpeg",
-                ),
+                image: AssetImage('assets/images/background_image.png'),
                 fit: BoxFit.fill,
               ),
             ),
@@ -81,7 +107,7 @@ class MyDrawer extends StatelessWidget {
           SizedBox(height: 10.0),
           ListTile(
             leading: Icon(Icons.logout),
-            title: Text("Logout"),
+            title: isLogin ? Text("Logout") : Text('Login'),
             onTap: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               await prefs.clear();

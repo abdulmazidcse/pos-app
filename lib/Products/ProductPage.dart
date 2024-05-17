@@ -14,36 +14,53 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   Helper helper = Helper(); // Create an instance of the Helper class
-  // String _scanBarcode = '';
+  bool _isLoading = false;
 
   // get productCodeController => null;
   final TextEditingController productCodeController = TextEditingController();
   void initState() {
     super.initState();
+    userData();
   }
 
   String productName = '';
   String productCode = '';
   double costPrice = 0;
   double mrpPrice = 0;
+  int companyId = 0;
+  int outletId = 0;
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> scanBarcodeNormal() async {
-    String barcodeScanRes; 
+    String barcodeScanRes;
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', true, ScanMode.BARCODE); 
+          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
-    } 
+    }
     if (!mounted) return;
-    setState(() { 
+    setState(() {
       productCode = barcodeScanRes;
       productCodeController.text = barcodeScanRes;
     });
   }
 
+  void userData() async {
+    final userInfo = await Api().userInfo();
+    var decodeInfo = jsonDecode(userInfo);
+    if (decodeInfo != null) {
+      setState(() {
+        companyId = decodeInfo['company_id'];
+        outletId = decodeInfo['outlet_id'];
+      });
+    }
+  }
+
   createProduct() async {
+    setState(() {
+      _isLoading = true; // Show loading indicator
+    });
     final String apiUrl = 'products';
     var product = {
       'product_type': 'standard',
@@ -57,11 +74,16 @@ class _ProductPageState extends State<ProductPage> {
       'min_order_qty': 1,
       'tax_method': 1,
       'product_tax': 1,
+      'company_id': companyId,
+      'outlet_id': outletId,
     };
     final response = await Api().postData(product, apiUrl);
 
     if (response.statusCode == 200) {
       helper.successToast('Product created successfully');
+      setState(() {
+        _isLoading = false; // Show loading indicator
+      });
     } else {
       if (response.statusCode == 422) {
         final responseData = json.decode(response.body);
@@ -74,13 +96,13 @@ class _ProductPageState extends State<ProductPage> {
         String productCodeError =
             errors['product_code'] != null ? errors['product_code'][0] : '';
         if (productNameError != '') {
-          helper.errorToast(productNameError);
+          helper.validationToast(true, productNameError);
         }
         if (productNativeNameError != '') {
-          helper.errorToast(productNativeNameError);
+          helper.validationToast(true, productNativeNameError);
         }
         if (productCodeError != '') {
-          helper.errorToast(productCodeError);
+          helper.validationToast(true, productCodeError);
         }
       }
     }
@@ -202,22 +224,25 @@ class _ProductPageState extends State<ProductPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Padding(padding: EdgeInsets.only(top: 10.0)),
-                          ElevatedButton(
-                            child: Text(
-                              'Save',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                  color: Colors.white),
-                            ),
-                            onPressed: createProduct,
-                            style: ElevatedButton.styleFrom(
-                                elevation: 9.0,
-                                backgroundColor: Colors.green,
-                                fixedSize: const Size(300, 50),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(75))),
-                          ),
+                          _isLoading
+                              ? CircularProgressIndicator()
+                              : ElevatedButton(
+                                  child: Text(
+                                    'Save',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13,
+                                        color: Colors.white),
+                                  ),
+                                  onPressed: createProduct,
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 9.0,
+                                      backgroundColor: Colors.green,
+                                      fixedSize: const Size(300, 50),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(75))),
+                                ),
                         ],
                       ),
                     ),
