@@ -1,31 +1,31 @@
 class Product {
   final int productId;
-  final String productStockId;
+  final int productStockId;
   final dynamic outletId;
   final String productType;
   final String productName;
   final String productNativeName;
   final String productCode;
-  final dynamic categoryId;
+  final int categoryId;
   final dynamic barcodeSymbology;
-  final String minOrderQty;
-  final double costPrice;
-  final double depoPrice;
-  final double mrpPrice;
+  final dynamic minOrderQty;
+  final num costPrice;
+  final num depoPrice;
+  final num mrpPrice;
   final int taxMethod;
-  final double productTax;
+  final int productTax;
   final int measuringUnit;
   final dynamic weight;
-  final int itemDiscount;
+  final dynamic itemDiscount;
   final dynamic discount;
   final int tax;
-  final String quantity;
-  final String stockQuantity;
+  final dynamic quantity;
+  final dynamic stockQuantity;
   final dynamic expiresDate;
   final Map<String, dynamic> disArray;
 
   // Price that can be changed
-  double newPrice;
+  num newPrice;
 
   Product({
     required this.productId,
@@ -57,7 +57,7 @@ class Product {
 
   // Setter for mrpPrice
   // Method to change the price
-  void changePrice(double price) {
+  void changePrice(num price) {
     // mrpPrice = price;
     newPrice = price; // Update the new price property
   }
@@ -78,12 +78,12 @@ class Product {
       categoryId: json['category_id'],
       barcodeSymbology: json['barcode_symbology'],
       minOrderQty: json['min_order_qty'],
-      costPrice: double.parse(json['cost_price']),
-      depoPrice: double.parse(json['depo_price']),
-      mrpPrice: double.parse(json['mrp_price']),
-      taxMethod: int.parse(json['tax_method']),
-      productTax: double.parse(json['product_tax']),
-      measuringUnit: int.parse(json['measuring_unit']),
+      costPrice: json['cost_price'],
+      depoPrice: json['depo_price'],
+      mrpPrice: json['mrp_price'],
+      taxMethod: json['tax_method'],
+      productTax: json['product_tax'],
+      measuringUnit: json['measuring_unit'],
       weight: json['weight'],
       itemDiscount: json['item_discount'],
       discount: json['discount'],
@@ -92,7 +92,7 @@ class Product {
       stockQuantity: json['stock_quantity'],
       expiresDate: json['expires_date'],
       disArray: json['dis_array'],
-      newPrice: double.parse(json['mrp_price']),
+      newPrice: json['mrp_price'],
     );
   }
 }

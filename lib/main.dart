@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
             return Text('Error: ${snapshot.error}');
           } else {
             bool isUserLogin = snapshot.data!;
-            var myPageWidget = isUserLogin ? HomePage() : PosPageGlassy();
+            var myPageWidget = isUserLogin ? HomePage() : HomePage();
 
             return MultiProvider(
               providers: [

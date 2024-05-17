@@ -101,7 +101,8 @@ class _PosPageState extends State<PosPage> {
               },
               onSelected: (String selectedProduct) {
                 dynamic selectedProductObj = _filteredProducts.firstWhere(
-                    (product) => product.productName == selectedProduct);
+                  (product) => product?.productName == selectedProduct,
+                );
 
                 if (selectedProductObj != null) {
                   if (selectedProductObj.productCode.length > 0) {

@@ -3,8 +3,8 @@ import 'package:pos/Pos/ProductModel.dart';
 class CartItem {
   final Product product;
   int qty;
-  double newPrice;
-  double subtotal; // Subtotal property to store the subtotal value
+  num newPrice;
+  num subtotal; // Subtotal property to store the subtotal value
 
   CartItem({
     required this.product,

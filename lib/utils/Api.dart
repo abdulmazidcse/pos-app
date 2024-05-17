@@ -6,8 +6,14 @@ import 'package:pos/Products/Product.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Api {
-  final String _url = 'https://inventory.kathergolpo.com/backend/api/';
-  final String url = 'https://inventory.kathergolpo.com/backend/api/';
+  // final String _url = 'https://inventory.kathergolpo.com/backend/api/';
+  static const String _url = 'http://192.168.31.135:8000/api/';
+  static const String url = 'http://192.168.31.135:8000/api/';
+  //static const String baseUrl = "http://your_api_domain/"; // Replace with your API base URL
+  //static const String registerUrl = baseUrl + "register"; // Replace with your API endpoint for registration
+
+  // final String url = 'https://inventory.kathergolpo.com/backend/api/';
+  // final String url2 = 'http://192.168.31.135:8000/';
 
   _dGET(apiUrl) async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -41,6 +47,39 @@ class Api {
       throw Exception('Failed to load data');
     }
   }
+
+  Future<ApiResponse> registerUser(String data, String apiUrl) async {
+    var fullUrl = _url + apiUrl;
+    fullUrl = _url + apiUrl;
+    final response =
+        await http.post(Uri.parse(fullUrl), body: jsonEncode(data), headers: {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer '
+    });
+    if (response.statusCode == 200) {
+      // If the server returns a 200 OK response, parse the JSON
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      // print('ApiResponse.fromJson(jsonResponse)');
+      return ApiResponse.fromJson(jsonResponse);
+    } else {
+      //return response;
+      // If the server did not return a 200 OK response, throw an exception.
+      throw Exception('Failed to load data');
+    }
+  }
+
+  // Future<ApiResponse> responsesData(String response) async {
+  //   if (response.statusCode == 200) {
+  //     // If the server returns a 200 OK response, parse the JSON
+  //     final Map<String, dynamic> jsonResponse = json.decode(response.body);
+  //     // print('ApiResponse.fromJson(jsonResponse)');
+  //     return ApiResponse.fromJson(jsonResponse);
+  //   } else {
+  //     // If the server did not return a 200 OK response, throw an exception.
+  //     throw Exception('Failed to load data');
+  //   }
+  // }
 
   postData(data, apiUrl) async {
     var fullUrl;

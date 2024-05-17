@@ -7,6 +7,11 @@ class ProductController {
     final response = await Api().productSearchFetchData(searchTerm);
     if (response.success) {
       final productsData = response.data;
+      if (productsData is String) {
+        final decodedData = jsonDecode(productsData);
+        jsonDecode(decodedData);
+      }
+
       if (productsData != null) {
         if (productsData is List) {
           return productsData

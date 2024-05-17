@@ -2,10 +2,11 @@ import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import '../HomePage/HomePage.dart';
-import '../Auth/RegistrationPage.dart';
-import '../utils/Api.dart';
-import '../utils/Helper.dart';
+import 'package:pos/HomePage/HomePage.dart';
+import 'package:pos/Auth/RegistrationPage.dart';
+import 'package:pos/Auth/ForgetPassword.dart';
+import 'package:pos/utils/Api.dart';
+import 'package:pos/utils/Helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LogIn extends StatefulWidget {
@@ -120,7 +121,7 @@ class _LogInState extends State<LogIn> {
                       child: Container(
                         margin: EdgeInsets.only(top: 20.0),
                         child: new AutoSizeText(
-                          'Welcome to IMS Software',
+                          'Welcome to IMS Software fff',
                           style: TextStyle(
                             fontSize: 20.0,
                             color: Colors.black,
@@ -192,7 +193,12 @@ class _LogInState extends State<LogIn> {
                       children: [
                         TextButton(
                           onPressed: () {
-                            // Add your forgot password logic here
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ForgetPassword(),
+                              ),
+                            );
                           },
                           child: Text(
                             'Forgot Password?',

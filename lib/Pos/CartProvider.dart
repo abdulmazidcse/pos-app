@@ -51,7 +51,7 @@ class CartProvider with ChangeNotifier {
       final price = item.product.newPrice != null
           ? item.product.newPrice
           : item.product.mrpPrice;
-      final subtotal = price * item.qty;
+      final subtotal = (price * item.qty);
       item.subtotal = subtotal; // Update the subtotal for the current item
       _netAmount += subtotal;
     }

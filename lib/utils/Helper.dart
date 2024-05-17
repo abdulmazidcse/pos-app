@@ -20,9 +20,20 @@ class Helper {
     );
   }
 
-  errorToast(msg) {
+  validationToast(isSet, errMessage) {
     Fluttertoast.showToast(
-        msg: msg ?? 'An error occurred',
+        msg: isSet ? errMessage : 'An error occurred',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0);
+  }
+
+  errorToast(errMessage) {
+    Fluttertoast.showToast(
+        msg: errMessage ? errMessage : 'An error occurred',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,

@@ -2,18 +2,19 @@ import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import '../HomePage/HomePage.dart';
-import '../Auth/RegistrationPage.dart';
-import '../utils/Api.dart';
-import '../utils/Helper.dart';
+import 'package:pos/HomePage/HomePage.dart';
+import 'package:pos/Auth/RegistrationPage.dart';
+import 'package:pos/Login/login.dart';
+import 'package:pos/utils/Api.dart';
+import 'package:pos/utils/Helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LogIn extends StatefulWidget {
+class ForgetPassword extends StatefulWidget {
   @override
-  _LogInState createState() => _LogInState();
+  _ForgetPasswordState createState() => _ForgetPasswordState();
 }
 
-class _LogInState extends State<LogIn> {
+class _ForgetPasswordState extends State<ForgetPassword> {
   bool _isLoading = false;
   String username = '';
   String password = '';
@@ -144,21 +145,6 @@ class _LogInState extends State<LogIn> {
                       },
                     ),
                     SizedBox(height: 20.0),
-                    TextField(
-                      style: TextStyle(color: Colors.black),
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                        hintStyle: TextStyle(color: Colors.black),
-                        icon: Icon(Icons.lock, color: Colors.black),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          password = value;
-                        });
-                      },
-                      obscureText: true,
-                    ),
-                    SizedBox(height: 20.0),
                     Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -168,13 +154,13 @@ class _LogInState extends State<LogIn> {
                               ? CircularProgressIndicator()
                               : ElevatedButton(
                                   child: Text(
-                                    'Sign In',
+                                    'Submit',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 13,
                                         color: Colors.white),
                                   ),
-                                  onPressed: login,
+                                  onPressed: () {},
                                   style: ElevatedButton.styleFrom(
                                       elevation: 9.0,
                                       primary: Colors.green,
@@ -187,39 +173,24 @@ class _LogInState extends State<LogIn> {
                       ),
                     ),
                     SizedBox(height: 20.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            // Add your forgot password logic here
-                          },
-                          child: Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
+                    Center(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LogIn(),
                             ),
+                          );
+                        },
+                        child: Text(
+                          'Login?',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RegistrationPage(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            'Not a Member?',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
