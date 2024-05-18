@@ -12,7 +12,7 @@ class Helper {
         actions: <Widget>[
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text('OK'),
+            child: const Text('OK'),
           ),
         ],
       ),
@@ -48,7 +48,7 @@ class Helper {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 1,
-        backgroundColor: Color(0xFFDDFFDD),
+        backgroundColor: const Color(0xFFDDFFDD),
         textColor: Colors.black,
         fontSize: 16.0);
   }

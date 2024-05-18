@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:pos/HomePage/HomePage.dart';
@@ -8,19 +6,23 @@ import 'package:pos/Auth/ForgetPassword.dart';
 import 'package:pos/utils/Api.dart';
 import 'package:pos/utils/Helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
-class LogIn extends StatefulWidget {
+class Login extends StatefulWidget {
+  const Login({Key? key}) : super(key: key);
   @override
-  _LogInState createState() => _LogInState();
+  LoginState createState() => LoginState();
 }
 
-class _LogInState extends State<LogIn> {
+class LoginState extends State<Login> {
+  final borderRadius = BorderRadius.circular(75);
   bool _isLoading = false;
   String username = '';
   String password = '';
 
   Helper helper = Helper(); // Create an instance of the Helper class
 
+  @override
   void initState() {
     super.initState();
   }
@@ -62,7 +64,7 @@ class _LogInState extends State<LogIn> {
     }
   }
 
-  void login() async {
+  handleLoginButtonPress() async {
     bool isLoggedIn = false;
     if ((username == '') || (password == '')) {
       helper.validationToast(true, 'Username & Password required field');
@@ -81,6 +83,16 @@ class _LogInState extends State<LogIn> {
     }
   }
 
+  // _handleLoginButtonPress() async {
+  //   setState(() {
+  //     _isLoading = true; // Set loading indicator while processing
+  //   });
+  //   await userLogin(); // Perform asynchronous login operation
+  //   setState(() {
+  //     _isLoading = false; // Hide loading indicator after completion
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +100,7 @@ class _LogInState extends State<LogIn> {
         children: [
           // Background image
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/imageedit.jpg'),
                 fit: BoxFit.cover,
@@ -102,7 +114,7 @@ class _LogInState extends State<LogIn> {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.4),
                   borderRadius: BorderRadius.circular(20.0),
@@ -110,7 +122,7 @@ class _LogInState extends State<LogIn> {
                     BoxShadow(
                       color: Colors.white.withOpacity(0.2),
                       blurRadius: 10,
-                      offset: Offset(0, 5),
+                      offset: const Offset(0, 5),
                     ),
                   ],
                 ),
@@ -119,8 +131,8 @@ class _LogInState extends State<LogIn> {
                   children: [
                     Center(
                       child: Container(
-                        margin: EdgeInsets.only(top: 20.0),
-                        child: new AutoSizeText(
+                        margin: const EdgeInsets.only(top: 20.0),
+                        child: const AutoSizeText(
                           'Welcome to IMS Software',
                           style: TextStyle(
                             fontSize: 20.0,
@@ -130,10 +142,10 @@ class _LogInState extends State<LogIn> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextField(
-                      style: TextStyle(color: Colors.black),
-                      decoration: InputDecoration(
+                      style: const TextStyle(color: Colors.black),
+                      decoration: const InputDecoration(
                         hintText: 'Email',
                         hintStyle: TextStyle(color: Colors.black),
                         icon: Icon(Icons.email, color: Colors.black),
@@ -144,10 +156,10 @@ class _LogInState extends State<LogIn> {
                         });
                       },
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextField(
-                      style: TextStyle(color: Colors.black),
-                      decoration: InputDecoration(
+                      style: const TextStyle(color: Colors.black),
+                      decoration: const InputDecoration(
                         hintText: 'Password',
                         hintStyle: TextStyle(color: Colors.black),
                         icon: Icon(Icons.lock, color: Colors.black),
@@ -159,35 +171,36 @@ class _LogInState extends State<LogIn> {
                       },
                       obscureText: true,
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Padding(padding: EdgeInsets.only(top: 10.0)),
+                          const Padding(padding: EdgeInsets.only(top: 10.0)),
                           _isLoading // Check the _isLoading flag
-                              ? CircularProgressIndicator()
+                              ? const CircularProgressIndicator()
                               : ElevatedButton(
-                                  child: Text(
+                                  onPressed: handleLoginButtonPress,
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 9.0,
+                                    backgroundColor: Colors.green,
+                                    fixedSize: const Size(300, 50),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: borderRadius,
+                                    ),
+                                  ),
+                                  child: const Text(
                                     'Sign In',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 13,
                                         color: Colors.white),
                                   ),
-                                  onPressed: login,
-                                  style: ElevatedButton.styleFrom(
-                                      elevation: 9.0,
-                                      primary: Colors.green,
-                                      fixedSize: const Size(300, 50),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(75))),
                                 ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -200,7 +213,7 @@ class _LogInState extends State<LogIn> {
                               ),
                             );
                           },
-                          child: Text(
+                          child: const Text(
                             'Forgot Password?',
                             style: TextStyle(
                               color: Colors.black,
@@ -217,7 +230,7 @@ class _LogInState extends State<LogIn> {
                               ),
                             );
                           },
-                          child: Text(
+                          child: const Text(
                             'Not a Member?',
                             style: TextStyle(
                               color: Colors.black,

@@ -1,26 +1,25 @@
 import 'dart:convert';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:pos/HomePage/HomePage.dart';
-import 'package:pos/Auth/RegistrationPage.dart';
-import 'package:pos/Login/login.dart';
+import 'package:pos/Auth/Login.dart';
 import 'package:pos/utils/Api.dart';
 import 'package:pos/utils/Helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ForgetPassword extends StatefulWidget {
+  const ForgetPassword({Key? key}) : super(key: key);
   @override
-  _ForgetPasswordState createState() => _ForgetPasswordState();
+  ForgetPasswordState createState() => ForgetPasswordState();
 }
 
-class _ForgetPasswordState extends State<ForgetPassword> {
+class ForgetPasswordState extends State<ForgetPassword> {
   bool _isLoading = false;
   String username = '';
   String password = '';
 
   Helper helper = Helper(); // Create an instance of the Helper class
-
+  @override
   void initState() {
     super.initState();
   }
@@ -76,7 +75,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
       helper.successToast('Login Success');
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => const HomePage()),
       );
     }
   }
@@ -88,7 +87,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         children: [
           // Background image
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/imageedit.jpg'),
                 fit: BoxFit.cover,
@@ -102,7 +101,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.4),
                   borderRadius: BorderRadius.circular(20.0),
@@ -110,7 +109,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     BoxShadow(
                       color: Colors.white.withOpacity(0.2),
                       blurRadius: 10,
-                      offset: Offset(0, 5),
+                      offset: const Offset(0, 5),
                     ),
                   ],
                 ),
@@ -119,8 +118,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   children: [
                     Center(
                       child: Container(
-                        margin: EdgeInsets.only(top: 20.0),
-                        child: new AutoSizeText(
+                        margin: const EdgeInsets.only(top: 20.0),
+                        child: const AutoSizeText(
                           'Welcome to IMS Software',
                           style: TextStyle(
                             fontSize: 20.0,
@@ -130,60 +129,55 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20.0),
-                    TextField(
+                    const SizedBox(height: 20.0),
+                    const TextField(
                       style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         hintText: 'Email',
                         hintStyle: TextStyle(color: Colors.black),
                         icon: Icon(Icons.email, color: Colors.black),
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          username = value;
-                        });
-                      },
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Padding(padding: EdgeInsets.only(top: 10.0)),
+                          const Padding(padding: EdgeInsets.only(top: 10.0)),
                           _isLoading // Check the _isLoading flag
-                              ? CircularProgressIndicator()
+                              ? const CircularProgressIndicator()
                               : ElevatedButton(
-                                  child: Text(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                      elevation: 9.0,
+                                      backgroundColor: Colors.green,
+                                      fixedSize: const Size(300, 50),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(75))),
+                                  child: const Text(
                                     'Submit',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 13,
                                         color: Colors.white),
                                   ),
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                      elevation: 9.0,
-                                      primary: Colors.green,
-                                      fixedSize: const Size(300, 50),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(75))),
                                 ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     Center(
                       child: TextButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => LogIn(),
+                              builder: (context) => const Login(),
                             ),
                           );
                         },
-                        child: Text(
+                        child: const Text(
                           'Login?',
                           style: TextStyle(
                             color: Colors.black,

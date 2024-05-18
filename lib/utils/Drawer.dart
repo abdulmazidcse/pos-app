@@ -2,22 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:pos/HomePage/HomePage.dart';
 import 'package:pos/Pos/PosPage.dart';
 import 'package:pos/Products/ProductPage.dart';
-import 'package:pos/Auth/login.dart';
+import 'package:pos/Products/ProductList.dart';
+import 'package:pos/Auth/Login.dart';
 import 'package:pos/utils/Api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class MyDrawer extends StatefulWidget {
+  const MyDrawer({Key? key}) : super(key: key);
   @override
-  _MyDrawerState createState() => _MyDrawerState();
+  MyDrawerState createState() => MyDrawerState();
 }
 
-class _MyDrawerState extends State<MyDrawer> {
+class MyDrawerState extends State<MyDrawer> {
   dynamic userName = '';
   dynamic userEmail = '';
   dynamic userId = '';
   bool isLogin = false;
 
+  @override
   void initState() {
     super.initState();
     userData(); // Call userData in initState
@@ -44,7 +47,7 @@ class _MyDrawerState extends State<MyDrawer> {
           UserAccountsDrawerHeader(
             accountName: Text(
               userName,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 15.0,
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -52,16 +55,16 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             accountEmail: Text(
               userEmail,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 12.0,
                 color: Colors.black,
                 fontWeight: FontWeight.normal,
               ),
             ),
-            currentAccountPicture: CircleAvatar(
+            currentAccountPicture: const CircleAvatar(
               backgroundImage: AssetImage('assets/images/logo.png'),
             ),
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/background_image.png'),
                 fit: BoxFit.fill,
@@ -69,50 +72,50 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
           ),
           ListTile(
-              leading: Icon(Icons.home_outlined),
-              title: Text("Home"),
+              leading: const Icon(Icons.home_outlined),
+              title: const Text("Home"),
               onTap: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
+                  MaterialPageRoute(builder: (context) => const HomePage()),
                 );
               }),
-          SizedBox(height: 10.0),
+          const SizedBox(height: 10.0),
           ListTile(
-            leading: Icon(Icons.production_quantity_limits),
-            title: Text("POS"),
+            leading: const Icon(Icons.production_quantity_limits),
+            title: const Text("POS"),
             onTap: () async {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => PosPage()));
             },
           ),
-          SizedBox(height: 10.0),
+          const SizedBox(height: 10.0),
           ListTile(
-            leading: Icon(Icons.production_quantity_limits),
-            title: Text("Products List"),
+            leading: const Icon(Icons.production_quantity_limits),
+            title: const Text("Products List"),
+            onTap: () async {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => ProductList()));
+            },
+          ),
+          const SizedBox(height: 10.0),
+          ListTile(
+            leading: const Icon(Icons.production_quantity_limits),
+            title: const Text("Create Products"),
             onTap: () async {
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => ProductPage()));
             },
           ),
-          SizedBox(height: 10.0),
+          const SizedBox(height: 10.0),
           ListTile(
-            leading: Icon(Icons.production_quantity_limits),
-            title: Text("Create Products"),
-            onTap: () async {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => ProductPage()));
-            },
-          ),
-          SizedBox(height: 10.0),
-          ListTile(
-            leading: Icon(Icons.logout),
-            title: isLogin ? Text("Logout") : Text('Login'),
+            leading: const Icon(Icons.logout),
+            title: isLogin ? const Text("Logout") : const Text('Login'),
             onTap: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
               await prefs.clear();
               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => LogIn(),
+                builder: (context) => const Login(),
               ));
             },
           )

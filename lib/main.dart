@@ -1,30 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'HomePage/HomePage.dart';
+import 'Products/ProductList.dart';
 import 'Pos/CartProvider.dart';
-import 'package:pos/Login/login.dart';
-import 'Pos/PosPage.dart';
-import 'Pos/PosPageGlassy.dart';
+// import 'package:pos/Auth/Login.dart';
+// import 'Pos/PosPage.dart';
+// import 'Pos/PosPageGlassy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
       future: checkAuth(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // Or any loading indicator
+          return const CircularProgressIndicator(); // Or any loading indicator
         } else {
           if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
             bool isUserLogin = snapshot.data!;
-            var myPageWidget = isUserLogin ? HomePage() : HomePage();
+            var myPageWidget =
+                isUserLogin ? const ProductList() : const HomePage();
 
             return MultiProvider(
               providers: [
@@ -33,7 +36,7 @@ class MyApp extends StatelessWidget {
               child: MaterialApp(
                 debugShowCheckedModeBanner: false,
                 home: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage('assets/images/imageedit.jpg'),
                       fit: BoxFit.cover,
