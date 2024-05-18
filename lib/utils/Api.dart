@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:async';
-// import 'package:http/http.dart';
 import 'package:pos/Products/Product.dart';
 import 'package:pos/Products/ProductModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,18 +16,6 @@ class Api {
   // final String url = 'https://inventory.kathergolpo.com/backend/api/';
   // final String url2 = 'http://192.168.31.135:8000/';
 
-  _dGET(apiUrl) async {
-    SharedPreferences localStorage = await SharedPreferences.getInstance();
-    var token = localStorage.getString('token').toString();
-    var fullUrl = _url + apiUrl;
-    // print(token);
-    return await http.get(Uri.parse(fullUrl), headers: {
-      'Content-type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token'
-    });
-  }
-
   Future<ApiResponse> productSearchFetchData(String searchTerm) async {
     // var apiUrl = 'product/list?search=$searchTerm&column=0&dir=desc';
     var apiUrl = 'posproducts?search=$searchTerm';
@@ -36,6 +23,7 @@ class Api {
 
     final response = await http.get(Uri.parse(fullUrl), headers: {
       'Accept': 'application/json',
+      // ignore: prefer_interpolation_to_compose_strings
       'Authorization': 'Bearer ' + await _getToken()
     });
 
@@ -59,6 +47,7 @@ class Api {
     final response = await http.get(url, headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
+      // ignore: prefer_interpolation_to_compose_strings
       'Authorization': 'Bearer ' + await _getToken()
     });
 
@@ -106,6 +95,7 @@ class Api {
         .post(Uri.parse(fullUrl), body: jsonEncode(data), headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
+      // ignore: prefer_interpolation_to_compose_strings
       'Authorization': 'Bearer ' + await _getToken()
     });
   }
@@ -125,15 +115,9 @@ class Api {
 
   userInfo() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
-    final user_info = localStorage.getString('user').toString();
-    return user_info;
+    return localStorage.getString('user').toString();
   }
 
   _setHeadersWithout() =>
       {'Content-type': 'application/json', 'Accept': 'application/json'};
-  _setHeaders() => {
-        'Content-type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + _getToken(),
-      };
 }

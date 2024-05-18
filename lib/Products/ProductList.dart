@@ -46,8 +46,6 @@ class ProductListState extends State<ProductList> {
         _hasMore = newProducts.length == Api().perPage;
         _currentPage = page;
       });
-    } catch (error) {
-      print('Error fetching products: $error'); // Handle errors appropriately
     } finally {
       setState(() {
         _isLoading = false;
@@ -95,7 +93,6 @@ class ProductListState extends State<ProductList> {
     if (_isLoading || !_hasMore) return;
 
     final nextPage = _currentPage + 1;
-    print('Loading more products for page $nextPage');
     await fetchProducts(page: nextPage);
   }
 
@@ -108,7 +105,6 @@ class ProductListState extends State<ProductList> {
             _scrollController.position.maxScrollExtent - 200 &&
         !_isLoading &&
         _hasMore) {
-      print('Scroll reached near the bottom. Loading more products...');
       loadMore();
     }
   }

@@ -8,16 +8,18 @@ import '../utils/Helper.dart';
 import '../utils/Drawer.dart';
 
 class ProductPage extends StatefulWidget {
+  const ProductPage({Key? key}) : super(key: key);
   @override
-  _ProductPageState createState() => _ProductPageState();
+  ProductPageState createState() => ProductPageState();
 }
 
-class _ProductPageState extends State<ProductPage> {
+class ProductPageState extends State<ProductPage> {
   Helper helper = Helper(); // Create an instance of the Helper class
   bool _isLoading = false;
 
   // get productCodeController => null;
   final TextEditingController productCodeController = TextEditingController();
+  @override
   void initState() {
     super.initState();
     userData();
@@ -61,7 +63,7 @@ class _ProductPageState extends State<ProductPage> {
     setState(() {
       _isLoading = true; // Show loading indicator
     });
-    final String apiUrl = 'products';
+    const String apiUrl = 'products';
     var product = {
       'product_type': 'standard',
       'product_name': productName,
@@ -111,12 +113,12 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       body: Stack(
         children: [
           // Background image
           Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/imageedit.jpg'),
                 fit: BoxFit.cover,
@@ -130,7 +132,7 @@ class _ProductPageState extends State<ProductPage> {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Container(
                 width: double.infinity,
-                padding: EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.4),
                   borderRadius: BorderRadius.circular(20.0),
@@ -138,7 +140,7 @@ class _ProductPageState extends State<ProductPage> {
                     BoxShadow(
                       color: Colors.white.withOpacity(0.2),
                       blurRadius: 10,
-                      offset: Offset(0, 5),
+                      offset: const Offset(0, 5),
                     ),
                   ],
                 ),
@@ -147,8 +149,8 @@ class _ProductPageState extends State<ProductPage> {
                   children: [
                     Center(
                       child: Container(
-                        margin: EdgeInsets.only(top: 20.0),
-                        child: new AutoSizeText(
+                        margin: const EdgeInsets.only(top: 20.0),
+                        child: const AutoSizeText(
                           'Create Product',
                           style: TextStyle(
                             fontSize: 20.0,
@@ -160,11 +162,11 @@ class _ProductPageState extends State<ProductPage> {
                     ),
                     ElevatedButton(
                         onPressed: () => scanBarcodeNormal(),
-                        child: Text('Start barcode scan')),
-                    SizedBox(height: 20.0),
+                        child: const Text('Start barcode scan')),
+                    const SizedBox(height: 20.0),
                     TextField(
-                      style: TextStyle(color: Colors.black),
-                      decoration: InputDecoration(
+                      style: const TextStyle(color: Colors.black),
+                      decoration: const InputDecoration(
                         hintText: 'Product Name',
                         hintStyle: TextStyle(color: Colors.black),
                         icon: Icon(Icons.email, color: Colors.black),
@@ -175,11 +177,11 @@ class _ProductPageState extends State<ProductPage> {
                         });
                       },
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextField(
                       controller: productCodeController,
-                      style: TextStyle(color: Colors.black),
-                      decoration: InputDecoration(
+                      style: const TextStyle(color: Colors.black),
+                      decoration: const InputDecoration(
                         hintText: 'Product Code',
                         hintStyle: TextStyle(color: Colors.black),
                         icon: Icon(Icons.barcode_reader, color: Colors.black),
@@ -190,10 +192,10 @@ class _ProductPageState extends State<ProductPage> {
                         });
                       },
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextField(
-                      style: TextStyle(color: Colors.black),
-                      decoration: InputDecoration(
+                      style: const TextStyle(color: Colors.black),
+                      decoration: const InputDecoration(
                         hintText: 'Cost Price',
                         hintStyle: TextStyle(color: Colors.black),
                         icon: Icon(Icons.price_check, color: Colors.black),
@@ -204,10 +206,10 @@ class _ProductPageState extends State<ProductPage> {
                         });
                       },
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextField(
-                      style: TextStyle(color: Colors.black),
-                      decoration: InputDecoration(
+                      style: const TextStyle(color: Colors.black),
+                      decoration: const InputDecoration(
                         hintText: 'Sale Price',
                         hintStyle: TextStyle(color: Colors.black),
                         icon: Icon(Icons.price_check, color: Colors.black),
@@ -218,22 +220,15 @@ class _ProductPageState extends State<ProductPage> {
                         });
                       },
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Padding(padding: EdgeInsets.only(top: 10.0)),
+                          const Padding(padding: EdgeInsets.only(top: 10.0)),
                           _isLoading
-                              ? CircularProgressIndicator()
+                              ? const CircularProgressIndicator()
                               : ElevatedButton(
-                                  child: Text(
-                                    'Save',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 13,
-                                        color: Colors.white),
-                                  ),
                                   onPressed: createProduct,
                                   style: ElevatedButton.styleFrom(
                                       elevation: 9.0,
@@ -242,11 +237,18 @@ class _ProductPageState extends State<ProductPage> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(75))),
+                                  child: const Text(
+                                    'Save',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13,
+                                        color: Colors.white),
+                                  ),
                                 ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                   ],
                 ),
               ),

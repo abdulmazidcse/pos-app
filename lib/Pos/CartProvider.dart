@@ -12,7 +12,6 @@ class CartProvider with ChangeNotifier {
   void addToCart(Product product) {
     final existingItemIndex = _cartItems
         .indexWhere((item) => item.product.productId == product.productId);
-    // print(_cartItems.length);
     if (existingItemIndex != -1) {
       _cartItems[existingItemIndex].qty++;
     } else {

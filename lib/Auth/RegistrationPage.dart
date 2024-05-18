@@ -91,10 +91,7 @@ class RegistrationState extends State<RegistrationPage> {
           _isLoading = false;
         });
       }
-    } catch (e) {
-      // Handle network or other errors
-      // print(e);
-    }
+    } finally {}
   }
 
   validationFass(isError) {

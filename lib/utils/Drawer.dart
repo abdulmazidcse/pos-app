@@ -95,7 +95,7 @@ class MyDrawerState extends State<MyDrawer> {
             title: const Text("Products List"),
             onTap: () async {
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => ProductList()));
+                  MaterialPageRoute(builder: (context) => const ProductList()));
             },
           ),
           const SizedBox(height: 10.0),

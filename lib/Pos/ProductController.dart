@@ -29,7 +29,6 @@ class ProductController {
             if (productData is Map<String, dynamic>) {
               // If it's a Map, parse the product data
               final productsDataData = productData['data'];
-              // print(productsDataData);
               if (productsDataData is List) {
                 return productsDataData
                     .map((product) => Product.fromJson(product))

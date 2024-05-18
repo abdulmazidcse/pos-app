@@ -370,9 +370,7 @@ class _PosPageState extends State<PosPage> {
               },
             ),
             ElevatedButton(
-              onPressed: () {
-                print('Order submitted! Net amount: Tk  ');
-              },
+              onPressed: () {},
               child: Text('Submit Order'),
             ),
           ],

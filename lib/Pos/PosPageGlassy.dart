@@ -127,9 +127,7 @@ class _PosPageGlassyState extends State<PosPageGlassy> {
                 },
               ),
               ElevatedButton(
-                onPressed: () {
-                  print('Order submitted! Net amount: Tk  ');
-                },
+                onPressed: () {},
                 child: Text('Submit Order'),
               ),
             ],
