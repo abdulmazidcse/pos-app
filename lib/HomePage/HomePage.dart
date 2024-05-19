@@ -18,7 +18,7 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       body: Stack(
         children: [
           Container(
@@ -66,7 +66,7 @@ class HomePageState extends State<HomePage> {
                     ElevatedButton(
                       onPressed: () async {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => ManuPage()));
+                            builder: (context) => const ManuPage()));
                       },
                       style: ElevatedButton.styleFrom(
                           elevation: 9.0,

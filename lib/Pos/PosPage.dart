@@ -9,11 +9,13 @@ import '../utils/Drawer.dart';
 import '../utils/Helper.dart';
 
 class PosPage extends StatefulWidget {
+  const PosPage({Key? key}) : super(key: key);
+
   @override
-  _PosPageState createState() => _PosPageState();
+  PosPageState createState() => PosPageState();
 }
 
-class _PosPageState extends State<PosPage> {
+class PosPageState extends State<PosPage> {
   Helper helper = Helper(); // Create an instance of the Helper class
   List<Product> _filteredProducts = [];
   String productCode = '';
@@ -60,7 +62,7 @@ class _PosPageState extends State<PosPage> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('${product.productName} added to cart'),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       ),
     );
     setState(() {
@@ -73,12 +75,12 @@ class _PosPageState extends State<PosPage> {
     final selectedCartItems = Provider.of<CartProvider>(context).cartItems;
 
     return Scaffold(
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(6.0),
         child: Column(
           children: [
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Autocomplete<String>(
               optionsBuilder: (TextEditingValue textEditingValue) {
                 if (textEditingValue.text.isEmpty) {
@@ -141,19 +143,19 @@ class _PosPageState extends State<PosPage> {
                   },
                   decoration: InputDecoration(
                     hintText: 'Search Products...',
-                    prefixIcon: Icon(Icons.search),
+                    prefixIcon: const Icon(Icons.search),
                     suffixIcon: IconButton(
-                      icon: Icon(Icons.barcode_reader),
+                      icon: const Icon(Icons.barcode_reader),
                       onPressed: () => scanBarcodeNormal(),
                     ),
                   ),
                 );
               },
             ),
-            Container(
+            SizedBox(
               height: 400,
               child: ListView.builder(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   top: 5.0,
                 ),
                 itemCount: selectedCartItems.length,
@@ -165,8 +167,8 @@ class _PosPageState extends State<PosPage> {
                     direction: DismissDirection.endToStart,
                     background: Container(
                       alignment: Alignment.centerRight,
-                      color: Color.fromARGB(255, 251, 174, 169),
-                      child: Icon(Icons.delete),
+                      color: const Color.fromARGB(255, 251, 174, 169),
+                      child: const Icon(Icons.delete),
                     ),
                     onDismissed: (direction) {
                       // Remove the item from the cart when dismissed
@@ -174,11 +176,11 @@ class _PosPageState extends State<PosPage> {
                           .removeCartItem(cartItem);
                     },
                     child: Container(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                         top: 2.0,
                         bottom: 2.0,
                       ),
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
                             color: Colors.black26,
@@ -193,22 +195,22 @@ class _PosPageState extends State<PosPage> {
                               Expanded(
                                 flex: 11,
                                 child: Container(
-                                  padding: EdgeInsets.only(left: 8),
+                                  padding: const EdgeInsets.only(left: 8),
                                   color: Colors.black12,
                                   height: 80, // Adjust the height as needed
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(height: 5),
+                                      const SizedBox(height: 5),
                                       Text(
                                         'Name ${cartItem.product.productName}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 11,
                                         ), // Adjust the font size of the item name
                                       ),
-                                      SizedBox(height: 5),
-                                      Container(
+                                      const SizedBox(height: 5),
+                                      SizedBox(
                                         height:
                                             40, // Set the height of the container
                                         width:
@@ -232,7 +234,7 @@ class _PosPageState extends State<PosPage> {
                                               );
                                             });
                                           },
-                                          decoration: InputDecoration(
+                                          decoration: const InputDecoration(
                                             labelText: 'Price',
                                             hintText: 'Enter price',
                                             border: OutlineInputBorder(),
@@ -246,14 +248,14 @@ class _PosPageState extends State<PosPage> {
                               Expanded(
                                 flex: 4,
                                 child: Container(
-                                  padding: EdgeInsets.only(right: 8),
+                                  padding: const EdgeInsets.only(right: 8),
                                   color: Colors.black12,
                                   height: 80, // Adjust the height as needed
                                   child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.end,
                                       children: [
-                                        SizedBox(height: 5),
+                                        const SizedBox(height: 5),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
@@ -282,25 +284,25 @@ class _PosPageState extends State<PosPage> {
                                                   border: Border.all(
                                                     color: Colors.green,
                                                   ), // Green border
+                                                ), // Set the icon color to red and adjust size
+                                                padding: const EdgeInsets.all(
+                                                  6,
                                                 ),
-                                                child: Icon(
+                                                child: const Icon(
                                                   Icons.remove,
                                                   color: Colors.red,
                                                   size: 9,
-                                                ), // Set the icon color to red and adjust size
-                                                padding: EdgeInsets.all(
-                                                  6,
                                                 ), // Adjust padding as needed
                                               ),
                                             ),
-                                            SizedBox(width: 5),
+                                            const SizedBox(width: 5),
                                             Text(
                                               'Qty: ${cartItem.qty}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 12,
                                               ), // Adjust the font size of the quantity text
                                             ),
-                                            SizedBox(width: 5),
+                                            const SizedBox(width: 5),
                                             InkWell(
                                               onTap: () {
                                                 setState(() {
@@ -321,23 +323,23 @@ class _PosPageState extends State<PosPage> {
                                                   border: Border.all(
                                                     color: Colors.green,
                                                   ), // Green border
+                                                ), // Set the icon color to green and adjust size
+                                                padding: const EdgeInsets.all(
+                                                  6,
                                                 ),
-                                                child: Icon(
+                                                child: const Icon(
                                                   Icons.add,
                                                   color: Colors.green,
                                                   size: 9,
-                                                ), // Set the icon color to green and adjust size
-                                                padding: EdgeInsets.all(
-                                                  6,
                                                 ), // Adjust padding as needed
                                               ),
                                             ),
                                           ],
                                         ),
-                                        SizedBox(height: 20),
+                                        const SizedBox(height: 20),
                                         Text(
                                           'Subtotal: ${double.tryParse(cartItem.subtotal.toString())}',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 12,
                                           ), // Adjust the font size of the subtotal text
                                         ),
@@ -365,13 +367,13 @@ class _PosPageState extends State<PosPage> {
               builder: (context, cartProvider, child) {
                 return Text(
                   'Net Amount: ${cartProvider.netAmount.toString()}',
-                  style: TextStyle(fontSize: 14),
+                  style: const TextStyle(fontSize: 14),
                 );
               },
             ),
             ElevatedButton(
               onPressed: () {},
-              child: Text('Submit Order'),
+              child: const Text('Submit Order'),
             ),
           ],
         ),

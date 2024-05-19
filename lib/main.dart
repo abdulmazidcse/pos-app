@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'HomePage/HomePage.dart';
 import 'Products/ProductList.dart';
 import 'Pos/CartProvider.dart';
-// import 'package:pos/Auth/Login.dart';
+import 'package:pos/Auth/Login.dart';
 // import 'Pos/PosPage.dart';
 // import 'Pos/PosPageGlassy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,6 +14,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+  // const WidgetsFlutterBinding.ensureInitialized();
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
@@ -26,8 +27,7 @@ class MyApp extends StatelessWidget {
             return Text('Error: ${snapshot.error}');
           } else {
             bool isUserLogin = snapshot.data!;
-            var myPageWidget =
-                isUserLogin ? const ProductList() : const HomePage();
+            var myPageWidget = isUserLogin ? const HomePage() : const Login();
 
             return MultiProvider(
               providers: [

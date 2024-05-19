@@ -67,17 +67,17 @@ class ProductListState extends State<ProductList> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Delete'),
-          content: Text('Are you sure you want to delete this product?'),
+          title: const Text('Confirm Delete'),
+          content: const Text('Are you sure you want to delete this product?'),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
             ),
             TextButton(
-              child: Text('Delete'),
+              child: const Text('Delete'),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
                 _deleteProduct(index); // Delete the product

@@ -42,6 +42,8 @@ dependencies:
   fluttertoast: ^8.2.5
   provider: ^6.1.2
   searchfield: ^1.0.1 
+  flutter_native_splash: ^2.4.0
+
 
 dev_dependencies:
   flutter_test:
@@ -97,3 +99,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
+flutter_native_splash:
+  image: assets/images/water-splash-effect.png  # Ensure this image exists in the specified path
+  color: "#ffffff"  # Background color of the splash screen
+  android: true
+  ios: true
+  web: true

@@ -3,7 +3,7 @@ import 'package:pos/Pos/CartItem.dart';
 import 'package:pos/Pos/ProductModel.dart';
 
 class CartProvider with ChangeNotifier {
-  List<CartItem> _cartItems = [];
+  final List<CartItem> _cartItems = [];
   double _netAmount = 0.00;
 
   List<CartItem> get cartItems => _cartItems;
@@ -47,9 +47,7 @@ class CartProvider with ChangeNotifier {
   void _calculateNetAmount() {
     _netAmount = 0.00;
     for (var item in _cartItems) {
-      final price = item.product.newPrice != null
-          ? item.product.newPrice
-          : item.product.mrpPrice;
+      final price = item.product.newPrice;
       final subtotal = (price * item.qty);
       item.subtotal = subtotal; // Update the subtotal for the current item
       _netAmount += subtotal;

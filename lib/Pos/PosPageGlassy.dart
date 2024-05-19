@@ -10,15 +10,14 @@ import '../utils/Drawer.dart';
 import '../utils/Helper.dart';
 
 class PosPageGlassy extends StatefulWidget {
+  const PosPageGlassy({Key? key}) : super(key: key);
   @override
-  _PosPageGlassyState createState() => _PosPageGlassyState();
+  PosPageGlassyState createState() => PosPageGlassyState();
 }
 
-class _PosPageGlassyState extends State<PosPageGlassy> {
+class PosPageGlassyState extends State<PosPageGlassy> {
   Helper helper = Helper(); // Create an instance of the Helper class
-  List<Product> _filteredProducts = [];
   String productCode = '';
-  bool? _selectedOption = false;
 
   Future<void> scanBarcodeNormal() async {
     String barcodeScanRes;
@@ -31,7 +30,6 @@ class _PosPageGlassyState extends State<PosPageGlassy> {
     if (!mounted) return;
 
     if (barcodeScanRes.isEmpty) {
-      _filteredProducts = [];
     } else if (barcodeScanRes.length >= 3) {
       dynamic productsData =
           await ProductController().fetchProducts(barcodeScanRes);
@@ -43,42 +41,24 @@ class _PosPageGlassyState extends State<PosPageGlassy> {
     }
   }
 
-  void _filterProducts(String searchTerm) async {
-    if (searchTerm.isEmpty) {
-      _filteredProducts = [];
-    } else if (searchTerm.length >= 3) {
-      final productsData = await ProductController().fetchProducts(searchTerm);
-      _filteredProducts = productsData
-          .where((product) => product.productName
-              .toLowerCase()
-              .contains(searchTerm.toLowerCase()))
-          .toList();
-    }
-    setState(() {}); // Update UI with filtered products
-  }
-
   void _addToCartAndClearResults(Product product) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('${product.productName} added to cart'),
-        duration: Duration(seconds: 2),
+        duration: const Duration(seconds: 2),
       ),
     );
-    setState(() {
-      _filteredProducts = [];
-    });
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final selectedCartItems = Provider.of<CartProvider>(context).cartItems;
-
     return Scaffold(
-        drawer: MyDrawer(),
+        drawer: const MyDrawer(),
         body: Stack(
           children: [
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/images/imageedit.jpg'),
                   fit: BoxFit.cover,
@@ -86,30 +66,28 @@ class _PosPageGlassyState extends State<PosPageGlassy> {
               ),
             ),
             Container(
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.4),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Center(
-                      child: Container(
-                        margin: EdgeInsets.only(top: 20.0),
-                        child: new AutoSizeText(
-                          'This is Home Page',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.4),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Center(
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 20.0),
+                      child: const AutoSizeText(
+                        'This is Home Page',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    SizedBox(height: 20.0)
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 20.0)
+                ],
               ),
             ),
           ],
@@ -122,13 +100,14 @@ class _PosPageGlassyState extends State<PosPageGlassy> {
                 builder: (context, cartProvider, child) {
                   return Text(
                     'Net Amount: ${cartProvider.netAmount.toString()}',
-                    style: TextStyle(fontSize: 14, color: Colors.transparent),
+                    style: const TextStyle(
+                        fontSize: 14, color: Colors.transparent),
                   );
                 },
               ),
               ElevatedButton(
                 onPressed: () {},
-                child: Text('Submit Order'),
+                child: const Text('Submit Order'),
               ),
             ],
           ),
