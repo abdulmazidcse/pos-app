@@ -43,9 +43,13 @@ dependencies:
   provider: ^6.1.2
   searchfield: ^1.0.1 
   flutter_native_splash: ^2.4.0
+  json_annotation: ^4.4.0
+  intl: ^0.19.0
 
 
 dev_dependencies:
+  build_runner: ^2.1.0
+  json_serializable: ^6.0.0
   flutter_test:
     sdk: flutter
 

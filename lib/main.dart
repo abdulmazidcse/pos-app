@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'HomePage/HomePage.dart';
 import 'Products/ProductList.dart';
 import 'Pos/CartProvider.dart';
+import 'Sales/SalesListPage.dart';
 import 'package:pos/Auth/Login.dart';
 // import 'Pos/PosPage.dart';
 // import 'Pos/PosPageGlassy.dart';
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
             return Text('Error: ${snapshot.error}');
           } else {
             bool isUserLogin = snapshot.data!;
-            var myPageWidget = isUserLogin ? const HomePage() : const Login();
+            var myPageWidget =
+                isUserLogin ? const SalesListPage() : const Login();
 
             return MultiProvider(
               providers: [

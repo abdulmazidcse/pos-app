@@ -4,6 +4,7 @@ import 'package:pos/Auth/Login.dart';
 import 'package:pos/Auth/RegistrationPage.dart';
 import 'package:pos/Products/ProductPage.dart';
 import 'package:pos/Products/ProductList.dart';
+import 'package:pos/Sales/SalesListPage.dart';
 import 'package:pos/HomePage/HomePage.dart';
 import 'package:pos/Pos/PosPage.dart';
 import 'package:pos/Pos/PosPageGlassy.dart';
@@ -18,7 +19,7 @@ class ManuPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 5.0),
             ElevatedButton(
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -44,7 +45,7 @@ class ManuPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 15.0),
             ElevatedButton(
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -70,7 +71,7 @@ class ManuPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 15.0),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -94,7 +95,7 @@ class ManuPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 15.0),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -118,11 +119,11 @@ class ManuPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 15.0),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => PosPage(),
+                  builder: (context) => const PosPage(),
                 ));
               },
               style: ElevatedButton.styleFrom(
@@ -142,11 +143,11 @@ class ManuPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 15.0),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => PosPageGlassy(),
+                  builder: (context) => const PosPageGlassy(),
                 ));
               },
               style: ElevatedButton.styleFrom(
@@ -166,7 +167,31 @@ class ManuPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 15.0),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const SalesListPage(),
+                ));
+              },
+              style: ElevatedButton.styleFrom(
+                elevation: 9.0,
+                backgroundColor: Colors.green,
+                fixedSize: const Size(300, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(75),
+                ),
+              ),
+              child: const Text(
+                'Sale List',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            const SizedBox(height: 15.0),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -190,7 +215,7 @@ class ManuPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 15.0),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
