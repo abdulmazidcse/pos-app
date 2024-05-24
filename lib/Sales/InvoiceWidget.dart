@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart'; // Import for currency formatting
 import 'package:pos/Sales/SaleModel.dart';
 import '../utils/DashedBorder.dart';
+import 'package:barcode_widget/barcode_widget.dart';
 
 class InvoiceWidget extends StatelessWidget {
   final SaleModel saleData;
@@ -26,7 +27,7 @@ class InvoiceWidget extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Invoice'),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
           padding: const EdgeInsets.all(
@@ -37,14 +38,6 @@ class InvoiceWidget extends StatelessWidget {
                 color: const Color.fromARGB(255, 205, 206, 206),
                 width: 5), // Set the border color and width
             borderRadius: BorderRadius.circular(5.0),
-            // boxShadow: [
-            //   BoxShadow(
-            //     color: Colors.black.withOpacity(0.5),
-            //     blurRadius: 96, // 1 inch blur radius
-            //     spreadRadius: -24, // -0.25 inch spread radius
-            //     offset: const Offset(0, 0),
-            //   ),
-            // ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,9 +53,9 @@ class InvoiceWidget extends StatelessWidget {
                         Center(
                           child: Container(
                             margin: const EdgeInsets.only(top: 15.0),
-                            child: const AutoSizeText(
-                              'Retail Shop',
-                              style: TextStyle(
+                            child: AutoSizeText(
+                              saleData.outlet.name, // 'Retail Shop',
+                              style: const TextStyle(
                                 fontSize: 20.0,
                                 color: Colors.black,
                               ),
@@ -70,14 +63,14 @@ class InvoiceWidget extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '34/4/A/10, North Bashaboo, Dhaka 1000',
-                              style: TextStyle(fontSize: 12),
+                        Center(
+                          child: Expanded(
+                              child: Text(
+                            '${saleData.outlet.address}',
+                            style: const TextStyle(
+                              fontSize: 12,
                             ),
-                          ],
+                          )),
                         ),
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -106,29 +99,32 @@ class InvoiceWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              const Row(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                      flex: 15, // 10%
+                      child: Text(
+                        // 'Address: H-405,R-29,Mohakhali Dohs,Dhaka-1212',
+                        'Address: ${saleData.customer.address}',
+                        style: const TextStyle(fontSize: 12),
+                      )),
+                ],
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Address: H-405,R-29,Mohakhali Dohs,Dhaka-1212',
-                    style: TextStyle(fontSize: 12),
+                    'Mobile: ${saleData.customer.phone}',
+                    style: const TextStyle(fontSize: 12),
                   ),
                 ],
               ),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Mobile: 01741575914',
-                    style: TextStyle(fontSize: 12),
-                  ),
-                ],
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Srvd by: Super Admin',
+                    'Srvd by: ${saleData.createdBy.name}',
                     style: TextStyle(fontSize: 12),
                   ),
                 ],
@@ -282,7 +278,7 @@ class InvoiceWidget extends StatelessWidget {
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    saleData.orderDiscountValue.toString(),
+                    currencyFormatter.format(saleData.orderDiscountValue),
                     style: const TextStyle(
                         fontSize: 14, fontWeight: FontWeight.bold),
                   ),
@@ -305,14 +301,34 @@ class InvoiceWidget extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+              Row(
                 children: [
-                  Text(
-                    '123 Main Street\nAnytown, CA 12345',
-                    style: TextStyle(fontSize: 12),
-                  ),
+                  Text('Payment Description:'),
                 ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Description'),
+                  Text('Amount'),
+                ],
+              ),
+              Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('cash'),
+                  Text(saleData.collectionAmount.toString()),
+                ],
+              ),
+              Center(
+                child: BarcodeWidget(
+                  barcode: Barcode.code128(),
+                  data: 'INV00124000164',
+                  width: 100,
+                  height: 50,
+                ),
               ),
             ],
           ),

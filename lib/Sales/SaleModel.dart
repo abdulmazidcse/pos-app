@@ -20,6 +20,9 @@ class SaleModel {
   num salesItemsCount;
   num salesItemsSumDiscount;
   num salesItemsSumMrpPrice;
+  Customer customer;
+  Outlet outlet;
+  CreatedBy createdBy;
   List<SalesItem> salesItems;
 
   SaleModel({
@@ -39,6 +42,9 @@ class SaleModel {
     required this.salesItemsSumDiscount,
     required this.salesItemsSumMrpPrice,
     required this.salesItems,
+    required this.customer,
+    required this.outlet,
+    required this.createdBy,
   });
 
   factory SaleModel.fromJson(Map<String, dynamic> json) {
@@ -60,6 +66,9 @@ class SaleModel {
       salesItemsSumMrpPrice: json["sales_items_sum_mrp_price"],
       salesItems: List<SalesItem>.from(
           json['sales_items'].map((x) => SalesItem.fromJson(x))),
+      customer: Customer.fromJson(json["customer"]),
+      outlet: Outlet.fromJson(json["outlets"]),
+      createdBy: CreatedBy.fromJson(json["created_by"]),
     );
   }
   @override
@@ -151,5 +160,105 @@ class Products {
         "product_code": productCode,
         "mrp_price": mrpPrice,
         "cost_price": costPrice,
+      };
+}
+
+class Customer {
+  int id;
+  String name;
+  dynamic email;
+  dynamic phone;
+  dynamic address;
+
+  Customer({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.phone,
+    required this.address,
+  });
+
+  factory Customer.fromJson(Map<String, dynamic> json) => Customer(
+        id: json["id"],
+        name: json["name"],
+        email: json["email"],
+        phone: json["phone"],
+        address: json["address"],
+      );
+
+  @override
+  String toString() =>
+      'Customer{ id: $id, name: $name, email: $email, phone: $phone }';
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "email": email,
+        "phone": phone,
+        "address": address,
+      };
+}
+
+class Outlet {
+  int id;
+  dynamic name;
+  dynamic address;
+  dynamic outlet_number;
+
+  Outlet({
+    required this.id,
+    required this.name,
+    required this.address,
+    required this.outlet_number,
+  });
+
+  factory Outlet.fromJson(Map<String, dynamic> json) => Outlet(
+        id: json["id"],
+        name: json["name"],
+        address: json["address"],
+        outlet_number: json["outlet_number"],
+      );
+
+  @override
+  String toString() =>
+      'Customer{ id: $id, name: $name, address: $address, phone: $outlet_number }';
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "address": address,
+        "outlet_number": outlet_number,
+      };
+}
+
+class CreatedBy {
+  int id;
+  String name;
+  String email;
+  String phone;
+
+  CreatedBy({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.phone,
+  });
+
+  factory CreatedBy.fromJson(Map<String, dynamic> json) => CreatedBy(
+        id: json["id"],
+        name: json["name"],
+        email: json["email"],
+        phone: json["phone"],
+      );
+
+  @override
+  String toString() =>
+      'Customer{ id: $id, name: $name, email: $email, phone: $phone }';
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "email": email,
+        "phone": phone,
       };
 }
