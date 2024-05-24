@@ -100,11 +100,6 @@ class SalesListPageState extends State<SalesListPage> {
     await fetchSalesOrders(page: nextPage);
   }
 
-  Future<void> invoiceDetails(itemData) async {
-    print('itemData');
-    print(itemData);
-  }
-
   Future<void> refresh() async {
     await fetchSalesOrders(page: 1);
   }
@@ -225,21 +220,43 @@ class SalesListPageState extends State<SalesListPage> {
                                   child: Card(
                                     margin:
                                         const EdgeInsets.symmetric(vertical: 2),
-                                    child: ListTile(
-                                      title: Text(saleData.invoiceNumber),
-                                      subtitle: Text(
-                                        'Code: ${saleData.id}\nPrice: \$${saleData.grandTotal}',
-                                      ),
-                                      onTap: () {
-                                        // Navigate to the InvoiceDetailScreen when the tile is clicked
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => InvoiceWidget(
-                                                saleData: saleData),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                '#${saleData.invoiceNumber}',
+                                                style: TextStyle(fontSize: 14),
+                                              ),
+                                              Text(
+                                                '${saleData.createdAt}',
+                                                style: TextStyle(fontSize: 14),
+                                              ),
+                                            ],
                                           ),
-                                        );
-                                      },
+                                          ListTile(
+                                            title: Text(saleData.invoiceNumber),
+                                            subtitle: Text(
+                                              'Code: ${saleData.id}\nPrice: \$${saleData.grandTotal}',
+                                            ),
+                                            onTap: () {
+                                              // Navigate to the InvoiceDetailScreen when the tile is clicked
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      InvoiceWidget(
+                                                          saleData: saleData),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );

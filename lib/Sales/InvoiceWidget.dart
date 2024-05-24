@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart'; // Import for currency formatting
 import 'package:pos/Sales/SaleModel.dart';
+import '../utils/DashedBorder.dart';
 
 class InvoiceWidget extends StatelessWidget {
   final SaleModel saleData;
@@ -16,6 +17,11 @@ class InvoiceWidget extends StatelessWidget {
     final currencyFormatter =
         NumberFormat.currency(symbol: '\$'); // Currency formatting
 
+    // Calculate the sum of sub_total values
+    final double subTotalSum =
+        saleData.salesItems.fold(0, (sum, item) => sum + item.subTotal);
+    final double TotalAmount = subTotalSum - saleData.orderDiscountValue;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Invoice'),
@@ -24,22 +30,21 @@ class InvoiceWidget extends StatelessWidget {
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
           padding: const EdgeInsets.all(
-              8.0), // Approximate 2mm padding (1mm = 3.78px)
+              15.0), // Approximate 2mm padding (1mm = 3.78px)
           decoration: BoxDecoration(
             color: Colors.white,
-            // Background color
             border: Border.all(
-              color: const Color.fromARGB(255, 255, 255, 181), // Border color
-              width: 5.0, // Border width
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.5),
-                blurRadius: 96, // 1 inch blur radius
-                spreadRadius: -24, // -0.25 inch spread radius
-                offset: const Offset(0, 0),
-              ),
-            ],
+                color: const Color.fromARGB(255, 205, 206, 206),
+                width: 5), // Set the border color and width
+            borderRadius: BorderRadius.circular(5.0),
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: Colors.black.withOpacity(0.5),
+            //     blurRadius: 96, // 1 inch blur radius
+            //     spreadRadius: -24, // -0.25 inch spread radius
+            //     offset: const Offset(0, 0),
+            //   ),
+            // ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,12 +97,12 @@ class InvoiceWidget extends StatelessWidget {
               ),
               const SizedBox(height: 6),
 
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Customer : Delta Force',
-                    style: TextStyle(fontSize: 12),
+                    'Customer : ${saleData.customerName}',
+                    style: const TextStyle(fontSize: 12),
                   ),
                 ],
               ),
@@ -134,11 +139,11 @@ class InvoiceWidget extends StatelessWidget {
                 children: [
                   Text(
                     '#${saleData.invoiceNumber}',
-                    style: TextStyle(fontSize: 14),
+                    style: const TextStyle(fontSize: 13),
                   ),
                   Text(
                     '${saleData.createdAt}',
-                    style: TextStyle(fontSize: 14),
+                    style: const TextStyle(fontSize: 13),
                   ),
                 ],
               ),
@@ -152,44 +157,86 @@ class InvoiceWidget extends StatelessWidget {
                       color: Colors.black, // Border color
                       width: 1.0, // Border width
                     ),
-                    bottom: BorderSide(
-                      color: Colors.black, // Border color
-                      width: 1.0, // Border width
-                    ),
+                  ),
+                  color: Colors.white,
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 25, // 20%
+                        child: Text(
+                          'Item Name',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 10, // 10%
+                        child: Text(
+                          'Qty',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 15, // 10%
+                        child: Text(
+                          'MRP',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 15, // 10%
+                        child: Text(
+                          'Dis',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 15, // 10%
+                        child: Text(
+                          'Value',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 20,
+
+                        /// 10%
+                        child: Text(
+                          'Total',
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Item Name',
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      'Qty',
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      'MRP',
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      'Value',
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      'Total',
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
               ),
-
               // Invoice Description Table Body - List of Items
               ListView.builder(
                 shrinkWrap: true, // Makes the list view non-scrollable
@@ -202,7 +249,9 @@ class InvoiceWidget extends StatelessWidget {
                     description: item.products.productName,
                     quantity: item.quantity,
                     unitPrice: item.mrpPrice,
-                    total: item.mrpPrice,
+                    discount: item.discount,
+                    total: (item.mrpPrice - item.discount),
+                    sub_total: item.subTotal,
                   );
                 },
               ),
@@ -213,27 +262,14 @@ class InvoiceWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Net Total:',
+                    'Sub Total:',
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     currencyFormatter
-                        .format(saleData.grandTotal), // Use currency formatter
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Vat 19.5%:',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    'Vat 19.5%:',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        .format(subTotalSum), // Display calculated subTotalSum
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -242,20 +278,33 @@ class InvoiceWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Total Amount Due:',
+                    'Discount:',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    saleData.orderDiscountValue.toString(),
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Total Amount:',
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     currencyFormatter
-                        .format(saleData.totalAmount), // Use currency formatter
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        .format(TotalAmount), // Use currency formatter
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
-
-              // Invoice Footer - Company Address (Optional)
-              // You can uncomment this section and add your company address details
               const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -277,6 +326,8 @@ class InvoiceItemRow extends StatelessWidget {
   final String description;
   final int quantity;
   final num unitPrice;
+  final dynamic discount;
+  final num sub_total;
   // final double vat;
   final num total;
 
@@ -285,6 +336,8 @@ class InvoiceItemRow extends StatelessWidget {
     required this.description,
     required this.quantity,
     required this.unitPrice,
+    required this.discount,
+    required this.sub_total,
     // required this.vat,
     required this.total,
   });
@@ -292,117 +345,82 @@ class InvoiceItemRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: Colors.black, // Border color
-            width: 1.0, // Border width
+      child: CustomPaint(
+        painter: DashedBorder(
+          color: Colors.black,
+          strokeWidth: 1.0,
+          dashWidth: 1.0,
+          dashSpace: 3.0,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 25, // 20%
+                child: Text(
+                  description,
+                  textAlign: TextAlign.start,
+                  style: const TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 10, // 10%
+                child: Text(
+                  quantity.toString(),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 15, // 10%
+                child: Text(
+                  '\$${unitPrice.toStringAsFixed(2)}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 15, // 10%
+                child: Text(
+                  '\$${discount.toStringAsFixed(2)}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 15, // 10%
+                child: Text(
+                  '\$${total.toStringAsFixed(2)}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 20, // 10%
+                child: Text(
+                  '\$${sub_total.toStringAsFixed(2)}',
+                  textAlign: TextAlign.end,
+                  style: const TextStyle(
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            description,
-            style: TextStyle(fontSize: 12),
-          ),
-          Text(
-            quantity.toString(),
-            style: TextStyle(fontSize: 12),
-          ),
-          Text(
-            '\$${unitPrice.toStringAsFixed(2)}',
-            style: TextStyle(fontSize: 12),
-          ),
-          Text(
-            '00',
-            style: TextStyle(fontSize: 12),
-          ),
-          Text(
-            '\$${total.toStringAsFixed(2)}',
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-          ),
-        ],
       ),
     );
   }
 }
-
-//   Widget build(BuildContext context) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         // Invoice Header
-//         Text(
-//           'Retail Shop 1',
-//           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-//         ),
-//         Text('34/4/A/10, North Bashaboo, Dhaka 1000'),
-//         Text('INVOICE'),
-
-//         // Customer Details
-//         Text(
-//           'Customer: Delta Force',
-//           style: TextStyle(fontSize: 16),
-//         ),
-//         Text('Address: H-405,R-29,Mohakhali Dohs, Dhaka-1212'),
-//         Text('Mobile: 01741575914'),
-//         Text('Srvd by: Super Admin'),
-
-//         // Invoice Details
-//         Text('Invoice #INV00124000164'),
-//         Text('Invoice Date: 22 Feb 2024'),
-
-//         // Product Table
-//         DataTable(
-//           columns: const [
-//             DataColumn(label: Text('Item Name')),
-//             DataColumn(label: Text('Qty')),
-//             DataColumn(label: Text('Unit Price')),
-//             DataColumn(label: Text('MRP')),
-//             DataColumn(label: Text('Value')),
-//             DataColumn(label: Text('Amount')),
-//           ],
-//           rows: const [
-//             DataRow(
-//               cells: [
-//                 DataCell(Text('A4 Kham')),
-//                 DataCell(Text('3')),
-//                 DataCell(Text('5.00')),
-//                 DataCell(Text('15.00')),
-//                 DataCell(Text('9.00')),
-//                 DataCell(Text('27.00')),
-//               ],
-//             ),
-//             DataRow(
-//               cells: [
-//                 DataCell(Text('Flower Mop')),
-//                 DataCell(Text('2')),
-//                 DataCell(Text('130.00')),
-//                 DataCell(Text('260.00')),
-//                 DataCell(Text('260.00')),
-//                 DataCell(Text('520.00')),
-//               ],
-//             ),
-//           ],
-//         ),
-
-//         // Summary
-//         Text('Total Amount: 797.00'),
-//         Text('Discount: 0.00'),
-//         Text('VAT: 0.00'),
-//         Text('Net Amount: 797.00'),
-//         Text('Paid Amount: 0.00'),
-
-//         // Payment Details
-//         Text('Payment Method: Cash on Delivery'),
-//         Text('Amount Paid: 0.00'),
-
-//         // Footer
-//         Text('Invoice #INV00124000164'),
-//         Text('System By: Invoice App'),
-//       ],
-//     );
-//   }
-// }

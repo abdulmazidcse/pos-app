@@ -10,6 +10,7 @@ class SaleModel {
   String invoiceNumber;
   num grandTotal;
   num totalAmount;
+  dynamic subTotal;
   dynamic orderDiscountValue;
   dynamic customerDiscount;
   dynamic customerGroupDiscount;
@@ -27,6 +28,7 @@ class SaleModel {
     required this.invoiceNumber,
     required this.grandTotal,
     required this.totalAmount,
+    required this.subTotal,
     required this.orderDiscountValue,
     required this.customerDiscount,
     required this.customerGroupDiscount,
@@ -45,6 +47,7 @@ class SaleModel {
       createdAt: json["created_at"],
       invoiceNumber: json["invoice_number"],
       grandTotal: json["grand_total"],
+      subTotal: json["sub_total"],
       totalAmount: json["total_amount"],
       orderDiscountValue: json["order_discount_value"],
       customerDiscount: json["customer_discount"],
@@ -72,6 +75,7 @@ class SalesItem {
   dynamic discount;
   num mrpPrice;
   num costPrice;
+  num subTotal;
   Products products;
 
   SalesItem({
@@ -82,6 +86,7 @@ class SalesItem {
     required this.discount,
     required this.mrpPrice,
     required this.costPrice,
+    required this.subTotal,
     required this.products,
   });
 
@@ -92,7 +97,8 @@ class SalesItem {
         quantity: json["quantity"],
         discount: json["discount"],
         mrpPrice: json["mrp_price"],
-        costPrice: json["cost_price"]?.toDouble(),
+        costPrice: json["cost_price"],
+        subTotal: (json["mrp_price"] - json["discount"]) * json["quantity"],
         products: Products.fromJson(json["products"]),
       );
 
