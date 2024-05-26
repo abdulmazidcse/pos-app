@@ -3,50 +3,30 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import '../utils/Api.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import '../utils/Helper.dart';
 import '../utils/Drawer.dart';
 
-class ProductPage extends StatefulWidget {
-  const ProductPage({Key? key}) : super(key: key);
+class CustomerPage extends StatefulWidget {
+  const CustomerPage({Key? key}) : super(key: key);
   @override
-  ProductPageState createState() => ProductPageState();
+  CustomerPageState createState() => CustomerPageState();
 }
 
-class ProductPageState extends State<ProductPage> {
+class CustomerPageState extends State<CustomerPage> {
   Helper helper = Helper(); // Create an instance of the Helper class
   bool _isLoading = false;
 
-  // get productCodeController => null;
-  final TextEditingController productCodeController = TextEditingController();
   @override
   void initState() {
     super.initState();
     userData();
   }
 
-  String productName = '';
-  String productCode = '';
-  double costPrice = 0;
-  double mrpPrice = 0;
+  String customerName = '';
+  String customerCode = '';
+  dynamic phoneNumber = '';
+  dynamic address = '';
   int companyId = 0;
-  int outletId = 0;
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> scanBarcodeNormal() async {
-    String barcodeScanRes;
-    try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
-    } on PlatformException {
-      barcodeScanRes = 'Failed to get platform version.';
-    }
-    if (!mounted) return;
-    setState(() {
-      productCode = barcodeScanRes;
-      productCodeController.text = barcodeScanRes;
-    });
-  }
 
   void userData() async {
     final userInfo = await Api().userInfo();
@@ -54,7 +34,6 @@ class ProductPageState extends State<ProductPage> {
     if (decodeInfo != null) {
       setState(() {
         companyId = decodeInfo['company_id'];
-        outletId = decodeInfo['outlet_id'];
       });
     }
   }
@@ -63,48 +42,49 @@ class ProductPageState extends State<ProductPage> {
     setState(() {
       _isLoading = true; // Show loading indicator
     });
-    const String apiUrl = 'products';
+    const String apiUrl = 'customers';
     var product = {
-      'product_type': 'standard',
-      'product_name': productName,
-      'product_native_name': productName,
-      'product_code': productCode,
-      'category_id': 8,
-      'sub_category_id': 9,
-      'cost_price': costPrice,
-      'mrp_price': mrpPrice,
-      'min_order_qty': 1,
-      'tax_method': 1,
-      'product_tax': 1,
+      'name': customerName,
+      'customer_code': customerCode,
+      'phone': phoneNumber,
+      'address': address,
+      'customer_group_id': 1,
       'company_id': companyId,
-      'outlet_id': outletId,
+      'discount_percent': 0,
+      'customer_receivable_account': 0,
     };
     final response = await Api().postData(product, apiUrl);
 
     if (response.statusCode == 200) {
-      helper.successToast('Product created successfully');
+      helper.successToast('Customer created successfully');
       setState(() {
         _isLoading = false; // Show loading indicator
       });
     } else {
       if (response.statusCode == 422) {
         final responseData = json.decode(response.body);
+        print('responseData================= ');
+        print(responseData.toString());
         final errors = responseData['errors'];
-        String productNameError =
-            errors['product_name'] != null ? errors['product_name'][0] : '';
-        String productNativeNameError = errors['product_native_name'] != null
-            ? errors['product_native_name'][0]
-            : '';
-        String productCodeError =
-            errors['product_code'] != null ? errors['product_code'][0] : '';
-        if (productNameError != '') {
-          helper.validationToast(true, productNameError);
+        String customerCodeError =
+            errors['customer_code'] != null ? errors['customer_code'][0] : '';
+        String customerNameError =
+            errors['name'] != null ? errors['name'][0] : '';
+        String customerPhoneError =
+            errors['phone'] != null ? errors['phone'][0] : '';
+        String customerAddressError =
+            errors['address'] != null ? errors['address'][0] : '';
+        if (customerNameError != '') {
+          helper.validationToast(true, customerNameError);
         }
-        if (productNativeNameError != '') {
-          helper.validationToast(true, productNativeNameError);
+        if (customerPhoneError != '') {
+          helper.validationToast(true, customerPhoneError);
         }
-        if (productCodeError != '') {
-          helper.validationToast(true, productCodeError);
+        if (customerCodeError != '') {
+          helper.validationToast(true, customerCodeError);
+        }
+        if (customerAddressError != '') {
+          helper.validationToast(true, customerAddressError);
         }
       }
     }
@@ -115,7 +95,7 @@ class ProductPageState extends State<ProductPage> {
     return Scaffold(
       drawer: const MyDrawer(),
       appBar: AppBar(
-        title: const Text('Create Product'),
+        title: const Text('Create Customer'),
         backgroundColor: Colors.transparent,
         elevation: 90, // Removes the shadow
       ),
@@ -156,7 +136,7 @@ class ProductPageState extends State<ProductPage> {
                       child: Container(
                         margin: const EdgeInsets.only(top: 20.0),
                         child: const AutoSizeText(
-                          'Create Product',
+                          'Create Customer Account',
                           style: TextStyle(
                             fontSize: 20.0,
                             color: Colors.black,
@@ -165,35 +145,16 @@ class ProductPageState extends State<ProductPage> {
                         ),
                       ),
                     ),
-                    ElevatedButton(
-                        onPressed: () => scanBarcodeNormal(),
-                        child: const Text('Start barcode scan')),
-                    const SizedBox(height: 20.0),
                     TextField(
                       style: const TextStyle(color: Colors.black),
                       decoration: const InputDecoration(
-                        hintText: 'Product Name',
+                        hintText: 'Customer Name',
                         hintStyle: TextStyle(color: Colors.black),
-                        icon: Icon(Icons.email, color: Colors.black),
+                        icon: Icon(Icons.person, color: Colors.black),
                       ),
                       onChanged: (value) {
                         setState(() {
-                          productName = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 20.0),
-                    TextField(
-                      controller: productCodeController,
-                      style: const TextStyle(color: Colors.black),
-                      decoration: const InputDecoration(
-                        hintText: 'Product Code',
-                        hintStyle: TextStyle(color: Colors.black),
-                        icon: Icon(Icons.barcode_reader, color: Colors.black),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          productCode = value;
+                          customerName = value;
                         });
                       },
                     ),
@@ -201,13 +162,13 @@ class ProductPageState extends State<ProductPage> {
                     TextField(
                       style: const TextStyle(color: Colors.black),
                       decoration: const InputDecoration(
-                        hintText: 'Cost Price',
+                        hintText: 'Customer Code',
                         hintStyle: TextStyle(color: Colors.black),
-                        icon: Icon(Icons.price_check, color: Colors.black),
+                        icon: Icon(Icons.qr_code, color: Colors.black),
                       ),
                       onChanged: (value) {
                         setState(() {
-                          costPrice = double.parse(value);
+                          customerCode = value;
                         });
                       },
                     ),
@@ -215,13 +176,27 @@ class ProductPageState extends State<ProductPage> {
                     TextField(
                       style: const TextStyle(color: Colors.black),
                       decoration: const InputDecoration(
-                        hintText: 'Sale Price',
+                        hintText: 'Phone Number',
                         hintStyle: TextStyle(color: Colors.black),
-                        icon: Icon(Icons.price_check, color: Colors.black),
+                        icon: Icon(Icons.phone, color: Colors.black),
                       ),
                       onChanged: (value) {
                         setState(() {
-                          mrpPrice = double.parse(value);
+                          phoneNumber = value;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 20.0),
+                    TextField(
+                      style: const TextStyle(color: Colors.black),
+                      decoration: const InputDecoration(
+                        hintText: 'Address',
+                        hintStyle: TextStyle(color: Colors.black),
+                        icon: Icon(Icons.home, color: Colors.black),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          address = double.parse(value);
                         });
                       },
                     ),

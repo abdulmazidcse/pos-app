@@ -3,6 +3,9 @@ import 'package:pos/HomePage/HomePage.dart';
 import 'package:pos/Pos/PosPage.dart';
 import 'package:pos/Products/ProductPage.dart';
 import 'package:pos/Products/ProductList.dart';
+import 'package:pos/Sales/SalesListPage.dart';
+import 'package:pos/Customer/CustomerPage.dart';
+import 'package:pos/Customer/CustomerListPage.dart';
 import 'package:pos/Auth/Login.dart';
 import 'package:pos/utils/Api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -86,7 +89,34 @@ class MyDrawerState extends State<MyDrawer> {
             title: const Text("POS"),
             onTap: () async {
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => PosPage()));
+                  MaterialPageRoute(builder: (context) => const PosPage()));
+            },
+          ),
+          const SizedBox(height: 10.0),
+          ListTile(
+            leading: const Icon(Icons.production_quantity_limits),
+            title: const Text("Create Customer"),
+            onTap: () async {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const CustomerPage()));
+            },
+          ),
+          const SizedBox(height: 10.0),
+          ListTile(
+            leading: const Icon(Icons.production_quantity_limits),
+            title: const Text("Customer List"),
+            onTap: () async {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const CustomerListPage()));
+            },
+          ),
+          const SizedBox(height: 10.0),
+          ListTile(
+            leading: const Icon(Icons.production_quantity_limits),
+            title: const Text("Sales List"),
+            onTap: () async {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const SalesListPage()));
             },
           ),
           const SizedBox(height: 10.0),
@@ -104,7 +134,7 @@ class MyDrawerState extends State<MyDrawer> {
             title: const Text("Create Products"),
             onTap: () async {
               Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => ProductPage()));
+                  MaterialPageRoute(builder: (context) => const ProductPage()));
             },
           ),
           const SizedBox(height: 10.0),

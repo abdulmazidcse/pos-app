@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pos/Pos/CartItem.dart';
 import 'package:pos/Pos/CartProvider.dart';
 import 'package:pos/Pos/ProductModel.dart';
 import 'package:pos/Pos/ProductController.dart';
@@ -6,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import '../utils/Drawer.dart';
-import '../utils/Helper.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class PosPage extends StatefulWidget {
   const PosPage({Key? key}) : super(key: key);
@@ -16,10 +17,18 @@ class PosPage extends StatefulWidget {
 }
 
 class PosPageState extends State<PosPage> {
-  Helper helper = Helper(); // Create an instance of the Helper class
+  final TextEditingController _fieldTextEditingController =
+      TextEditingController();
+  final FocusNode _fieldFocusNode = FocusNode();
+  bool _selectedOption = false;
   List<Product> _filteredProducts = [];
-  String productCode = '';
-  bool? _selectedOption = false;
+
+  @override
+  void dispose() {
+    _fieldTextEditingController.dispose();
+    _fieldFocusNode.dispose();
+    super.dispose();
+  }
 
   Future<void> scanBarcodeNormal() async {
     String barcodeScanRes;
@@ -29,42 +38,43 @@ class PosPageState extends State<PosPage> {
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     }
+
     if (!mounted) return;
 
-    if (barcodeScanRes.isEmpty) {
-      _filteredProducts = [];
-    } else if (barcodeScanRes.length >= 3) {
-      dynamic productsData =
+    if (barcodeScanRes.isNotEmpty && barcodeScanRes.length >= 3) {
+      var productsData =
           await ProductController().fetchProducts(barcodeScanRes);
-      if (productsData.length > 0) {
-        _addToCartAndClearResults(productsData[0]);
-        Provider.of<CartProvider>(context, listen: false)
-            .addToCart(productsData[0]);
+      if (productsData.isNotEmpty) {
+        _addToCart(productsData[0]);
       }
     }
   }
 
   void _filterProducts(String searchTerm) async {
-    if (searchTerm.isEmpty) {
-      _filteredProducts = [];
-    } else if (searchTerm.length >= 3) {
-      final productsData = await ProductController().fetchProducts(searchTerm);
-      _filteredProducts = productsData
-          .where((product) => product.productName
-              .toLowerCase()
-              .contains(searchTerm.toLowerCase()))
-          .toList();
+    if (searchTerm.isNotEmpty && searchTerm.length >= 3) {
+      var productsData = await ProductController().fetchProducts(searchTerm);
+      setState(() {
+        _filteredProducts = productsData
+            .where((product) => product.productName
+                .toLowerCase()
+                .contains(searchTerm.toLowerCase()))
+            .toList();
+      });
+    } else {
+      setState(() {
+        _filteredProducts = [];
+      });
     }
-    setState(() {}); // Update UI with filtered products
   }
 
-  void _addToCartAndClearResults(Product product) {
+  void _addToCart(Product product) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('${product.productName} added to cart'),
         duration: const Duration(seconds: 2),
       ),
     );
+    Provider.of<CartProvider>(context, listen: false).addToCart(product);
     setState(() {
       _filteredProducts = [];
     });
@@ -73,310 +83,249 @@ class PosPageState extends State<PosPage> {
   @override
   Widget build(BuildContext context) {
     final selectedCartItems = Provider.of<CartProvider>(context).cartItems;
-
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       drawer: const MyDrawer(),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(6.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            Autocomplete<String>(
-              optionsBuilder: (TextEditingValue textEditingValue) {
-                if (textEditingValue.text.isEmpty) {
-                  // Return an empty list when there's no text in the search field
-                  return <String>[];
-                } else if (textEditingValue.text.length >= 3) {
-                  // Fetch products based on the search term
-                  return ProductController()
-                      .fetchProducts(textEditingValue.text)
-                      .then((productsData) {
-                    return productsData
-                        .where((product) => product.productName
-                            .toLowerCase()
-                            .contains(textEditingValue.text.toLowerCase()))
-                        .map((product) => product.productName)
-                        .toList();
-                  });
-                }
-                return <String>[];
-              },
-              onSelected: (String selectedProduct) {
-                dynamic selectedProductObj = _filteredProducts.firstWhere(
-                  (product) => product?.productName == selectedProduct,
-                );
-
-                if (selectedProductObj != null) {
-                  if (selectedProductObj.productCode.length > 0) {
-                    _addToCartAndClearResults(selectedProductObj);
-                    Provider.of<CartProvider>(context, listen: false)
-                        .addToCart(selectedProductObj);
-                  }
-                  selectedProductObj = '';
-                  selectedProduct = '';
-                  _filteredProducts.clear();
-                }
-                setState(() {
-                  _selectedOption = true;
-                });
-              },
-              fieldViewBuilder: (BuildContext context,
-                  TextEditingController fieldTextEditingController,
-                  FocusNode fieldFocusNode,
-                  VoidCallback onFieldSubmitted) {
-                if (_selectedOption == true) {
-                  _selectedOption = false;
-                  fieldTextEditingController.text = '';
-                  _filteredProducts.clear();
-                }
-                return TextField(
-                  controller: fieldTextEditingController,
-                  focusNode: fieldFocusNode,
-                  onChanged: (String value) {
-                    // Update the autocomplete options when the text field value changes
-                    _filterProducts(value);
-                    if (_selectedOption == true) {
-                      _selectedOption = false;
-                      value = '';
-                      _filteredProducts.clear();
-                    }
-                  },
-                  decoration: InputDecoration(
-                    hintText: 'Search Products...',
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.barcode_reader),
-                      onPressed: () => scanBarcodeNormal(),
-                    ),
-                  ),
-                );
-              },
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/imageedit.jpg'),
+                fit: BoxFit.cover,
+              ),
             ),
-            SizedBox(
-              height: 400,
-              child: ListView.builder(
-                padding: const EdgeInsets.only(
-                  top: 5.0,
-                ),
-                itemCount: selectedCartItems.length,
-                itemBuilder: (context, index) {
-                  final cartItem = selectedCartItems[index];
-                  return Dismissible(
-                    key: Key(cartItem.product.productId
-                        .toString()), // Unique key for each item
-                    direction: DismissDirection.endToStart,
-                    background: Container(
-                      alignment: Alignment.centerRight,
-                      color: const Color.fromARGB(255, 251, 174, 169),
-                      child: const Icon(Icons.delete),
-                    ),
-                    onDismissed: (direction) {
-                      // Remove the item from the cart when dismissed
-                      Provider.of<CartProvider>(context, listen: false)
-                          .removeCartItem(cartItem);
+          ),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.4),
+            ),
+          ),
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(6.0),
+            child: Column(
+              children: [
+                _buildCustomAutocompleteField(),
+                SizedBox(
+                  height: screenHeight -
+                      220, // Adjust the height based on header and footer
+                  child: ListView.builder(
+                    padding: const EdgeInsets.only(top: 5.0),
+                    itemCount: selectedCartItems.length,
+                    itemBuilder: (context, index) {
+                      final cartItem = selectedCartItems[index];
+                      return _buildCartItem(cartItem);
                     },
-                    child: Container(
-                      padding: const EdgeInsets.only(
-                        top: 2.0,
-                        bottom: 2.0,
-                      ),
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Colors.black26,
-                            width: 1.0,
-                          ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (_filteredProducts.isNotEmpty)
+            Positioned(
+              top: 60, // Adjust this value based on your layout
+              left: 16,
+              right: 16,
+              child: Material(
+                elevation: 4.0,
+                borderRadius: BorderRadius.circular(8.0),
+                child: Container(
+                  height: 200, // Adjust the height as needed
+                  child: ListView.builder(
+                    itemCount: _filteredProducts.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(_filteredProducts[index].productName),
+                        onTap: () {
+                          _addToCart(_filteredProducts[index]);
+                          _fieldTextEditingController.clear();
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: _buildBottomBar(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCustomAutocompleteField() {
+    return TextField(
+      controller: _fieldTextEditingController,
+      focusNode: _fieldFocusNode,
+      onChanged: (value) => _filterProducts(value),
+      decoration: InputDecoration(
+        hintText: 'Search Products...',
+        prefixIcon: const Icon(Icons.search),
+        suffixIcon: IconButton(
+          icon: const Icon(Icons.barcode_reader),
+          onPressed: scanBarcodeNormal,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCartItem(CartItem cartItem) {
+    return Dismissible(
+      key: Key(cartItem.product.productId.toString()),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        alignment: Alignment.centerRight,
+        color: const Color.fromARGB(255, 251, 174, 169),
+        child: const Icon(Icons.delete),
+      ),
+      onDismissed: (direction) {
+        Provider.of<CartProvider>(context, listen: false)
+            .removeCartItem(cartItem);
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 2.0),
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: Colors.black26,
+              width: 1.0,
+            ),
+          ),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 11,
+              child: Container(
+                padding: const EdgeInsets.only(left: 8),
+                color: Colors.black12,
+                height: 80,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 5),
+                    Text(
+                      'Name: ${cartItem.product.productName}',
+                      style: const TextStyle(fontSize: 11),
+                    ),
+                    const SizedBox(height: 5),
+                    SizedBox(
+                      height: 40,
+                      width: 100,
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          setState(() {
+                            final newPrice = double.tryParse(value) ?? 0;
+                            cartItem.product.newPrice = newPrice;
+                            Provider.of<CartProvider>(context, listen: false)
+                                .updateCartItemPrice(cartItem, newPrice);
+                          });
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Price',
+                          hintText: 'Enter price',
+                          border: OutlineInputBorder(),
                         ),
                       ),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 11,
-                                child: Container(
-                                  padding: const EdgeInsets.only(left: 8),
-                                  color: Colors.black12,
-                                  height: 80, // Adjust the height as needed
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        'Name ${cartItem.product.productName}',
-                                        style: const TextStyle(
-                                          fontSize: 11,
-                                        ), // Adjust the font size of the item name
-                                      ),
-                                      const SizedBox(height: 5),
-                                      SizedBox(
-                                        height:
-                                            40, // Set the height of the container
-                                        width:
-                                            100, // Set the width of the container
-                                        child: TextField(
-                                          keyboardType: TextInputType.number,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              final newPrice =
-                                                  double.tryParse(value) ?? 0;
-                                              // Update the price directly in the cartItem
-                                              cartItem.product.newPrice =
-                                                  newPrice;
-                                              // Call the method in CartProvider to update the item's price and recalculate netAmount
-                                              Provider.of<CartProvider>(
-                                                context,
-                                                listen: false,
-                                              ).updateCartItemPrice(
-                                                cartItem,
-                                                newPrice,
-                                              );
-                                            });
-                                          },
-                                          decoration: const InputDecoration(
-                                            labelText: 'Price',
-                                            hintText: 'Enter price',
-                                            border: OutlineInputBorder(),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 4,
-                                child: Container(
-                                  padding: const EdgeInsets.only(right: 8),
-                                  color: Colors.black12,
-                                  height: 80, // Adjust the height as needed
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        const SizedBox(height: 5),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  if (cartItem.qty > 0) {
-                                                    cartItem.qty--;
-                                                    // Call method to update cart quantity
-                                                    Provider.of<CartProvider>(
-                                                      context,
-                                                      listen: false,
-                                                    ).updateCartItemQuantity(
-                                                      cartItem,
-                                                      cartItem.qty,
-                                                    );
-                                                  }
-                                                });
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  border: Border.all(
-                                                    color: Colors.green,
-                                                  ), // Green border
-                                                ), // Set the icon color to red and adjust size
-                                                padding: const EdgeInsets.all(
-                                                  6,
-                                                ),
-                                                child: const Icon(
-                                                  Icons.remove,
-                                                  color: Colors.red,
-                                                  size: 9,
-                                                ), // Adjust padding as needed
-                                              ),
-                                            ),
-                                            const SizedBox(width: 5),
-                                            Text(
-                                              'Qty: ${cartItem.qty}',
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                              ), // Adjust the font size of the quantity text
-                                            ),
-                                            const SizedBox(width: 5),
-                                            InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  cartItem.qty++;
-                                                  // Call method to update cart quantity
-                                                  Provider.of<CartProvider>(
-                                                    context,
-                                                    listen: false,
-                                                  ).updateCartItemQuantity(
-                                                    cartItem,
-                                                    cartItem.qty,
-                                                  );
-                                                });
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  border: Border.all(
-                                                    color: Colors.green,
-                                                  ), // Green border
-                                                ), // Set the icon color to green and adjust size
-                                                padding: const EdgeInsets.all(
-                                                  6,
-                                                ),
-                                                child: const Icon(
-                                                  Icons.add,
-                                                  color: Colors.green,
-                                                  size: 9,
-                                                ), // Adjust padding as needed
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 20),
-                                        Text(
-                                          'Subtotal: ${double.tryParse(cartItem.subtotal.toString())}',
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          ), // Adjust the font size of the subtotal text
-                                        ),
-                                      ]),
-                                ),
-                              ),
-                            ],
-                          ),
-                          // You can add more widgets here as needed
-                        ],
-                      ),
                     ),
-                  );
-                },
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 4,
+              child: Container(
+                padding: const EdgeInsets.only(right: 8),
+                color: Colors.black12,
+                height: 80,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        _buildQuantityControl(Icons.remove, Colors.red, () {
+                          if (cartItem.qty > 0) {
+                            setState(() {
+                              cartItem.qty--;
+                              Provider.of<CartProvider>(context, listen: false)
+                                  .updateCartItemQuantity(
+                                      cartItem, cartItem.qty);
+                            });
+                          }
+                        }),
+                        const SizedBox(width: 5),
+                        Text(
+                          'Qty: ${cartItem.qty}',
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                        const SizedBox(width: 5),
+                        _buildQuantityControl(Icons.add, Colors.green, () {
+                          setState(() {
+                            cartItem.qty++;
+                            Provider.of<CartProvider>(context, listen: false)
+                                .updateCartItemQuantity(cartItem, cartItem.qty);
+                          });
+                        }),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Subtotal: ${cartItem.subtotal.toString()}',
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Consumer<CartProvider>(
-              builder: (context, cartProvider, child) {
-                return Text(
-                  'Net Amount: ${cartProvider.netAmount.toString()}',
-                  style: const TextStyle(fontSize: 14),
-                );
-              },
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text('Submit Order'),
-            ),
-          ],
+    );
+  }
+
+  Widget _buildQuantityControl(
+      IconData icon, Color color, VoidCallback onPressed) {
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: color),
         ),
+        padding: const EdgeInsets.all(6),
+        child: Icon(icon, color: color, size: 9),
+      ),
+    );
+  }
+
+  Widget _buildBottomBar() {
+    return Container(
+      color: Colors.white.withOpacity(0.4),
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Consumer<CartProvider>(
+            builder: (context, cartProvider, child) {
+              return Text(
+                'Net Amount: ${cartProvider.netAmount.toString()}',
+                style: const TextStyle(fontSize: 14, color: Colors.black),
+              );
+            },
+          ),
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text('Submit Order'),
+          ),
+        ],
       ),
     );
   }

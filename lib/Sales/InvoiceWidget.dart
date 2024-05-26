@@ -301,31 +301,31 @@ class InvoiceWidget extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              Row(
+              const Row(
                 children: [
                   Text('Payment Description:'),
                 ],
               ),
               const SizedBox(height: 8),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Description'),
                   Text('Amount'),
                 ],
               ),
-              Divider(),
+              const Divider(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('cash'),
+                  const Text('cash'),
                   Text(saleData.collectionAmount.toString()),
                 ],
               ),
               Center(
                 child: BarcodeWidget(
                   barcode: Barcode.code128(),
-                  data: 'INV00124000164',
+                  data: saleData.invoiceNumber,
                   width: 100,
                   height: 50,
                 ),

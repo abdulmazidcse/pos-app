@@ -126,6 +126,8 @@ class SalesListPageState extends State<SalesListPage> {
       drawer: const MyDrawer(),
       appBar: AppBar(
         title: const Text('Order List'),
+        backgroundColor: Colors.transparent,
+        elevation: 90, // Removes the shadow
       ),
       body: Stack(
         children: [

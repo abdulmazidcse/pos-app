@@ -54,63 +54,168 @@ class PosPageGlassyState extends State<PosPageGlassy> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: const MyDrawer(),
-        body: Stack(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/imageedit.jpg'),
-                  fit: BoxFit.cover,
-                ),
+      drawer: const MyDrawer(),
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/imageedit.jpg'),
+                fit: BoxFit.cover,
               ),
             ),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.4),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Center(
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 20.0),
-                      child: const AutoSizeText(
-                        'This is Home Page',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
+          ),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.4),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Center(
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 20.0),
+                    child: const AutoSizeText(
+                      'This is Home Page',
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20.0)
+                ),
+                const SizedBox(height: 20.0),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              color: Colors.white.withOpacity(0.4),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Consumer<CartProvider>(
+                    builder: (context, cartProvider, child) {
+                      return Text(
+                        'Net Amount: ${cartProvider.netAmount.toString()}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.black,
+                        ),
+                      );
+                    },
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: const Text('Submit Order'),
+                  ),
                 ],
               ),
             ),
-          ],
-        ),
-        bottomNavigationBar: BottomAppBar(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Consumer<CartProvider>(
-                builder: (context, cartProvider, child) {
-                  return Text(
-                    'Net Amount: ${cartProvider.netAmount.toString()}',
-                    style: const TextStyle(
-                        fontSize: 14, color: Colors.transparent),
-                  );
-                },
-              ),
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text('Submit Order'),
-              ),
-            ],
           ),
-        ));
+        ],
+      ),
+    );
+
+    // return Scaffold(
+    //   drawer: const MyDrawer(),
+    //   body: Stack(
+    //     children: [
+    //       Container(
+    //         decoration: const BoxDecoration(
+    //           image: DecorationImage(
+    //             image: AssetImage('assets/images/imageedit.jpg'),
+    //             fit: BoxFit.cover,
+    //           ),
+    //         ),
+    //       ),
+    //       Container(
+    //         width: double.infinity,
+    //         decoration: BoxDecoration(
+    //           color: Colors.white.withOpacity(0.4),
+    //         ),
+    //         child: Column(
+    //           mainAxisSize: MainAxisSize.min,
+    //           children: [
+    //             Center(
+    //               child: Container(
+    //                 margin: const EdgeInsets.only(top: 20.0),
+    //                 child: const AutoSizeText(
+    //                   'This is Home Page',
+    //                   style: TextStyle(
+    //                     fontSize: 20.0,
+    //                     color: Colors.black,
+    //                     fontWeight: FontWeight.bold,
+    //                   ),
+    //                 ),
+    //               ),
+    //             ),
+    //             const SizedBox(height: 20.0)
+    //           ],
+    //         ),
+    //       ),
+    //       Container(
+    //         color: Colors.white.withOpacity(0.4),
+    //         padding:
+    //             const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+    //         child: Row(
+    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //           children: [
+    //             Consumer<CartProvider>(
+    //               builder: (context, cartProvider, child) {
+    //                 return Text(
+    //                   'Net Amount: ${cartProvider.netAmount.toString()}',
+    //                   style: const TextStyle(
+    //                     fontSize: 14,
+    //                     color: Colors.black,
+    //                   ),
+    //                 );
+    //               },
+    //             ),
+    //             ElevatedButton(
+    //               onPressed: () {},
+    //               child: const Text('Submit Order'),
+    //             ),
+    //           ],
+    //         ),
+    //       )
+    //     ],
+    //   ),
+    // bottomNavigationBar: BottomAppBar(
+    //   color: Colors.transparent,
+    //   elevation: 0,
+    //   child: Container(
+    //     color: Colors.white.withOpacity(0.4),
+    //     padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+    //     child: Row(
+    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //       children: [
+    //         Consumer<CartProvider>(
+    //           builder: (context, cartProvider, child) {
+    //             return Text(
+    //               'Net Amount: ${cartProvider.netAmount.toString()}',
+    //               style: const TextStyle(
+    //                 fontSize: 14,
+    //                 color: Colors.black,
+    //               ),
+    //             );
+    //           },
+    //         ),
+    //         ElevatedButton(
+    //           onPressed: () {},
+    //           child: const Text('Submit Order'),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // ),
+    // );
   }
 }

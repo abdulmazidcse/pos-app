@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'HomePage/HomePage.dart';
-import 'Products/ProductList.dart';
 import 'Pos/CartProvider.dart';
-import 'Sales/SalesListPage.dart';
 import 'package:pos/Auth/Login.dart';
-import '../Sales/OrdersPage.dart';
 // import 'Pos/PosPage.dart';
 // import 'Pos/PosPageGlassy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,8 +26,7 @@ class MyApp extends StatelessWidget {
             return Text('Error: ${snapshot.error}');
           } else {
             bool isUserLogin = snapshot.data!;
-            var myPageWidget =
-                isUserLogin ? const SalesListPage() : const Login();
+            var myPageWidget = isUserLogin ? const HomePage() : const Login();
 
             return MultiProvider(
               providers: [
