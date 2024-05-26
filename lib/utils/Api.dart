@@ -8,10 +8,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Api {
   // final String _url = 'https://inventory.kathergolpo.com/backend/api/';
-  // static const String _url = 'http://172.30.38.145:8000/api/';
-  // static const String url = 'http://172.30.38.145:8000/api/';
-  static const String _url = 'http://192.168.31.135:8000/api/';
-  static const String url = 'http://192.168.31.135:8000/api/';
+  static const String _url = 'http://172.30.38.145:8000/api/';
+  static const String url = 'http://172.30.38.145:8000/api/';
+  // static const String _url = 'http://192.168.31.135:8000/api/';
+  // static const String url = 'http://192.168.31.135:8000/api/';
   // static const String _url = 'https://inventory.kathergolpo.com/backend/api/';
   // static const String url = 'https://inventory.kathergolpo.com/backend/api/';
   final int perPage = 10;

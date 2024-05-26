@@ -5,6 +5,7 @@ import 'Products/ProductList.dart';
 import 'Pos/CartProvider.dart';
 import 'Sales/SalesListPage.dart';
 import 'package:pos/Auth/Login.dart';
+import '../Sales/OrdersPage.dart';
 // import 'Pos/PosPage.dart';
 // import 'Pos/PosPageGlassy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
