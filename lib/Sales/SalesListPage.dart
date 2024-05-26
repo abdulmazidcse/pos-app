@@ -259,6 +259,22 @@ class SalesListPageState extends State<SalesListPage> {
                                                   ),
                                                 ],
                                               ),
+                                              // Row(
+                                              //   children: [
+                                              //     Icon(
+                                              //         Icons
+                                              //             .check_circle_outlined,
+                                              //         color: Colors.green,
+                                              //         size: 20),
+                                              //     SizedBox(width: 8.0),
+                                              //     Text(
+                                              //       'Status: Paid',
+                                              //       style: TextStyle(
+                                              //           fontSize: 11,
+                                              //           color: Colors.green),
+                                              //     ),
+                                              //   ],
+                                              // ),
                                               Row(
                                                 children: [
                                                   Icon(Icons.calendar_today,
@@ -296,22 +312,23 @@ class SalesListPageState extends State<SalesListPage> {
                                                   ),
                                                 ],
                                               ),
-                                              Row(
-                                                children: [
-                                                  Icon(
-                                                      Icons
-                                                          .check_circle_outlined,
-                                                      color: Colors.green,
-                                                      size: 20),
-                                                  SizedBox(width: 8.0),
-                                                  Text(
-                                                    'Status: Paid',
-                                                    style: TextStyle(
-                                                        fontSize: 11,
-                                                        color: Colors.green),
-                                                  ),
-                                                ],
-                                              ),
+
+                                              // Row(
+                                              //   children: [
+                                              //     Icon(
+                                              //         Icons
+                                              //             .check_circle_outlined,
+                                              //         color: Colors.green,
+                                              //         size: 20),
+                                              //     SizedBox(width: 8.0),
+                                              //     Text(
+                                              //       'Status: Paid',
+                                              //       style: TextStyle(
+                                              //           fontSize: 11,
+                                              //           color: Colors.green),
+                                              //     ),
+                                              //   ],
+                                              // ),
                                               Row(
                                                 children: [
                                                   Icon(Icons.money_outlined,
@@ -328,6 +345,7 @@ class SalesListPageState extends State<SalesListPage> {
                                               ),
                                             ],
                                           ),
+                                          SizedBox(height: 8.0),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
@@ -356,26 +374,26 @@ class SalesListPageState extends State<SalesListPage> {
                                                       size: 20),
                                                   SizedBox(width: 8.0),
                                                   Text(
-                                                    'T.Dis: ${saleData.salesItemsSumDiscount}',
+                                                    'Discount: ${saleData.salesItemsSumDiscount}',
                                                     style: TextStyle(
                                                         fontSize: 12,
                                                         color: Colors.blue),
                                                   ),
                                                 ],
                                               ),
-                                              Row(
-                                                children: [
-                                                  Icon(Icons.list,
-                                                      color: Colors.cyan),
-                                                  SizedBox(width: 8.0),
-                                                  Text(
-                                                    'T.Items: ${saleData.salesItemsCount}',
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.cyan),
-                                                  ),
-                                                ],
-                                              ),
+                                              // Row(
+                                              //   children: [
+                                              //     Icon(Icons.list,
+                                              //         color: Colors.cyan),
+                                              //     SizedBox(width: 8.0),
+                                              //     Text(
+                                              //       'T.Items: ${saleData.salesItemsCount}',
+                                              //       style: TextStyle(
+                                              //           fontSize: 12,
+                                              //           color: Colors.cyan),
+                                              //     ),
+                                              //   ],
+                                              // ),
                                             ],
                                           ),
                                         ],
