@@ -143,21 +143,21 @@ class CustomerListPageState extends State<CustomerListPage> {
             children: [
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                  child: SizedBox(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(10.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.white.withOpacity(0.2),
-                          blurRadius: 10,
-                          offset: const Offset(0, 5),
-                        ),
-                      ],
-                    ),
+                    // padding: const EdgeInsets.all(10.0),
+                    // decoration: BoxDecoration(
+                    //   color: Colors.white.withOpacity(0.4),
+                    //   borderRadius: BorderRadius.circular(10.0),
+                    //   boxShadow: [
+                    //     BoxShadow(
+                    //       color: Colors.white.withOpacity(0.2),
+                    //       blurRadius: 10,
+                    //       offset: const Offset(0, 5),
+                    //     ),
+                    //   ],
+                    // ),
                     child: RefreshIndicator(
                       onRefresh: refresh,
                       child: _isLoading && _customers.isEmpty
@@ -228,14 +228,14 @@ class CustomerListPageState extends State<CustomerListPage> {
                                             BorderRadius.circular(6.0),
                                       ),
                                       child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            right: BorderSide(
-                                              color: Colors.blue,
-                                              width: 4.0,
-                                            ),
-                                          ),
-                                        ),
+                                        // decoration: BoxDecoration(
+                                        //   border: Border(
+                                        //     right: BorderSide(
+                                        //       color: Colors.blue,
+                                        //       width: 4.0,
+                                        //     ),
+                                        //   ),
+                                        // ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(11.0),
                                           child: Column(
@@ -253,7 +253,7 @@ class CustomerListPageState extends State<CustomerListPage> {
                                                         const Icon(
                                                           Icons.person,
                                                           color: Colors.green,
-                                                          size: 16,
+                                                          size: 20,
                                                         ),
                                                         const SizedBox(
                                                             width: 6.0),
@@ -264,7 +264,7 @@ class CustomerListPageState extends State<CustomerListPage> {
                                                             color: Colors.green,
                                                             fontWeight:
                                                                 FontWeight.bold,
-                                                            fontSize: 11,
+                                                            fontSize: 12,
                                                           ),
                                                         ),
                                                       ],
@@ -282,13 +282,13 @@ class CustomerListPageState extends State<CustomerListPage> {
                                                     children: [
                                                       const Icon(Icons.phone,
                                                           color: Colors.indigo,
-                                                          size: 16),
+                                                          size: 20),
                                                       const SizedBox(
                                                           width: 6.0),
                                                       Text(
                                                         '${customer.phone}',
                                                         style: const TextStyle(
-                                                            fontSize: 11,
+                                                            fontSize: 12,
                                                             color:
                                                                 Colors.indigo),
                                                       ),
@@ -326,7 +326,7 @@ class CustomerListPageState extends State<CustomerListPage> {
                                                         const Icon(
                                                           Icons.home,
                                                           color: Colors.green,
-                                                          size: 16,
+                                                          size: 20,
                                                         ),
                                                         const SizedBox(
                                                             width: 6.0),
@@ -340,7 +340,7 @@ class CustomerListPageState extends State<CustomerListPage> {
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
-                                                              fontSize: 11,
+                                                              fontSize: 12,
                                                             ),
                                                             overflow:
                                                                 TextOverflow

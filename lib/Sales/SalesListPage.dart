@@ -244,15 +244,15 @@ class SalesListPageState extends State<SalesListPage> {
                                             children: [
                                               Row(
                                                 children: [
-                                                  Icon(
+                                                  const Icon(
                                                     Icons.receipt_long_outlined,
                                                     color: Colors.green,
                                                     size: 20,
                                                   ),
-                                                  SizedBox(width: 8.0),
+                                                  const SizedBox(width: 8.0),
                                                   Text(
                                                     '#${saleData.invoiceNumber}',
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       color: Colors.green,
                                                       fontWeight:
                                                           FontWeight.bold,

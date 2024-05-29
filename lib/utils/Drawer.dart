@@ -83,7 +83,7 @@ class MyDrawerState extends State<MyDrawer> {
                   MaterialPageRoute(builder: (context) => const HomePage()),
                 );
               }),
-          const SizedBox(height: 10.0),
+          const SizedBox(height: 7.0),
           ListTile(
             leading: const Icon(Icons.production_quantity_limits),
             title: const Text("POS"),
@@ -92,7 +92,7 @@ class MyDrawerState extends State<MyDrawer> {
                   MaterialPageRoute(builder: (context) => const PosPage()));
             },
           ),
-          const SizedBox(height: 10.0),
+          const SizedBox(height: 7.0),
           ListTile(
             leading: const Icon(Icons.production_quantity_limits),
             title: const Text("Create Customer"),
@@ -101,7 +101,7 @@ class MyDrawerState extends State<MyDrawer> {
                   builder: (context) => const CustomerPage()));
             },
           ),
-          const SizedBox(height: 10.0),
+          const SizedBox(height: 7.0),
           ListTile(
             leading: const Icon(Icons.production_quantity_limits),
             title: const Text("Customer List"),
@@ -110,7 +110,7 @@ class MyDrawerState extends State<MyDrawer> {
                   builder: (context) => const CustomerListPage()));
             },
           ),
-          const SizedBox(height: 10.0),
+          const SizedBox(height: 7.0),
           ListTile(
             leading: const Icon(Icons.production_quantity_limits),
             title: const Text("Sales List"),
@@ -119,7 +119,7 @@ class MyDrawerState extends State<MyDrawer> {
                   builder: (context) => const SalesListPage()));
             },
           ),
-          const SizedBox(height: 10.0),
+          const SizedBox(height: 7.0),
           ListTile(
             leading: const Icon(Icons.production_quantity_limits),
             title: const Text("Products List"),
@@ -128,7 +128,7 @@ class MyDrawerState extends State<MyDrawer> {
                   MaterialPageRoute(builder: (context) => const ProductList()));
             },
           ),
-          const SizedBox(height: 10.0),
+          const SizedBox(height: 7.0),
           ListTile(
             leading: const Icon(Icons.production_quantity_limits),
             title: const Text("Create Products"),
@@ -137,7 +137,7 @@ class MyDrawerState extends State<MyDrawer> {
                   MaterialPageRoute(builder: (context) => const ProductPage()));
             },
           ),
-          const SizedBox(height: 10.0),
+          const SizedBox(height: 7.0),
           ListTile(
             leading: const Icon(Icons.logout),
             title: isLogin ? const Text("Logout") : const Text('Login'),

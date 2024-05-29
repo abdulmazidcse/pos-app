@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'HomePage/HomePage.dart';
+import 'Pos/PosPage.dart';
 import 'Pos/CartProvider.dart';
 import 'package:pos/Auth/Login.dart';
 // import 'Pos/PosPage.dart';

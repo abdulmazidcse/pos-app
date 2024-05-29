@@ -142,144 +142,112 @@ class ProductListState extends State<ProductList> {
           Column(
             children: [
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(10.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.white.withOpacity(0.2),
-                          blurRadius: 10,
-                          offset: const Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: RefreshIndicator(
-                      onRefresh: refresh,
-                      child: _isLoading && _products.isEmpty
-                          ? const Center(child: CircularProgressIndicator())
-                          : ListView.builder(
-                              controller: _scrollController,
-                              itemCount: _products.length + (_hasMore ? 1 : 0),
-                              itemBuilder: (context, index) {
-                                if (index == _products.length) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                }
-                                final product = _products[index];
-                                return Dismissible(
-                                    key: Key(product.id
-                                        .toString()), // Unique key for each product
-                                    direction: DismissDirection
-                                        .endToStart, // Swipe from right to left to delete
-                                    confirmDismiss: (direction) async {
-                                      // Show a confirmation dialog before deleting
-                                      return showDialog<bool>(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text("Confirm"),
-                                            content: const Text(
-                                                "Are you sure you want to delete this item?"),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () =>
-                                                    Navigator.of(context)
-                                                        .pop(false),
-                                                child: const Text("CANCEL"),
-                                              ),
-                                              TextButton(
-                                                onPressed: () =>
-                                                    Navigator.of(context)
-                                                        .pop(true),
-                                                child: const Text("DELETE"),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                    onDismissed: (direction) {
-                                      // Remove the item from the list when dismissed
-                                      setState(() {
-                                        _products.removeAt(index);
-                                      });
-                                    },
-                                    background: Container(
-                                      alignment: Alignment.centerRight,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      color: Colors.red,
-                                      child: const Icon(
-                                        Icons.delete,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    child: Card(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 4.0, horizontal: 8.0),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(6.0),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(11.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Expanded(
-                                                  child: Row(
-                                                    children: [
-                                                      const Icon(
-                                                        Icons
-                                                            .receipt_long_outlined,
-                                                        color: Colors.green,
-                                                        size: 20,
-                                                      ),
-                                                      const SizedBox(
-                                                          width: 8.0),
-                                                      Text(
-                                                        'P.Name: ${product.productName}',
-                                                        style: const TextStyle(
-                                                          color: Colors.green,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 13,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
+                child: SizedBox(
+                  width: double.infinity,
+                  // padding: const EdgeInsets.all(10.0),
+                  // decoration: BoxDecoration(
+                  //   // color: Colors.white.withOpacity(0.4),
+                  //   borderRadius: BorderRadius.circular(10.0),
+                  //   boxShadow: [
+                  //     BoxShadow(
+                  //       color: Colors.white.withOpacity(0.2),
+                  //       blurRadius: 10,
+                  //       offset: const Offset(0, 5),
+                  //     ),
+                  //   ],
+                  // ),
+                  child: RefreshIndicator(
+                    onRefresh: refresh,
+                    child: _isLoading && _products.isEmpty
+                        ? const Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                            controller: _scrollController,
+                            itemCount: _products.length + (_hasMore ? 1 : 0),
+                            itemBuilder: (context, index) {
+                              if (index == _products.length) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              final product = _products[index];
+                              return Dismissible(
+                                  key: Key(product.id
+                                      .toString()), // Unique key for each product
+                                  direction: DismissDirection
+                                      .endToStart, // Swipe from right to left to delete
+                                  confirmDismiss: (direction) async {
+                                    // Show a confirmation dialog before deleting
+                                    return showDialog<bool>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text("Confirm"),
+                                          content: const Text(
+                                              "Are you sure you want to delete this item?"),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context)
+                                                      .pop(false),
+                                              child: const Text("CANCEL"),
                                             ),
-                                            const SizedBox(height: 8.0),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Row(
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context)
+                                                      .pop(true),
+                                              child: const Text("DELETE"),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  onDismissed: (direction) {
+                                    // Remove the item from the list when dismissed
+                                    setState(() {
+                                      _products.removeAt(index);
+                                    });
+                                  },
+                                  background: Container(
+                                    alignment: Alignment.centerRight,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    color: Colors.red,
+                                    child: const Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  child: Card(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 4.0, horizontal: 8.0),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6.0),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(11.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Row(
                                                   children: [
                                                     const Icon(
-                                                        Icons.attach_money,
-                                                        color: Colors.brown,
-                                                        size: 20),
+                                                      Icons
+                                                          .receipt_long_outlined,
+                                                      color: Colors.green,
+                                                      size: 20,
+                                                    ),
                                                     const SizedBox(width: 8.0),
                                                     Text(
-                                                      'MRP Price${product.mrpPrice}',
+                                                      'P.Name: ${product.productName}',
                                                       style: const TextStyle(
-                                                        color: Colors.brown,
+                                                        color: Colors.green,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontSize: 13,
@@ -287,74 +255,85 @@ class ProductListState extends State<ProductList> {
                                                     ),
                                                   ],
                                                 ),
-                                                Row(
-                                                  children: [
-                                                    const Icon(
-                                                        Icons.money_rounded,
-                                                        color: Colors.indigo,
-                                                        size: 20),
-                                                    const SizedBox(width: 8.0),
-                                                    Text(
-                                                      'Cost Price: ${product.costPrice}',
-                                                      style: const TextStyle(
-                                                          fontSize: 11,
-                                                          color: Colors.indigo),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 8.0),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  const Icon(Icons.attach_money,
+                                                      color: Colors.brown,
+                                                      size: 20),
+                                                  const SizedBox(width: 8.0),
+                                                  Text(
+                                                    'MRP Price${product.mrpPrice}',
+                                                    style: const TextStyle(
+                                                      color: Colors.brown,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 13,
                                                     ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(height: 8.0),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    const Icon(
-                                                        Icons.barcode_reader,
-                                                        color: Colors.blue,
-                                                        size: 20),
-                                                    const SizedBox(width: 8.0),
-                                                    Text(
-                                                      'P.Code: ${product.productCode}',
-                                                      style: const TextStyle(
-                                                          fontSize: 12),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    BarcodeWidget(
-                                                      barcode:
-                                                          Barcode.code128(),
-                                                      data: product.productCode,
-                                                      width: 100,
-                                                      height: 40,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  const Icon(
+                                                      Icons.money_rounded,
+                                                      color: Colors.indigo,
+                                                      size: 20),
+                                                  const SizedBox(width: 8.0),
+                                                  Text(
+                                                    'Cost Price: ${product.costPrice}',
+                                                    style: const TextStyle(
+                                                        fontSize: 11,
+                                                        color: Colors.indigo),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 8.0),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  const Icon(
+                                                      Icons.barcode_reader,
+                                                      color: Colors.blue,
+                                                      size: 20),
+                                                  const SizedBox(width: 8.0),
+                                                  Text(
+                                                    'P.Code: ${product.productCode}',
+                                                    style: const TextStyle(
+                                                        fontSize: 12),
+                                                  ),
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  BarcodeWidget(
+                                                    barcode: Barcode.code128(),
+                                                    data: product.productCode,
+                                                    width: 100,
+                                                    height: 40,
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                    )
-                                    // Card(
-                                    //   margin:
-                                    //       const EdgeInsets.symmetric(vertical: 2),
-                                    //   child: ListTile(
-                                    //     title: Text(product.productName),
-                                    //     subtitle: Text(
-                                    //       'Code: ${product.productCode}\nMrp Price: \$${product.mrpPrice}\nCost Price: \$${product.costPrice}',
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    );
-                              },
-                            ),
-                    ),
+                                    ),
+                                  ));
+                            },
+                          ),
                   ),
                 ),
               ),
