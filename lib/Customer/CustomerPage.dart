@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import '../utils/Api.dart';
-import 'package:flutter/services.dart';
 import '../utils/Helper.dart';
 import '../utils/Drawer.dart';
 
@@ -43,7 +42,7 @@ class CustomerPageState extends State<CustomerPage> {
       _isLoading = true; // Show loading indicator
     });
     const String apiUrl = 'customers';
-    var product = {
+    var customer = {
       'name': customerName,
       'customer_code': customerCode,
       'phone': phoneNumber,
@@ -53,7 +52,7 @@ class CustomerPageState extends State<CustomerPage> {
       'discount_percent': 0,
       'customer_receivable_account': 0,
     };
-    final response = await Api().postData(product, apiUrl);
+    final response = await Api().postData(customer, apiUrl);
 
     if (response.statusCode == 200) {
       helper.successToast('Customer created successfully');
@@ -63,8 +62,6 @@ class CustomerPageState extends State<CustomerPage> {
     } else {
       if (response.statusCode == 422) {
         final responseData = json.decode(response.body);
-        print('responseData================= ');
-        print(responseData.toString());
         final errors = responseData['errors'];
         String customerCodeError =
             errors['customer_code'] != null ? errors['customer_code'][0] : '';

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pos/Pos/CartItem.dart';
 import 'package:pos/Pos/CartProvider.dart';
+import 'package:pos/Pos/InvoiceScreen.dart';
 import 'package:pos/Pos/ProductModel.dart';
 import 'package:pos/Pos/CustomerModel.dart';
 import 'package:pos/Pos/ProductController.dart';
@@ -14,7 +15,8 @@ import '../Customer/CustomerModel.dart';
 import '../utils/Drawer.dart';
 import '../utils/Api.dart';
 import '../utils/Helper.dart';
-import 'package:auto_size_text/auto_size_text.dart';
+import 'package:pos/Pos/InvoiceModel.dart';
+import 'dart:ui'; // Import this for BackdropFilter
 
 class PosPage extends StatefulWidget {
   const PosPage({Key? key}) : super(key: key);
@@ -31,6 +33,8 @@ class PosPageState extends State<PosPage> {
   List<Product> _filteredProducts = [];
   Future<List<Customer>>? futureCustomers;
   Customer? selectedCustomer;
+
+  int customerId = 0;
 
   bool _isLoading = false;
 
@@ -111,7 +115,24 @@ class PosPageState extends State<PosPage> {
   }
 
   _handleSubmitOrder() async {
+    // Check if customerId is empty or null
+    if (customerId == 0) {
+      helper.validationToast(true, 'Please select a customer');
+      return;
+    }
+
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
+
+    // Check if there are any items in the cart
+    if (cartProvider.cartItems.isEmpty) {
+      helper.validationToast(true, 'Please select at least one item');
+      return;
+    }
+
+    setState(() {
+      _isLoading = true; // Show loading indicator
+    });
+
     final selectedCartItems = cartProvider.cartItems;
 
     final List<Map<String, dynamic>> cartItemsJson =
@@ -129,10 +150,11 @@ class PosPageState extends State<PosPage> {
         'dis_array': []
       };
     }).toList();
+
     // Prepare the JSON payload
     final Map<String, dynamic> payload = {
       'items': cartItemsJson,
-      'customer_id': 1,
+      'customer_id': customerId,
       'total_amount': cartProvider.netAmount,
       'grand_total': cartProvider.netAmount,
       'total_collect_amount': cartProvider.netAmount,
@@ -159,55 +181,23 @@ class PosPageState extends State<PosPage> {
         }
       ],
     };
-    // selectedCartItems.forEach((item) {
-    //   print(
-    //       'Product: ${item.product.productName}, Quantity: ${item.qty}, Price: ${item.product.newPrice}');
-    // });
 
-    // Convert cart items to JSON format
-
-    print('payload');
-    print(cartProvider.toString());
-    print(payload);
     const String apiUrl = 'sales';
 
     final response = await Api().postData(payload, apiUrl);
 
     if (response.statusCode == 200) {
-      helper.successToast('Customer created successfully');
-      // setState(() {
-      //   _isLoading = false; // Show loading indicator
-      // });
       final responseData = json.decode(response.body);
-      print('responseData================= ');
-      print(responseData.toString());
+      InvoiceModel saleData = InvoiceModel.fromJson(responseData['data'][0]);
+      setState(() {
+        _isLoading = false; // Show loading indicator
+      });
+      helper.successToast('Order created successfully');
+      cartProvider.clearCart();
+      navigateToInvoiceScreen(context, saleData);
     } else {
-      final responseData = json.decode(response.body);
-      print('else ====== ');
-      print(responseData.toString());
+      helper.errorToast('Failed to create order');
     }
-
-    // Define the server endpoint
-    // final String url = 'http://127.0.0.1:8000/api/sales';
-
-    // try {
-    //   final response = await http.post(
-    //     Uri.parse(url),
-    //     headers: {'Content-Type': 'application/json'},
-    //     body: json.encode(payload),
-    //   );
-
-    //   if (response.statusCode == 200) {
-    //     print('Order submitted successfully');
-    //     // Handle successful order submission
-    //   } else {
-    //     print('Failed to submit order: ${response.body}');
-    //     // Handle server errors
-    //   }
-    // } catch (e) {
-    //   print('Error submitting order: $e');
-    //   // Handle network errors
-    // }
   }
 
   @override
@@ -230,7 +220,7 @@ class PosPageState extends State<PosPage> {
             padding: const EdgeInsets.all(6.0),
             child: Column(
               children: [
-                const SizedBox(height: 10.0),
+                const SizedBox(height: 25.0),
                 _buildCustomerDropdown(),
                 const SizedBox(height: 10.0),
                 _buildCustomAutocompleteField(),
@@ -287,60 +277,14 @@ class PosPageState extends State<PosPage> {
     );
   }
 
-  Widget _buildCustomerDropdown() {
-    return FutureBuilder<List<Customer>>(
-      future: futureCustomers,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(child: Text('No customers available'));
-        } else {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: SizedBox(
-                  width: double.infinity,
-                  child: DropdownSearch<Customer>(
-                    items: snapshot.data!,
-                    itemAsString: (Customer c) => c.name,
-                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                      dropdownSearchDecoration: InputDecoration(
-                        labelText: "Customer",
-                        hintText: "Select a customer",
-                      ),
-                    ),
-                    selectedItem: selectedCustomer,
-                    onChanged: (Customer? customer) {
-                      setState(() {
-                        selectedCustomer = customer;
-                      });
-                    },
-                  ),
-                ),
-              ),
-              IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () {
-                  _showAddCustomerDialog();
-                },
-              ),
-            ],
-          );
-        }
-      },
-    );
-  }
-
   void _showAddCustomerDialog() {
     showDialog(
       context: context,
       builder: (context) {
-        final TextEditingController nameController = TextEditingController();
-        final TextEditingController emailController = TextEditingController();
+        String customerName = '';
+        String customerCode = '';
+        String phoneNumber = '';
+        String address = '';
 
         return AlertDialog(
           title: Text('Add New Customer'),
@@ -348,12 +292,51 @@ class PosPageState extends State<PosPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
-                controller: nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
+                  hintText: 'Customer Name',
+                  hintStyle: TextStyle(color: Colors.black),
+                  icon: Icon(Icons.person, color: Colors.black),
+                ),
+                onChanged: (value) {
+                  customerName = value;
+                },
               ),
+              SizedBox(height: 20.0),
               TextField(
-                controller: emailController,
-                decoration: InputDecoration(labelText: 'Email'),
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
+                  hintText: 'Customer Code',
+                  hintStyle: TextStyle(color: Colors.black),
+                  icon: Icon(Icons.qr_code, color: Colors.black),
+                ),
+                onChanged: (value) {
+                  customerCode = value;
+                },
+              ),
+              SizedBox(height: 20.0),
+              TextField(
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
+                  hintText: 'Phone Number',
+                  hintStyle: TextStyle(color: Colors.black),
+                  icon: Icon(Icons.phone, color: Colors.black),
+                ),
+                onChanged: (value) {
+                  phoneNumber = value;
+                },
+              ),
+              SizedBox(height: 20.0),
+              TextField(
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
+                  hintText: 'Address',
+                  hintStyle: TextStyle(color: Colors.black),
+                  icon: Icon(Icons.home, color: Colors.black),
+                ),
+                onChanged: (value) {
+                  address = value;
+                },
               ),
             ],
           ),
@@ -370,11 +353,13 @@ class PosPageState extends State<PosPage> {
                 setState(() {
                   final newCustomer = CustomerModel(
                     id: 0, // Adjust as necessary
-                    name: nameController.text,
-                    customerCode: '', // Adjust as necessary
-                    phone: '', // Adjust as necessary
-                    email: emailController.text,
-                    address: '', // Adjust as necessary
+                    name: customerName,
+                    customerCode: customerCode,
+                    customerGroupId: customerCode,
+                    customerReceivableAccount: customerCode,
+                    phone: phoneNumber,
+                    email: '',
+                    address: address,
                   );
                   // _customers.add(newCustomer);
                   // _selectedCustomer = newCustomer;
@@ -388,21 +373,167 @@ class PosPageState extends State<PosPage> {
     );
   }
 
+  Widget _buildCustomerDropdown() {
+    return FutureBuilder<List<Customer>>(
+      future: futureCustomers,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('No customers available'));
+        } else {
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.5), // Transparent white
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 30.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: DropdownSearch<Customer>(
+                          items: snapshot.data!,
+                          itemAsString: (Customer c) => c.name,
+                          dropdownDecoratorProps: const DropDownDecoratorProps(
+                            dropdownSearchDecoration: InputDecoration(
+                              hintStyle: TextStyle(color: Colors.white),
+                              labelStyle: TextStyle(color: Colors.blue),
+                              labelText: "Customer",
+                              hintText: "Select a customer",
+                            ),
+                          ),
+                          selectedItem: selectedCustomer,
+                          onChanged: (Customer? customer) {
+                            if (customer != null) {
+                              setState(() {
+                                selectedCustomer = customer;
+                                customerId = customer.id;
+                              });
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.add),
+                  onPressed: () {
+                    _showAddCustomerDialog();
+                  },
+                ),
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+
   Widget _buildCustomAutocompleteField() {
-    return TextField(
-      controller: _fieldTextEditingController,
-      focusNode: _fieldFocusNode,
-      onChanged: (value) => _filterProducts(value),
-      decoration: InputDecoration(
-        hintText: 'Search Products...',
-        prefixIcon: const Icon(Icons.search),
-        suffixIcon: IconButton(
-          icon: const Icon(Icons.barcode_reader),
-          onPressed: scanBarcodeNormal,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.5), // Transparent white
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10.0),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+          child: TextField(
+            controller: _fieldTextEditingController,
+            focusNode: _fieldFocusNode,
+            onChanged: (value) => _filterProducts(value),
+            decoration: InputDecoration(
+              hintText: 'Search Products...',
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.barcode_reader),
+                onPressed: scanBarcodeNormal,
+              ),
+              filled: true,
+              fillColor: Colors.transparent,
+            ),
+          ),
         ),
       ),
     );
   }
+
+  // Widget _buildCustomerDropdown() {
+  //   return FutureBuilder<List<Customer>>(
+  //     future: futureCustomers,
+  //     builder: (context, snapshot) {
+  //       if (snapshot.connectionState == ConnectionState.waiting) {
+  //         return const Center(child: CircularProgressIndicator());
+  //       } else if (snapshot.hasError) {
+  //         return Center(child: Text('Error: ${snapshot.error}'));
+  //       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+  //         return const Center(child: Text('No customers available'));
+  //       } else {
+  //         return Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Expanded(
+  //               child: SizedBox(
+  //                 width: double.infinity,
+  //                 child: DropdownSearch<Customer>(
+  //                   items: snapshot.data!,
+  //                   itemAsString: (Customer c) => c.name,
+  //                   dropdownDecoratorProps: const DropDownDecoratorProps(
+  //                     dropdownSearchDecoration: InputDecoration(
+  //                       labelText: "Customer",
+  //                       hintText: "Select a customer",
+  //                     ),
+  //                   ),
+  //                   selectedItem: selectedCustomer,
+  //                   onChanged: (Customer? customer) {
+  //                     if (customer != null) {
+  //                       setState(() {
+  //                         selectedCustomer = customer;
+  //                         customerId = customer.id;
+  //                       });
+  //                     }
+  //                   },
+  //                 ),
+  //               ),
+  //             ),
+  //             IconButton(
+  //               icon: const Icon(Icons.add),
+  //               onPressed: () {
+  //                 _showAddCustomerDialog();
+  //               },
+  //             ),
+  //           ],
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
+
+  // Widget _buildCustomAutocompleteField() {
+  //   return TextField(
+  //     controller: _fieldTextEditingController,
+  //     focusNode: _fieldFocusNode,
+  //     onChanged: (value) => _filterProducts(value),
+  //     decoration: InputDecoration(
+  //       hintText: 'Search Products...',
+  //       prefixIcon: const Icon(Icons.search),
+  //       suffixIcon: IconButton(
+  //         icon: const Icon(Icons.barcode_reader),
+  //         onPressed: scanBarcodeNormal,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildCartItem(CartItem cartItem) {
     return Dismissible(
@@ -514,9 +645,9 @@ class PosPageState extends State<PosPage> {
                           }),
                         ],
                       ),
-                      const SizedBox(width: 20.0),
+                      const SizedBox(width: 10.0),
                       Text(
-                        'Subtotal: ${cartItem.subtotal.toString()}',
+                        'S.total: ${cartItem.subtotal.toString()}',
                         style: const TextStyle(fontSize: 12),
                       ),
                     ],
@@ -556,16 +687,20 @@ class PosPageState extends State<PosPage> {
             builder: (context, cartProvider, child) {
               return Text(
                 'Net Amount: ${cartProvider.netAmount.toString()}',
-                style: const TextStyle(fontSize: 14, color: Colors.black),
+                style: const TextStyle(
+                    fontSize: 14, color: Color.fromARGB(255, 3, 104, 55)),
               );
             },
           ),
-          ElevatedButton(
-            onPressed: () {
-              _handleSubmitOrder();
-            },
-            child: const Text('Submit Order'),
-          ),
+          _isLoading
+              ? const CircularProgressIndicator()
+              : ElevatedButton(
+                  onPressed: () {
+                    _handleSubmitOrder();
+                  },
+                  child: const Text('Submit Order',
+                      style: TextStyle(color: Color.fromARGB(255, 3, 104, 55))),
+                ),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pos/Customer/EditCustomerPage.dart';
 import '../utils/Api.dart';
 import 'CustomerModel.dart';
 import 'CustomerController.dart';
@@ -129,14 +130,14 @@ class CustomerListPageState extends State<CustomerListPage> {
       body: Stack(
         children: [
           // Background image
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/imageedit.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          // Container(
+          //   decoration: const BoxDecoration(
+          //     image: DecorationImage(
+          //       image: AssetImage('assets/images/imageedit.jpg'),
+          //       fit: BoxFit.cover,
+          //     ),
+          //   ),
+          // ),
 
           // Glassy card and customer list
           Column(
@@ -173,190 +174,174 @@ class CustomerListPageState extends State<CustomerListPage> {
                                 }
                                 final customer = _customers[index];
                                 return Dismissible(
-                                    key: Key(customer.id
-                                        .toString()), // Unique key for each customer
-                                    direction: DismissDirection
-                                        .endToStart, // Swipe from right to left to delete
-                                    confirmDismiss: (direction) async {
-                                      // Show a confirmation dialog before deleting
-                                      return showDialog<bool>(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: const Text("Confirm"),
-                                            content: const Text(
-                                                "Are you sure you want to delete this item?"),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () =>
-                                                    Navigator.of(context)
-                                                        .pop(false),
-                                                child: const Text("CANCEL"),
+                                  key: Key(customer.id
+                                      .toString()), // Unique key for each customer
+                                  direction: DismissDirection
+                                      .endToStart, // Swipe from right to left to delete
+                                  confirmDismiss: (direction) async {
+                                    // Show a confirmation dialog before deleting
+                                    return showDialog<bool>(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text("Confirm"),
+                                          content: const Text(
+                                              "Are you sure you want to delete this item?"),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context)
+                                                      .pop(false),
+                                              child: const Text("CANCEL"),
+                                            ),
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context)
+                                                      .pop(true),
+                                              child: const Text("DELETE"),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  onDismissed: (direction) {
+                                    // Remove the item from the list when dismissed
+                                    setState(() {
+                                      _customers.removeAt(index);
+                                    });
+                                  },
+                                  background: Container(
+                                    alignment: Alignment.centerRight,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    color: Colors.red,
+                                    child: const Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  child: Card(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 4.0, horizontal: 8.0),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6.0),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 11.0, right: 11.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.person,
+                                                      color: Colors.green,
+                                                      size: 20,
+                                                    ),
+                                                    const SizedBox(width: 6.0),
+                                                    Text(
+                                                      'Name: ${customer.name}',
+                                                      style: const TextStyle(
+                                                        color: Colors.green,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 12,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                              TextButton(
-                                                onPressed: () =>
-                                                    Navigator.of(context)
-                                                        .pop(true),
-                                                child: const Text("DELETE"),
+                                              IconButton(
+                                                icon: const Icon(
+                                                    Icons.edit_square,
+                                                    color: Colors.green,
+                                                    size: 20),
+                                                onPressed: () async {
+                                                  final updatedCustomer =
+                                                      await Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            EditCustomerPage(
+                                                                customer:
+                                                                    customer)),
+                                                  );
+                                                  if (updatedCustomer != null) {
+                                                    setState(() {
+                                                      refresh();
+                                                    });
+                                                  }
+                                                },
                                               ),
                                             ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                    onDismissed: (direction) {
-                                      // Remove the item from the list when dismissed
-                                      setState(() {
-                                        _customers.removeAt(index);
-                                      });
-                                    },
-                                    background: Container(
-                                      alignment: Alignment.centerRight,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10),
-                                      color: Colors.red,
-                                      child: const Icon(
-                                        Icons.delete,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    child: Card(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 4.0, horizontal: 8.0),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(6.0),
-                                      ),
-                                      child: Container(
-                                        // decoration: BoxDecoration(
-                                        //   border: Border(
-                                        //     right: BorderSide(
-                                        //       color: Colors.blue,
-                                        //       width: 4.0,
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(11.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                          ),
+                                          const SizedBox(height: 6.0),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
                                                 children: [
-                                                  Expanded(
-                                                    child: Row(
-                                                      children: [
-                                                        const Icon(
-                                                          Icons.person,
-                                                          color: Colors.green,
-                                                          size: 20,
-                                                        ),
-                                                        const SizedBox(
-                                                            width: 6.0),
-                                                        Text(
-                                                          'Name: ${customer.name}',
-                                                          style:
-                                                              const TextStyle(
-                                                            color: Colors.green,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 12,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(height: 6.0),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      const Icon(Icons.phone,
-                                                          color: Colors.indigo,
-                                                          size: 20),
-                                                      const SizedBox(
-                                                          width: 6.0),
-                                                      Text(
-                                                        '${customer.phone}',
-                                                        style: const TextStyle(
-                                                            fontSize: 12,
-                                                            color:
-                                                                Colors.indigo),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  // Row(
-                                                  //   children: [
-                                                  //     const Icon(Icons.email,
-                                                  //         color: Colors.brown,
-                                                  //         size: 20),
-                                                  //     const SizedBox(width: 8.0),
-                                                  //     Text(
-                                                  //       '${customer.email}',
-                                                  //       style: const TextStyle(
-                                                  //         color: Colors.brown,
-                                                  //         fontWeight:
-                                                  //             FontWeight.bold,
-                                                  //         fontSize: 13,
-                                                  //       ),
-                                                  //     ),
-                                                  //   ],
-                                                  // ),
-                                                ],
-                                              ),
-                                              const SizedBox(height: 8.0),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Expanded(
-                                                    flex: 10,
-                                                    child: Row(
-                                                      children: [
-                                                        const Icon(
-                                                          Icons.home,
-                                                          color: Colors.green,
-                                                          size: 20,
-                                                        ),
-                                                        const SizedBox(
-                                                            width: 6.0),
-                                                        Flexible(
-                                                          child: Text(
-                                                            'Address: ${customer.address}',
-                                                            style:
-                                                                const TextStyle(
-                                                              color:
-                                                                  Colors.green,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 12,
-                                                            ),
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .visible,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
+                                                  const Icon(Icons.phone,
+                                                      color: Colors.indigo,
+                                                      size: 20),
+                                                  const SizedBox(width: 6.0),
+                                                  Text(
+                                                    '${customer.phone}',
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        color: Colors.indigo),
                                                   ),
                                                 ],
                                               ),
                                             ],
                                           ),
-                                        ),
+                                          const SizedBox(height: 8.0),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                flex: 10,
+                                                child: Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.home,
+                                                      color: Colors.green,
+                                                      size: 20,
+                                                    ),
+                                                    const SizedBox(width: 6.0),
+                                                    Flexible(
+                                                      child: Text(
+                                                        'Address: ${customer.address}',
+                                                        style: const TextStyle(
+                                                          color: Colors.green,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 12,
+                                                        ),
+                                                        overflow: TextOverflow
+                                                            .visible,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
-                                    ));
+                                    ),
+                                  ),
+                                );
                               },
                             ),
                     ),

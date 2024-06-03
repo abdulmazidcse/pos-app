@@ -65,6 +65,8 @@ class CustomerModel {
   int id;
   String name;
   String customerCode;
+  dynamic customerGroupId;
+  dynamic customerReceivableAccount;
   dynamic phone;
   dynamic email;
   dynamic address;
@@ -73,6 +75,8 @@ class CustomerModel {
     required this.id,
     required this.name,
     required this.customerCode,
+    required this.customerGroupId,
+    required this.customerReceivableAccount,
     required this.phone,
     required this.email,
     required this.address,
@@ -83,6 +87,8 @@ class CustomerModel {
       id: json['id'] ?? 0,
       name: json['name'] ?? '',
       customerCode: json['customer_code'] ?? '',
+      customerGroupId: json['customer_group_id'] ?? '',
+      customerReceivableAccount: json['customer_receivable_account'] ?? '',
       phone: json['phone'] ?? 0,
       email: json['email'] ?? 0,
       address: json['address'],

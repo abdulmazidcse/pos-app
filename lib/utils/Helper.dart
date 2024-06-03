@@ -51,4 +51,30 @@ class Helper {
         textColor: Colors.black,
         fontSize: 16.0);
   }
+
+  Widget btn(bool _isLoading, VoidCallback createProduct) {
+    return Container(
+      child: _isLoading
+          ? const CircularProgressIndicator()
+          : ElevatedButton(
+              onPressed: createProduct,
+              style: ElevatedButton.styleFrom(
+                elevation: 9.0,
+                backgroundColor: Colors.green,
+                fixedSize: const Size(300, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(75),
+                ),
+              ),
+              child: const Text(
+                'Save',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+    );
+  }
 }

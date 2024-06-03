@@ -2,7 +2,7 @@
 //
 //     final saleModel = saleModelFromJson(jsonString);
 
-import 'dart:convert';
+// import 'dart:convert';
 
 class SaleModel {
   int id;

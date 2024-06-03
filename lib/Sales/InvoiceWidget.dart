@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:intl/intl.dart'; // Import for currency formatting
@@ -11,8 +10,6 @@ class InvoiceWidget extends StatelessWidget {
 
   InvoiceWidget({required this.saleData});
 
-  // const InvoiceWidget({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final currencyFormatter =
@@ -21,6 +18,7 @@ class InvoiceWidget extends StatelessWidget {
     // Calculate the sum of sub_total values
     final double subTotalSum =
         saleData.salesItems.fold(0, (sum, item) => sum + item.subTotal);
+    // ignore: non_constant_identifier_names
     final double TotalAmount = subTotalSum - saleData.orderDiscountValue;
 
     return Scaffold(
@@ -45,7 +43,7 @@ class InvoiceWidget extends StatelessWidget {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Container(
+                  child: SizedBox(
                     width: double.infinity,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -326,7 +324,7 @@ class InvoiceWidget extends StatelessWidget {
                 child: BarcodeWidget(
                   barcode: Barcode.code128(),
                   data: saleData.invoiceNumber,
-                  width: 100,
+                  width: 120,
                   height: 50,
                 ),
               ),

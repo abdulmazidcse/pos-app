@@ -9,9 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Api {
   // final String url = 'https://inventory.kathergolpo.com/backend/api/';
   // static const String url = 'http://localhost:8000/api/';
-  static const String url = 'http://172.30.38.145:8000/api/';
+  static const String url = 'http://172.30.38.145:8000/api/'; // Office Net
+  // static const String url = 'http://192.168.43.18:8000/api/'; // mobile Net
   // static const String url = 'http://192.168.31.135:8000/api/';
-  // static const String url = 'https://inventory.kathergolpo.com/backend/api/';
   // static const String url = 'https://inventory.kathergolpo.com/backend/api/';
   final int perPage = 10;
 
@@ -96,8 +96,6 @@ class Api {
 
   Future<List<Customer>> fetchCustomers() async {
     final response = await http.get(Uri.parse('${Api.url}customers'));
-    print('fetchCustomers');
-    print(response.statusCode);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       final List<dynamic> customersJson = data['data'];
@@ -106,32 +104,6 @@ class Api {
       throw Exception('Failed to load customers');
     }
   }
-
-  // Future<SaleModel> fetchSales({int page = 1, int perPage = 1}) async {
-  //   var apiUrl = 'sale/list?search=&column=0&dir=desc';
-  //   var fullUrl = url + apiUrl;
-  //   final url = Uri.parse('$fullUrl&page=$page&length=$perPage');
-  //   final response = await http.get(url, headers: {
-  //     'Content-type': 'application/json',
-  //     'Accept': 'application/json',
-  //     // ignore: prefer_interpolation_to_compose_strings
-  //     'Authorization': 'Bearer ' + await _getToken(),
-  //   });
-
-  //   if (response.statusCode == 200) {
-  //     final Map<String, dynamic> responseBody = json.decode(response.body);
-  //     final salesData = responseBody['data']['data']['data'];
-
-  //     if (salesData is List) {
-  //       return salesData.map((orders) => SaleModel.fromJson(orders)).toList();
-  //     } else {
-  //       throw Exception('Failed to fetch products: Unexpected data format');
-  //     }
-  //   } else {
-  //     // Handle API errors
-  //     throw Exception('Failed to fetch sales data');
-  //   }
-  // }
 
   Future<List<SaleModel>> getSalesOrder({int page = 1, int perPage = 2}) async {
     var apiUrl = 'sale/list?search=&column=0&dir=desc';
@@ -182,10 +154,22 @@ class Api {
   }
 
   postData(data, apiUrl) async {
-    var fullUrl;
+    String fullUrl;
     fullUrl = url + apiUrl;
     return await http
         .post(Uri.parse(fullUrl), body: jsonEncode(data), headers: {
+      'Content-type': 'application/json',
+      'Accept': 'application/json',
+      // ignore: prefer_interpolation_to_compose_strings
+      'Authorization': 'Bearer ' + await _getToken()
+    });
+  }
+
+  putData(data, apiUrl) async {
+    String fullUrl;
+    fullUrl = url + apiUrl;
+    print(fullUrl);
+    return await http.put(Uri.parse(fullUrl), body: jsonEncode(data), headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
       // ignore: prefer_interpolation_to_compose_strings

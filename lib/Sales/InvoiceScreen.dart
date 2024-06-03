@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import for currency formatting
 import 'package:pos/Sales/SaleModel.dart';
@@ -122,7 +121,8 @@ class InvoiceScreen extends StatelessWidget {
                 Text(
                   currencyFormatter
                       .format(saleData.grandTotal), // Use currency formatter
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -151,7 +151,8 @@ class InvoiceScreen extends StatelessWidget {
                 Text(
                   currencyFormatter
                       .format(saleData.totalAmount), // Use currency formatter
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -198,23 +199,23 @@ class InvoiceItemRow extends StatelessWidget {
       children: [
         Text(
           description,
-          style: TextStyle(fontSize: 12),
+          style: const TextStyle(fontSize: 12),
         ),
         Text(
           quantity.toString(),
-          style: TextStyle(fontSize: 12),
+          style: const TextStyle(fontSize: 12),
         ),
         Text(
           '\$${unitPrice.toStringAsFixed(2)}',
-          style: TextStyle(fontSize: 12),
+          style: const TextStyle(fontSize: 12),
         ),
-        Text(
+        const Text(
           '00',
           style: TextStyle(fontSize: 12),
         ),
         Text(
           '\$${total.toStringAsFixed(2)}',
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
         ),
       ],
     );

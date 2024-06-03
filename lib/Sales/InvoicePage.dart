@@ -1,36 +1,33 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:intl/intl.dart'; // Import for currency formatting
 import 'package:pos/Sales/SaleModel.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 
 class InvoicePage extends StatelessWidget {
   final SaleModel saleData;
 
-  InvoicePage({required this.saleData});
+  const InvoicePage({super.key, required this.saleData});
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Retail Shop 1.',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8),
-          Text('34/4-A/10, North Bashaboo, Dhaka 1000'),
-          SizedBox(height: 16),
-          Center(
+          const SizedBox(height: 8),
+          const Text('34/4-A/10, North Bashaboo, Dhaka 1000'),
+          const SizedBox(height: 16),
+          const Center(
             child: Text(
               'INVOICE',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
-          SizedBox(height: 16),
-          Row(
+          const SizedBox(height: 16),
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
@@ -51,11 +48,11 @@ class InvoicePage extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 16),
-          Divider(thickness: 2),
+          const SizedBox(height: 16),
+          const Divider(thickness: 2),
           Table(
             border: TableBorder.all(),
-            columnWidths: {
+            columnWidths: const {
               0: FlexColumnWidth(3),
               1: FlexColumnWidth(1),
               2: FlexColumnWidth(1),
@@ -63,7 +60,7 @@ class InvoicePage extends StatelessWidget {
               4: FlexColumnWidth(1),
               5: FlexColumnWidth(1),
             },
-            children: [
+            children: const [
               TableRow(children: [
                 TableCell(
                     child: Padding(
@@ -138,61 +135,61 @@ class InvoicePage extends StatelessWidget {
               ]),
             ],
           ),
-          Divider(thickness: 2),
-          SizedBox(height: 16),
-          Row(
+          const Divider(thickness: 2),
+          const SizedBox(height: 16),
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Total Amount:'),
               Text('275.00'),
             ],
           ),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Discount:'),
               Text('0.00'),
             ],
           ),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('VAT:'),
               Text('0.00'),
             ],
           ),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Net Amount:'),
               Text('200.00'),
             ],
           ),
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Paid Amount:'),
               Text('200.00'),
             ],
           ),
-          SizedBox(height: 16),
-          Text('Payment Description:'),
-          Row(
+          const SizedBox(height: 16),
+          const Text('Payment Description:'),
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Description'),
               Text('Amount'),
             ],
           ),
-          Divider(),
-          Row(
+          const Divider(),
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('cash'),
               Text('200.00'),
             ],
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Center(
             child: BarcodeWidget(
               barcode: Barcode.code128(),
@@ -201,9 +198,9 @@ class InvoicePage extends StatelessWidget {
               height: 80,
             ),
           ),
-          Center(child: Text('INV00124000164')),
-          SizedBox(height: 16),
-          Center(child: Text('System By: SSG-IT')),
+          const Center(child: Text('INV00124000164')),
+          const SizedBox(height: 16),
+          const Center(child: Text('System By: SSG-IT')),
         ],
       ),
     );

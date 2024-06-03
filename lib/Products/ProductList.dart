@@ -321,7 +321,7 @@ class ProductListState extends State<ProductList> {
                                                   BarcodeWidget(
                                                     barcode: Barcode.code128(),
                                                     data: product.productCode,
-                                                    width: 100,
+                                                    width: 120,
                                                     height: 40,
                                                   ),
                                                 ],

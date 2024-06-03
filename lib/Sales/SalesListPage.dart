@@ -1,12 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:pos/Sales/SaleModel.dart';
 import '../utils/Api.dart';
 import '../utils/Helper.dart';
 import '../utils/Drawer.dart';
-import '../Sales/InvoiceDetailScreen.dart';
-import '../Sales/InvoiceScreen.dart';
+// import '../Sales/InvoiceDetailScreen.dart';
+// import '../Sales/InvoiceScreen.dart';
 import '../Sales/InvoiceWidget.dart';
 
 class SalesListPage extends StatefulWidget {
@@ -145,7 +143,7 @@ class SalesListPageState extends State<SalesListPage> {
           Column(
             children: [
               Expanded(
-                child: Container(
+                child: SizedBox(
                   width: double.infinity,
                   // decoration: BoxDecoration(
                   //   color: Colors.white.withOpacity(0.1),
@@ -279,33 +277,34 @@ class SalesListPageState extends State<SalesListPage> {
                                               // ),
                                               Row(
                                                 children: [
-                                                  Icon(Icons.calendar_today,
+                                                  const Icon(
+                                                      Icons.calendar_today,
                                                       color: Colors.blue,
                                                       size: 20),
-                                                  SizedBox(width: 8.0),
+                                                  const SizedBox(width: 8.0),
                                                   Text(
-                                                    '${saleData.createdAt}',
-                                                    style:
-                                                        TextStyle(fontSize: 12),
+                                                    saleData.createdAt,
+                                                    style: const TextStyle(
+                                                        fontSize: 12),
                                                   ),
                                                 ],
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 8.0),
+                                          const SizedBox(height: 8.0),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Row(
                                                 children: [
-                                                  Icon(Icons.person,
+                                                  const Icon(Icons.person,
                                                       color: Colors.brown,
                                                       size: 20),
-                                                  SizedBox(width: 8.0),
+                                                  const SizedBox(width: 8.0),
                                                   Text(
-                                                    '${saleData.customerName}',
-                                                    style: TextStyle(
+                                                    saleData.customerName,
+                                                    style: const TextStyle(
                                                       color: Colors.brown,
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -333,13 +332,14 @@ class SalesListPageState extends State<SalesListPage> {
                                               // ),
                                               Row(
                                                 children: [
-                                                  Icon(Icons.money_outlined,
+                                                  const Icon(
+                                                      Icons.money_outlined,
                                                       color: Colors.indigo,
                                                       size: 20),
-                                                  SizedBox(width: 8.0),
+                                                  const SizedBox(width: 8.0),
                                                   Text(
                                                     'T. Amount: ${saleData.grandTotal}',
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontSize: 11,
                                                         color: Colors.indigo),
                                                   ),
@@ -347,20 +347,20 @@ class SalesListPageState extends State<SalesListPage> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(height: 8.0),
+                                          const SizedBox(height: 8.0),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Row(
                                                 children: [
-                                                  Icon(Icons.attach_money,
+                                                  const Icon(Icons.attach_money,
                                                       color: Colors.green,
                                                       size: 20),
-                                                  SizedBox(width: 8.0),
+                                                  const SizedBox(width: 8.0),
                                                   Text(
                                                     'Paid: ${saleData.collectionAmount}',
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       color: Colors.green,
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -371,13 +371,13 @@ class SalesListPageState extends State<SalesListPage> {
                                               ),
                                               Row(
                                                 children: [
-                                                  Icon(Icons.discount,
+                                                  const Icon(Icons.discount,
                                                       color: Colors.blue,
                                                       size: 20),
-                                                  SizedBox(width: 8.0),
+                                                  const SizedBox(width: 8.0),
                                                   Text(
                                                     'Discount: ${saleData.salesItemsSumDiscount}',
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontSize: 12,
                                                         color: Colors.blue),
                                                   ),

@@ -44,6 +44,12 @@ class CartProvider with ChangeNotifier {
     }
   }
 
+  void clearCart() {
+    _cartItems.clear();
+    _netAmount = 0.00;
+    notifyListeners();
+  }
+
   void _calculateNetAmount() {
     _netAmount = 0.00;
     for (var item in _cartItems) {

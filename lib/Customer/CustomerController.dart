@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:async';
-import 'package:flutter/material.dart';
 import '../utils/Api.dart';
 import 'CustomerModel.dart';
 
@@ -32,6 +31,56 @@ class CustomerController {
       }
     } else {
       throw Exception('Failed to load customer: ${response.statusCode}');
+    }
+  }
+
+  Future<bool> updateCustomer(CustomerModel customer) async {
+    final apiUrl = 'customers/${customer.id}';
+    final fullUrl = Api.url + apiUrl;
+    print('fullUrl');
+    print(fullUrl);
+    final response = await http.put(
+      Uri.parse(fullUrl),
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${await Api.getToken()}',
+      },
+      body: jsonEncode({
+        'name': customer.name,
+        'phone': customer.phone,
+        'email': customer.email,
+        'address': customer.address,
+        'customer_code': customer.customerCode,
+        'customer_group_id': customer.customerGroupId,
+        'customer_receivable_account': customer.customerReceivableAccount,
+        'discount_percent': 0,
+      }),
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> deleteCustomer(int customerId) async {
+    final apiUrl = 'customers/$customerId';
+    final fullUrl = Api.url + apiUrl;
+
+    final response = await http.delete(
+      Uri.parse(fullUrl),
+      headers: {
+        'Content-type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${await Api.getToken()}',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

@@ -8,6 +8,7 @@ import 'package:pos/Customer/CustomerPage.dart';
 import 'package:pos/Customer/CustomerListPage.dart';
 import 'package:pos/Auth/Login.dart';
 import 'package:pos/utils/Api.dart';
+import 'package:pos/profile/ProfileScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
@@ -75,7 +76,7 @@ class MyDrawerState extends State<MyDrawer> {
             ),
           ),
           ListTile(
-              leading: const Icon(Icons.home_outlined),
+              leading: const Icon(Icons.home),
               title: const Text("Home"),
               onTap: () {
                 Navigator.pushReplacement(
@@ -85,7 +86,7 @@ class MyDrawerState extends State<MyDrawer> {
               }),
           const SizedBox(height: 7.0),
           ListTile(
-            leading: const Icon(Icons.production_quantity_limits),
+            leading: const Icon(Icons.shopping_cart),
             title: const Text("POS"),
             onTap: () async {
               Navigator.of(context).pushReplacement(
@@ -94,7 +95,7 @@ class MyDrawerState extends State<MyDrawer> {
           ),
           const SizedBox(height: 7.0),
           ListTile(
-            leading: const Icon(Icons.production_quantity_limits),
+            leading: const Icon(Icons.person_add),
             title: const Text("Create Customer"),
             onTap: () async {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -103,7 +104,7 @@ class MyDrawerState extends State<MyDrawer> {
           ),
           const SizedBox(height: 7.0),
           ListTile(
-            leading: const Icon(Icons.production_quantity_limits),
+            leading: const Icon(Icons.group),
             title: const Text("Customer List"),
             onTap: () async {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -112,7 +113,7 @@ class MyDrawerState extends State<MyDrawer> {
           ),
           const SizedBox(height: 7.0),
           ListTile(
-            leading: const Icon(Icons.production_quantity_limits),
+            leading: const Icon(Icons.shopping_cart),
             title: const Text("Sales List"),
             onTap: () async {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -121,7 +122,7 @@ class MyDrawerState extends State<MyDrawer> {
           ),
           const SizedBox(height: 7.0),
           ListTile(
-            leading: const Icon(Icons.production_quantity_limits),
+            leading: const Icon(Icons.view_list),
             title: const Text("Products List"),
             onTap: () async {
               Navigator.of(context).pushReplacement(
@@ -130,7 +131,7 @@ class MyDrawerState extends State<MyDrawer> {
           ),
           const SizedBox(height: 7.0),
           ListTile(
-            leading: const Icon(Icons.production_quantity_limits),
+            leading: const Icon(Icons.ad_units),
             title: const Text("Create Products"),
             onTap: () async {
               Navigator.of(context).pushReplacement(
@@ -139,7 +140,16 @@ class MyDrawerState extends State<MyDrawer> {
           ),
           const SizedBox(height: 7.0),
           ListTile(
-            leading: const Icon(Icons.logout),
+            leading: const Icon(Icons.person),
+            title: const Text("Profile"),
+            onTap: () async {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const ProfileScreen()));
+            },
+          ),
+          const SizedBox(height: 7.0),
+          ListTile(
+            leading: const Icon(Icons.logout_sharp),
             title: isLogin ? const Text("Logout") : const Text('Login'),
             onTap: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
