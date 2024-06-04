@@ -55,39 +55,17 @@ class CustomerListPageState extends State<CustomerListPage> {
     }
   }
 
-  Future<void> _deleteProduct(int index) async {
-    // Implement your customer deletion logic here
+  Future<void> _deleteItem(int index) async {
+    CustomerController controller = CustomerController();
+    final success = await controller.deleteCustomer(_customers[index].id);
+    if (success) {
+      refresh();
+    }
     setState(() {
       _customers.removeAt(index);
     });
-
-    await fetchCustomers(page: 1);
-  }
-
-  Future<void> _confirmDelete(BuildContext context, int index) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm Delete'),
-          content: const Text('Are you sure you want to delete this customer?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-            ),
-            TextButton(
-              child: const Text('Delete'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                _deleteProduct(index); // Delete the customer
-              },
-            ),
-          ],
-        );
-      },
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Customer delete successfully')),
     );
   }
 
@@ -130,14 +108,14 @@ class CustomerListPageState extends State<CustomerListPage> {
       body: Stack(
         children: [
           // Background image
-          // Container(
-          //   decoration: const BoxDecoration(
-          //     image: DecorationImage(
-          //       image: AssetImage('assets/images/imageedit.jpg'),
-          //       fit: BoxFit.cover,
-          //     ),
-          //   ),
-          // ),
+          Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/imageedit.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
 
           // Glassy card and customer list
           Column(
@@ -206,10 +184,7 @@ class CustomerListPageState extends State<CustomerListPage> {
                                     );
                                   },
                                   onDismissed: (direction) {
-                                    // Remove the item from the list when dismissed
-                                    setState(() {
-                                      _customers.removeAt(index);
-                                    });
+                                    _deleteItem(index);
                                   },
                                   background: Container(
                                     alignment: Alignment.centerRight,
@@ -229,7 +204,7 @@ class CustomerListPageState extends State<CustomerListPage> {
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.only(
-                                          left: 11.0, right: 11.0),
+                                          left: 11.0, right: 11.0, bottom: 8),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -262,7 +237,7 @@ class CustomerListPageState extends State<CustomerListPage> {
                                               IconButton(
                                                 icon: const Icon(
                                                     Icons.edit_square,
-                                                    color: Colors.green,
+                                                    color: Colors.redAccent,
                                                     size: 20),
                                                 onPressed: () async {
                                                   final updatedCustomer =
@@ -304,7 +279,7 @@ class CustomerListPageState extends State<CustomerListPage> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 8.0),
+                                          const SizedBox(height: 6.0),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,

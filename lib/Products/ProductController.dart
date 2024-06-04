@@ -2,20 +2,19 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import '../utils/Api.dart';
-import 'CustomerModel.dart';
+import 'ProductModel.dart';
 
-class CustomerController {
-  Future<List<CustomerModel>> getCustomers(
+class ProductController {
+  Future<List<ProductModel>> getProducts(
       {int page = 1, int perPage = 10}) async {
-    var apiUrl = 'customers/list?search=&column=1&dir=desc';
+    var apiUrl = 'product/list?search=&column=0&dir=desc';
     var fullUrl = Api.url + apiUrl;
 
     final url = Uri.parse('$fullUrl&page=$page&length=$perPage');
     final response = await http.get(url, headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
-      // ignore: prefer_interpolation_to_compose_strings
-      'Authorization': 'Bearer ' + await Api.getToken()
+      'Authorization': 'Bearer ${await Api.getToken()}'
     });
 
     if (response.statusCode == 200) {
@@ -24,18 +23,18 @@ class CustomerController {
 
       if (productsData is List) {
         return productsData
-            .map((product) => CustomerModel.fromJson(product))
+            .map((product) => ProductModel.fromJson(product))
             .toList();
       } else {
-        throw Exception('Failed to fetch customer: Unexpected data format');
+        throw Exception('Failed to fetch product: Unexpected data format');
       }
     } else {
-      throw Exception('Failed to load customer: ${response.statusCode}');
+      throw Exception('Failed to load product: ${response.statusCode}');
     }
   }
 
-  Future<bool> updateCustomer(CustomerModel customer) async {
-    final apiUrl = 'customers/${customer.id}';
+  Future<bool> updateProduct(ProductModel product) async {
+    final apiUrl = 'products/${product.id}';
     final fullUrl = Api.url + apiUrl;
     final response = await http.put(
       Uri.parse(fullUrl),
@@ -45,14 +44,18 @@ class CustomerController {
         'Authorization': 'Bearer ${await Api.getToken()}',
       },
       body: jsonEncode({
-        'name': customer.name,
-        'phone': customer.phone,
-        'email': customer.email,
-        'address': customer.address,
-        'customer_code': customer.customerCode,
-        'customer_group_id': customer.customerGroupId,
-        'customer_receivable_account': customer.customerReceivableAccount,
-        'discount_percent': 0,
+        'name': product.productName,
+        'product_type': 'standard',
+        'product_name': product.productName,
+        'product_native_name': product.productName,
+        'product_code': product.productCode,
+        'cost_price': product.costPrice,
+        'mrp_price': product.mrpPrice,
+        'category_id': 8,
+        'sub_category_id': 9,
+        'min_order_qty': 1,
+        'tax_method': 1,
+        'product_tax': 1,
       }),
     );
     if (response.statusCode == 200) {
@@ -62,8 +65,8 @@ class CustomerController {
     }
   }
 
-  Future<bool> deleteCustomer(int customerId) async {
-    final apiUrl = 'customers/$customerId';
+  Future<bool> deleteProduct(int productId) async {
+    final apiUrl = 'products/$productId';
     final fullUrl = Api.url + apiUrl;
     final response = await http.delete(
       Uri.parse(fullUrl),

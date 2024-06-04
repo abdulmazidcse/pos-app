@@ -28,12 +28,17 @@ class CustomerListData {
   });
 
   factory CustomerListData.fromJson(Map<String, dynamic> json) {
+    List<CustomerModel> sortedProducts = (json['data'] as List<dynamic>?)
+            ?.map((product) => CustomerModel.fromJson(product))
+            .toList() ??
+        [];
+
+    // Sort the products by id in descending order
+    sortedProducts.sort((a, b) => b.id.compareTo(a.id));
+
     return CustomerListData(
       pagination: CustomerListPagination.fromJson(json['pagination'] ?? {}),
-      products: (json['data'] as List<dynamic>?)
-              ?.map((product) => CustomerModel.fromJson(product))
-              .toList() ??
-          [],
+      products: sortedProducts,
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:pos/Customer/CustomerListPage.dart';
 import '../utils/Api.dart';
 import '../utils/Helper.dart';
 import '../utils/Drawer.dart';
@@ -56,10 +57,21 @@ class CustomerPageState extends State<CustomerPage> {
 
     if (response.statusCode == 200) {
       helper.successToast('Customer created successfully');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Customer created successfully')),
+      );
       setState(() {
         _isLoading = false; // Show loading indicator
       });
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const CustomerListPage()));
     } else {
+      setState(() {
+        _isLoading = false; // Show loading indicator
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Required fields')),
+      );
       if (response.statusCode == 422) {
         final responseData = json.decode(response.body);
         final errors = responseData['errors'];
@@ -193,7 +205,7 @@ class CustomerPageState extends State<CustomerPage> {
                       ),
                       onChanged: (value) {
                         setState(() {
-                          address = double.parse(value);
+                          address = value;
                         });
                       },
                     ),

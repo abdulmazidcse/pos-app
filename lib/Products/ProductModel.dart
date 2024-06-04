@@ -69,28 +69,28 @@ class ProductModel {
   int categoryId;
   int subCategoryId;
   dynamic brandId;
-  dynamic barcodeSymbology;
+  // dynamic barcodeSymbology;
   dynamic minOrderQty;
   num costPrice;
   num depoPrice;
   num mrpPrice;
-  dynamic abpPrice;
-  dynamic abpQty;
+  // dynamic abpPrice;
+  // dynamic abpQty;
   int taxMethod;
   int productTax;
-  dynamic alertQuantity;
-  dynamic thumbnail;
-  dynamic shortDescription;
-  dynamic description;
-  dynamic purchaseMeasuringUnit;
-  dynamic salesMeasuringUnit;
-  dynamic convertionRate;
-  dynamic cartonSize;
-  dynamic cartonCpu;
+  // dynamic alertQuantity;
+  // dynamic thumbnail;
+  // dynamic shortDescription;
+  // dynamic description;
+  // dynamic purchaseMeasuringUnit;
+  // dynamic salesMeasuringUnit;
+  // dynamic convertionRate;
+  // dynamic cartonSize;
+  // dynamic cartonCpu;
   int quantity;
   int status;
   int discount;
-  CategoryModel category;
+  // CategoryModel category;
 
   ProductModel({
     required this.id,
@@ -100,28 +100,28 @@ class ProductModel {
     required this.categoryId,
     required this.subCategoryId,
     required this.brandId,
-    required this.barcodeSymbology,
+    // required this.barcodeSymbology,
     required this.minOrderQty,
     required this.costPrice,
     required this.depoPrice,
     required this.mrpPrice,
-    required this.abpPrice,
-    required this.abpQty,
+    // required this.abpPrice,
+    // required this.abpQty,
     required this.taxMethod,
     required this.productTax,
-    required this.alertQuantity,
-    required this.thumbnail,
-    required this.shortDescription,
-    required this.description,
-    required this.purchaseMeasuringUnit,
-    required this.salesMeasuringUnit,
-    required this.convertionRate,
-    required this.cartonSize,
-    required this.cartonCpu,
+    // required this.alertQuantity,
+    // required this.thumbnail,
+    // required this.shortDescription,
+    // required this.description,
+    // required this.purchaseMeasuringUnit,
+    // required this.salesMeasuringUnit,
+    // required this.convertionRate,
+    // required this.cartonSize,
+    // required this.cartonCpu,
     required this.quantity,
     required this.status,
     required this.discount,
-    required this.category,
+    // required this.category,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -133,28 +133,28 @@ class ProductModel {
       categoryId: json['category_id'] ?? 0,
       subCategoryId: json['sub_category_id'] ?? 0,
       brandId: json['brand_id'],
-      barcodeSymbology: json['barcode_symbology'],
+      // barcodeSymbology: json['barcode_symbology'],
       minOrderQty: json['min_order_qty'] ?? 0,
       costPrice: json['cost_price'] ?? 0,
       depoPrice: json['depo_price'] ?? 0,
       mrpPrice: json['mrp_price'] ?? 0,
-      abpPrice: json['abp_price'] ?? 0,
-      abpQty: json['abp_qty'] ?? 0,
+      // abpPrice: json['abp_price'] ?? 0,
+      // abpQty: json['abp_qty'] ?? 0,
       taxMethod: json['tax_method'] ?? 0,
       productTax: json['product_tax'] ?? 0,
-      alertQuantity: json['alert_quantity'],
-      thumbnail: json['thumbnail'],
-      shortDescription: json['short_description'],
-      description: json['description'],
-      purchaseMeasuringUnit: json['purchase_measuring_unit'],
-      salesMeasuringUnit: json['sales_measuring_unit'],
-      convertionRate: json['convertion_rate'],
-      cartonSize: json['carton_size'],
-      cartonCpu: json['carton_cpu'],
+      // alertQuantity: json['alert_quantity'],
+      // thumbnail: json['thumbnail'],
+      // shortDescription: json['short_description'],
+      // description: json['description'],
+      // purchaseMeasuringUnit: json['purchase_measuring_unit'],
+      // salesMeasuringUnit: json['sales_measuring_unit'],
+      // convertionRate: json['convertion_rate'],
+      // cartonSize: json['carton_size'],
+      // cartonCpu: json['carton_cpu'],
       quantity: json['quantity'] ?? 0,
       status: json['status'] ?? 0,
       discount: json['discount'] ?? 0,
-      category: CategoryModel.fromJson(json['category'] ?? {}),
+      // category: CategoryModel.fromJson(json['category'] ?? {}),
     );
   }
 

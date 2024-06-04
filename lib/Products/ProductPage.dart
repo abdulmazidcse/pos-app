@@ -64,7 +64,7 @@ class ProductPageState extends State<ProductPage> {
       _isLoading = true; // Show loading indicator
     });
     const String apiUrl = 'products';
-    var product = {
+    dynamic product = {
       'product_type': 'standard',
       'product_name': productName,
       'product_native_name': productName,

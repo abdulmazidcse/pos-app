@@ -114,7 +114,7 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
               ),
               // Add fields for other details
               _isLoading
-                  ? CircularProgressIndicator()
+                  ? const CircularProgressIndicator()
                   : ElevatedButton(
                       onPressed: () {
                         _handleUpdate();
