@@ -210,10 +210,11 @@ class PosPageState extends State<PosPage> {
         children: [
           Container(
             decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/imageedit.jpg'),
-                fit: BoxFit.cover,
-              ),
+              color: Color.fromARGB(179, 227, 227, 227),
+              // image: DecorationImage(
+              //   image: AssetImage('assets/images/imageedit.jpg'),
+              //   fit: BoxFit.cover,
+              // ),
             ),
           ),
           SingleChildScrollView(
