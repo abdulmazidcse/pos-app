@@ -7,7 +7,7 @@ import '../utils/Helper.dart';
 import '../utils/Drawer.dart';
 
 class CustomerPage extends StatefulWidget {
-  const CustomerPage({Key? key}) : super(key: key);
+  const CustomerPage({super.key});
   @override
   CustomerPageState createState() => CustomerPageState();
 }
@@ -38,7 +38,7 @@ class CustomerPageState extends State<CustomerPage> {
     }
   }
 
-  createProduct() async {
+  createProduct(context) async {
     setState(() {
       _isLoading = true; // Show loading indicator
     });
@@ -218,7 +218,7 @@ class CustomerPageState extends State<CustomerPage> {
                           _isLoading
                               ? const CircularProgressIndicator()
                               : ElevatedButton(
-                                  onPressed: createProduct,
+                                  onPressed: createProduct(context),
                                   style: ElevatedButton.styleFrom(
                                       elevation: 9.0,
                                       backgroundColor: Colors.green,

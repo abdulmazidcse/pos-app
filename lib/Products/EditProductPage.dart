@@ -8,10 +8,10 @@ class EditProductPage extends StatefulWidget {
   EditProductPage({required this.product});
 
   @override
-  _EditProductPageState createState() => _EditProductPageState();
+  EditProductPageState createState() => EditProductPageState();
 }
 
-class _EditProductPageState extends State<EditProductPage> {
+class EditProductPageState extends State<EditProductPage> {
   final _formKey = GlobalKey<FormState>();
 
   // Controllers for text fields
@@ -44,7 +44,7 @@ class _EditProductPageState extends State<EditProductPage> {
     super.dispose();
   }
 
-  Future<void> _handleUpdate(BuildContext context) async {
+  Future<void> _handleUpdate(context) async {
     if (_formKey.currentState!.validate()) {
       final updatedProduct = ProductModel(
         id: widget.product.id,

@@ -9,10 +9,10 @@ class EditOutletScreen extends StatefulWidget {
   const EditOutletScreen({super.key, required this.outlet});
 
   @override
-  _EditOutletScreenState createState() => _EditOutletScreenState();
+  EditOutletScreenState createState() => EditOutletScreenState();
 }
 
-class _EditOutletScreenState extends State<EditOutletScreen> {
+class EditOutletScreenState extends State<EditOutletScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
   late TextEditingController _contactPersonNameController;
@@ -30,10 +30,10 @@ class _EditOutletScreenState extends State<EditOutletScreen> {
     _outletNumberController =
         TextEditingController(text: widget.outlet.outletNumber);
     _addressController = TextEditingController(text: widget.outlet.addrs);
-    outlet_id = widget.outlet.id;
+    outletId = widget.outlet.id;
   }
 
-  var outlet_id = 0;
+  var outletId = 0;
 
   @override
   void dispose() {
@@ -44,7 +44,7 @@ class _EditOutletScreenState extends State<EditOutletScreen> {
     super.dispose();
   }
 
-  _handleUpdate() async {
+  _handleUpdate(context) async {
     setState(() {
       _isLoading = true; // Show loading indicator
     });
@@ -69,10 +69,10 @@ class _EditOutletScreenState extends State<EditOutletScreen> {
         status: widget.outlet.status,
         addrs: widget.outlet.addrs,
       );
-      outlet_id = widget.outlet.id;
+      outletId = widget.outlet.id;
 
       final success =
-          await OutletController().updateOutlet(updatedOutlet, outlet_id);
+          await OutletController().updateOutlet(updatedOutlet, outletId);
       if (success) {
         helper.successToast('Outlet update successfully');
         setState(() {
@@ -149,7 +149,7 @@ class _EditOutletScreenState extends State<EditOutletScreen> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  _handleUpdate();
+                  _handleUpdate(context);
                 },
                 style: ElevatedButton.styleFrom(
                     elevation: 9.0,

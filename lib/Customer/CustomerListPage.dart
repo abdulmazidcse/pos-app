@@ -7,7 +7,7 @@ import '../utils/Helper.dart';
 import '../utils/Drawer.dart';
 
 class CustomerListPage extends StatefulWidget {
-  const CustomerListPage({Key? key}) : super(key: key);
+  const CustomerListPage({super.key});
 
   @override
   CustomerListPageState createState() => CustomerListPageState();

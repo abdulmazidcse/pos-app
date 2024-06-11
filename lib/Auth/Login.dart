@@ -78,7 +78,7 @@ class LoginState extends State<Login> {
       helper.successToast('Login Success');
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => const HomePage()),
       );
     }
   }
@@ -209,7 +209,7 @@ class LoginState extends State<Login> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ForgetPassword(),
+                                builder: (context) => const ForgetPassword(),
                               ),
                             );
                           },

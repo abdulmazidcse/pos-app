@@ -36,9 +36,9 @@ class HelplineBox extends StatelessWidget {
       // ),
       child: Container(
         // transform: Matrix4.skewY(-0.05),
-        margin: EdgeInsets.symmetric(horizontal: 5.0),
-        width: 120.0,
-        height: 130.0,
+        margin: const EdgeInsets.symmetric(horizontal: 5.0),
+        width: 90.0,
+        height: 110.0,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             // borderRadius: const BorderRadius.only(
@@ -95,36 +95,33 @@ class HelplineBox extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
-                      child: Container(
-                        // transform: Matrix4.skewY(0.05),
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Column(
-                            children: [
-                              CircleAvatar(
-                                radius: 20,
-                                backgroundColor: bgColor.withOpacity(0.2),
-                                child: Icon(icon, color: bgColor, size: 30),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 20,
+                              backgroundColor: bgColor.withOpacity(0.2),
+                              child: Icon(icon, color: bgColor, size: 25),
+                            ),
+                            const SizedBox(height: 5.0),
+                            Text(
+                              text,
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.black,
                               ),
-                              const SizedBox(height: 10.0),
-                              Text(
-                                text,
-                                style: TextStyle(
-                                  fontSize: 16.0,
-                                  color: Colors.black,
-                                ),
+                            ),
+                            const SizedBox(height: 5.0),
+                            Text(
+                              subtext,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                color: Colors.grey[700],
                               ),
-                              const SizedBox(height: 5.0),
-                              Text(
-                                subtext,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 12.0,
-                                  color: Colors.grey[700],
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),

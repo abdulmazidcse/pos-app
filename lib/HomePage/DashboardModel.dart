@@ -8,6 +8,7 @@ class DashboardModel {
   final String currentMonthSalesAmount;
   final String previousMonthSalesAmount;
   final String currentYearSalesAmount;
+  final List<SevenDaysSalesData> last7DaysSales;
 
   DashboardModel({
     required this.annualTotalSales,
@@ -19,6 +20,7 @@ class DashboardModel {
     required this.currentMonthSalesAmount,
     required this.previousMonthSalesAmount,
     required this.currentYearSalesAmount,
+    required this.last7DaysSales,
   });
 
   factory DashboardModel.fromJson(Map<String, dynamic> json) {
@@ -32,6 +34,9 @@ class DashboardModel {
       currentMonthSalesAmount: json['currentMonthSalesAmount'] ?? "0.0",
       previousMonthSalesAmount: json['previousMonthSalesAmount'] ?? "0.0",
       currentYearSalesAmount: json['currentYearSalesAmount'] ?? "0.0",
+      last7DaysSales: (json['last7DaysSales'] as List<dynamic>)
+          .map((item) => SevenDaysSalesData.fromJson(item))
+          .toList(),
     );
   }
 
@@ -39,4 +44,29 @@ class DashboardModel {
   String toString() {
     return 'DashboardModel {todaySalesAmount: $todaySalesAmount, yesterdaySalesAmount: $yesterdaySalesAmount, currentWeekSalesAmount: $currentWeekSalesAmount, previousWeekSalesAmount: $previousWeekSalesAmount, currentMonthSalesAmount: $currentMonthSalesAmount, currentYearSalesAmount: $currentYearSalesAmount}';
   }
+}
+
+class SevenDaysSalesData {
+  final DateTime date;
+  final double totalSales;
+
+  SevenDaysSalesData({required this.date, required this.totalSales});
+
+  factory SevenDaysSalesData.fromJson(Map<String, dynamic> json) {
+    return SevenDaysSalesData(
+      date: DateTime.parse(json['date']),
+      totalSales: (json['total_sales'] as num).toDouble(),
+    );
+  }
+  @override
+  String toString() {
+    return 'SevenDaysSalesData {date: $totalSales';
+  }
+
+  // Map<String, dynamic> toJson() {
+  //   return {
+  //     'date': date.toIso8601String(),
+  //     'total_sales': totalSales,
+  //   };
+  // }
 }

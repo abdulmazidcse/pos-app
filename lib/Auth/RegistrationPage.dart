@@ -7,7 +7,7 @@ import '../Auth/Login.dart';
 import 'dart:convert';
 
 class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({Key? key}) : super(key: key);
+  const RegistrationPage({super.key});
   @override
   RegistrationState createState() => RegistrationState();
 }
@@ -48,7 +48,7 @@ class RegistrationState extends State<RegistrationPage> {
     try {
       var response = await http.post(
           Uri.parse(
-              Api.url + 'auth/register'), // Replace with your API endpoint
+              '${Api.url}auth/register'), // Replace with your API endpoint
           body: jsonEncode(user),
           headers: {
             'Content-type': 'application/json',

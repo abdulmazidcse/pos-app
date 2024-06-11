@@ -1,10 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:pos/utils/Api.dart';
-import 'DashboardModel.dart';
-
-import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:pos/utils/Api.dart';
 import 'DashboardModel.dart';
 
@@ -15,15 +9,13 @@ class DashboardController {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final resData = data['data'];
-        // print(data);
-        // print(resData);
         return DashboardModel.fromJson(resData);
       } else {
         throw Exception('Failed to load data');
       }
     } catch (error) {
-      print("Error fetching data: $error");
-      throw error;
+      // print("Error fetching data: $error");
+      rethrow;
     }
   }
 }

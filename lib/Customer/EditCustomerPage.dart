@@ -6,13 +6,13 @@ import 'CustomerController.dart';
 class EditCustomerPage extends StatefulWidget {
   final CustomerModel customer;
 
-  const EditCustomerPage({Key? key, required this.customer}) : super(key: key);
+  const EditCustomerPage({super.key, required this.customer});
 
   @override
-  _EditCustomerPageState createState() => _EditCustomerPageState();
+  EditCustomerPageState createState() => EditCustomerPageState();
 }
 
-class _EditCustomerPageState extends State<EditCustomerPage> {
+class EditCustomerPageState extends State<EditCustomerPage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
   late TextEditingController _phoneController;
@@ -39,7 +39,7 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
     // Initialize controllers for other fields
   }
 
-  _handleUpdate() async {
+  _handleUpdate(context) async {
     setState(() {
       _isLoading = true; // Show loading indicator
     });
@@ -117,7 +117,7 @@ class _EditCustomerPageState extends State<EditCustomerPage> {
                   ? const CircularProgressIndicator()
                   : ElevatedButton(
                       onPressed: () {
-                        _handleUpdate();
+                        _handleUpdate(context);
                       },
                       child: const Text('Save'),
                     ),

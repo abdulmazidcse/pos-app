@@ -6,13 +6,13 @@ import 'OutletController.dart'; // Ensure the path is correct
 class EditCompanyScreen extends StatefulWidget {
   final Company company;
 
-  const EditCompanyScreen({Key? key, required this.company}) : super(key: key);
+  const EditCompanyScreen({super.key, required this.company});
 
   @override
-  _EditCompanyScreenState createState() => _EditCompanyScreenState();
+  EditCompanyScreenState createState() => EditCompanyScreenState();
 }
 
-class _EditCompanyScreenState extends State<EditCompanyScreen> {
+class EditCompanyScreenState extends State<EditCompanyScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
   late TextEditingController _addressController;
@@ -46,7 +46,7 @@ class _EditCompanyScreenState extends State<EditCompanyScreen> {
     super.dispose();
   }
 
-  _handleUpdate() async {
+  _handleUpdate(context) async {
     setState(() {
       _isLoading = true; // Show loading indicator
     });
@@ -123,7 +123,7 @@ class _EditCompanyScreenState extends State<EditCompanyScreen> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () async {
-                  _handleUpdate();
+                  _handleUpdate(context);
                 },
                 child: _isLoading
                     ? const CircularProgressIndicator()

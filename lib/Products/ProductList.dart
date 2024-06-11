@@ -8,7 +8,7 @@ import '../utils/Drawer.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 
 class ProductList extends StatefulWidget {
-  const ProductList({Key? key}) : super(key: key);
+  const ProductList({super.key});
 
   @override
   ProductListState createState() => ProductListState();
@@ -132,6 +132,7 @@ class ProductListState extends State<ProductList> {
   }
 // Your existing code...
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const MyDrawer(),

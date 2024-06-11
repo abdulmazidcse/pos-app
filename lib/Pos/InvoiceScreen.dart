@@ -12,14 +12,14 @@ void navigateToInvoiceScreen(BuildContext context, InvoiceModel saleData) {
     context: context,
     builder: (BuildContext context) {
       return Dialog(
-        insetPadding: EdgeInsets.all(10.0), // 98% screen coverage
+        insetPadding: const EdgeInsets.all(10.0), // 98% screen coverage
         child: Stack(
           children: [
             Positioned(
               top: 10.0,
               right: 10.0,
               child: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.close,
                   color: Colors.redAccent,
                 ),
@@ -32,7 +32,7 @@ void navigateToInvoiceScreen(BuildContext context, InvoiceModel saleData) {
               top: 10.0,
               left: 10.0,
               child: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.print,
                   color: Colors.blue,
                 ),
@@ -90,7 +90,7 @@ class InvoiceScreen extends StatelessWidget {
           Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -166,7 +166,7 @@ class InvoiceScreen extends StatelessWidget {
             children: [
               Text(
                 'Srvd by: ${saleData.createdBy.name}',
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
               ),
             ],
           ),
@@ -179,7 +179,7 @@ class InvoiceScreen extends StatelessWidget {
                 style: const TextStyle(fontSize: 13),
               ),
               Text(
-                '${saleData.createdAt}',
+                saleData.createdAt,
                 style: const TextStyle(fontSize: 13),
               ),
             ],
@@ -281,7 +281,7 @@ class InvoiceScreen extends StatelessWidget {
                 unitPrice: item.mrpPrice,
                 discount: item.discount,
                 total: (item.mrpPrice - item.discount),
-                sub_total: item.subTotal,
+                subTotals: item.subTotal,
               );
             },
           ),
@@ -372,7 +372,7 @@ class InvoiceItemRow extends StatelessWidget {
   final dynamic unitPrice;
   final dynamic discount;
   final dynamic total;
-  final dynamic sub_total;
+  final dynamic subTotals;
 
   InvoiceItemRow({
     required this.description,
@@ -380,7 +380,7 @@ class InvoiceItemRow extends StatelessWidget {
     required this.unitPrice,
     required this.discount,
     required this.total,
-    required this.sub_total,
+    required this.subTotals,
   });
 
   @override
@@ -401,7 +401,7 @@ class InvoiceItemRow extends StatelessWidget {
               flex: 25,
               child: Text(
                 description,
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
               ),
             ),
             Expanded(
@@ -409,7 +409,7 @@ class InvoiceItemRow extends StatelessWidget {
               child: Text(
                 quantity.toString(),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
               ),
             ),
             Expanded(
@@ -417,7 +417,7 @@ class InvoiceItemRow extends StatelessWidget {
               child: Text(
                 unitPrice.toString(),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
               ),
             ),
             Expanded(
@@ -425,7 +425,7 @@ class InvoiceItemRow extends StatelessWidget {
               child: Text(
                 discount.toString(),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
               ),
             ),
             Expanded(
@@ -433,15 +433,15 @@ class InvoiceItemRow extends StatelessWidget {
               child: Text(
                 total.toString(),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
               ),
             ),
             Expanded(
               flex: 20,
               child: Text(
-                sub_total.toString(),
+                subTotals.toString(),
                 textAlign: TextAlign.end,
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
               ),
             ),
           ],

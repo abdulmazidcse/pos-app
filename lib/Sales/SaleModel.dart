@@ -66,7 +66,10 @@ class SaleModel {
       salesItemsSumMrpPrice: json["sales_items_sum_mrp_price"],
       salesItems: List<SalesItem>.from(
           json['sales_items'].map((x) => SalesItem.fromJson(x))),
-      customer: Customer.fromJson(json["customer"]),
+      // customer: Customer.fromJson(json["customer"]),
+      customer: json["customer"] != null
+          ? Customer.fromJson(json["customer"])
+          : Customer(id: 0, name: '', email: null, phone: null, address: null),
       outlet: Outlet.fromJson(json["outlets"]),
       createdBy: CreatedBy.fromJson(json["created_by"]),
     );

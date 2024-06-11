@@ -45,121 +45,124 @@ class MyDrawerState extends State<MyDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        children: [
-          UserAccountsDrawerHeader(
-            accountName: Text(
-              userName,
-              style: const TextStyle(
-                fontSize: 15.0,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.65,
+      child: Drawer(
+        child: ListView(
+          children: [
+            UserAccountsDrawerHeader(
+              accountName: Text(
+                userName,
+                style: const TextStyle(
+                  fontSize: 15.0,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              accountEmail: Text(
+                userEmail,
+                style: const TextStyle(
+                  fontSize: 12.0,
+                  color: Colors.black,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              currentAccountPicture: const CircleAvatar(
+                backgroundImage: AssetImage('assets/images/logo.png'),
+              ),
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/background_image.png'),
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
-            accountEmail: Text(
-              userEmail,
-              style: const TextStyle(
-                fontSize: 12.0,
-                color: Colors.black,
-                fontWeight: FontWeight.normal,
-              ),
+            ListTile(
+                leading: const Icon(Icons.home),
+                title: const Text("Home"),
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomePage()),
+                  );
+                }),
+            const SizedBox(height: 7.0),
+            ListTile(
+              leading: const Icon(Icons.shopping_cart),
+              title: const Text("POS"),
+              onTap: () async {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => const PosPage()));
+              },
             ),
-            currentAccountPicture: const CircleAvatar(
-              backgroundImage: AssetImage('assets/images/logo.png'),
+            const SizedBox(height: 7.0),
+            ListTile(
+              leading: const Icon(Icons.person_add),
+              title: const Text("Create Customer"),
+              onTap: () async {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const CustomerPage()));
+              },
             ),
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/background_image.png'),
-                fit: BoxFit.fill,
-              ),
+            const SizedBox(height: 7.0),
+            ListTile(
+              leading: const Icon(Icons.group),
+              title: const Text("Customer List"),
+              onTap: () async {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const CustomerListPage()));
+              },
             ),
-          ),
-          ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text("Home"),
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomePage()),
-                );
-              }),
-          const SizedBox(height: 7.0),
-          ListTile(
-            leading: const Icon(Icons.shopping_cart),
-            title: const Text("POS"),
-            onTap: () async {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const PosPage()));
-            },
-          ),
-          const SizedBox(height: 7.0),
-          ListTile(
-            leading: const Icon(Icons.person_add),
-            title: const Text("Create Customer"),
-            onTap: () async {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const CustomerPage()));
-            },
-          ),
-          const SizedBox(height: 7.0),
-          ListTile(
-            leading: const Icon(Icons.group),
-            title: const Text("Customer List"),
-            onTap: () async {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const CustomerListPage()));
-            },
-          ),
-          const SizedBox(height: 7.0),
-          ListTile(
-            leading: const Icon(Icons.shopping_cart),
-            title: const Text("Sales List"),
-            onTap: () async {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const SalesListPage()));
-            },
-          ),
-          const SizedBox(height: 7.0),
-          ListTile(
-            leading: const Icon(Icons.view_list),
-            title: const Text("Products List"),
-            onTap: () async {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const ProductList()));
-            },
-          ),
-          const SizedBox(height: 7.0),
-          ListTile(
-            leading: const Icon(Icons.ad_units),
-            title: const Text("Create Products"),
-            onTap: () async {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const ProductPage()));
-            },
-          ),
-          const SizedBox(height: 7.0),
-          ListTile(
-            leading: const Icon(Icons.person),
-            title: const Text("Profile"),
-            onTap: () async {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const ProfileScreen()));
-            },
-          ),
-          const SizedBox(height: 7.0),
-          ListTile(
-            leading: const Icon(Icons.logout_sharp),
-            title: isLogin ? const Text("Logout") : const Text('Login'),
-            onTap: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              await prefs.clear();
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (context) => const Login(),
-              ));
-            },
-          )
-        ],
+            const SizedBox(height: 7.0),
+            ListTile(
+              leading: const Icon(Icons.shopping_cart),
+              title: const Text("Sales List"),
+              onTap: () async {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const SalesListPage()));
+              },
+            ),
+            const SizedBox(height: 7.0),
+            ListTile(
+              leading: const Icon(Icons.view_list),
+              title: const Text("Products List"),
+              onTap: () async {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const ProductList()));
+              },
+            ),
+            const SizedBox(height: 7.0),
+            ListTile(
+              leading: const Icon(Icons.ad_units),
+              title: const Text("Create Products"),
+              onTap: () async {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const ProductPage()));
+              },
+            ),
+            const SizedBox(height: 7.0),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text("Profile"),
+              onTap: () async {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const ProfileScreen()));
+              },
+            ),
+            const SizedBox(height: 7.0),
+            ListTile(
+              leading: const Icon(Icons.logout_sharp),
+              title: isLogin ? const Text("Logout") : const Text('Login'),
+              onTap: () async {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const Login(),
+                ));
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.clear();
+              },
+            )
+          ],
+        ),
       ),
     );
   }

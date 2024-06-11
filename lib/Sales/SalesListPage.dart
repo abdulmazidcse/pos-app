@@ -249,7 +249,7 @@ class SalesListPageState extends State<SalesListPage> {
                                                   ),
                                                   const SizedBox(width: 8.0),
                                                   Text(
-                                                    '#${saleData.invoiceNumber}',
+                                                    '#${saleData.invoiceNumber} id ${saleData.id}',
                                                     style: const TextStyle(
                                                       color: Colors.green,
                                                       fontWeight:
