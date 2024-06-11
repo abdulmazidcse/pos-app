@@ -5,7 +5,7 @@ import '../HomePage/DashboardModel.dart';
 class SalesBarChart extends StatelessWidget {
   final List<SevenDaysSalesData> data;
 
-  const SalesBarChart({Key? key, required this.data}) : super(key: key);
+  const SalesBarChart({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {

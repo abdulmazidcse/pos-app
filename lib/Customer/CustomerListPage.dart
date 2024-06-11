@@ -55,7 +55,7 @@ class CustomerListPageState extends State<CustomerListPage> {
     }
   }
 
-  Future<void> _deleteItem(int index) async {
+  Future<void> _deleteItem(context, int index) async {
     CustomerController controller = CustomerController();
     final success = await controller.deleteCustomer(_customers[index].id);
     if (success) {
@@ -184,7 +184,7 @@ class CustomerListPageState extends State<CustomerListPage> {
                                     );
                                   },
                                   onDismissed: (direction) {
-                                    _deleteItem(index);
+                                    _deleteItem(context, index);
                                   },
                                   background: Container(
                                     alignment: Alignment.centerRight,

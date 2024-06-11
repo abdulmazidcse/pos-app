@@ -47,7 +47,7 @@ class OutletController {
 
   Future<Company> fetchCompany(companyId) async {
     String url = 'companies/$companyId';
-    print(url);
+    // print(url);
     final response = await Api().getData(url);
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
@@ -64,25 +64,6 @@ class OutletController {
     }
   }
 
-  // Future<Outlet> updateCompany(Company data, companyId) async {
-  //   var companyBody = {
-  //     'name': data.name,
-  //     'contact_person_name': data.contactPersonName,
-  //     'contact_person_number': data.contactPersonNumber,
-  //     'status': data.status,
-  //     'address': data.address,
-  //   };
-  //   var url = 'companies/$companyId';
-  //   final response = await Api().putData(companyBody, url);
-  // if (response.statusCode == 200) {
-  //   final Map<String, dynamic> updatedCompanyJson = jsonDecode(response.body);
-  //   return Outlet.fromJson(updatedCompanyJson); // Return updated outlet
-  // } else {
-  //   throw Exception(
-  //       'Failed to update company. Status code: ${response.statusCode}');
-  // }
-  // }
-
   Future<bool> updateCompany(Company data, comapanyId) async {
     dynamic companyBody = {
       'name': data.name,
@@ -93,15 +74,7 @@ class OutletController {
     };
     var url = 'companies/$comapanyId';
     final response = await Api().putData(companyBody, url);
-    print(response.body.toString());
-    // if (response.statusCode == 200) {
-    //   // final Map<String, dynamic> updatedCompanyJson = jsonDecode(response.body);
-    //   return jsonDecode(response.body);
-    //   // return Company.fromJson(updatedCompanyJson); // Return updated outlet
-    // } else {
-    //   throw Exception(
-    //       'Failed to update company. Status code: ${response.statusCode}');
-    // }
+    // print(response.body.toString());
     if (response.statusCode == 200) {
       return true;
     } else {

@@ -20,7 +20,8 @@ class DashedBorder extends CustomPainter {
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke;
 
-    _drawDashedLine(canvas, Offset(0, 0), Offset(size.width, 0), paint); // Top
+    _drawDashedLine(
+        canvas, const Offset(0, 0), Offset(size.width, 0), paint); // Top
     _drawDashedLine(canvas, Offset(0, size.height),
         Offset(size.width, size.height), paint); // Bottom
   }

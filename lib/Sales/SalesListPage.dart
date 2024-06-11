@@ -55,42 +55,6 @@ class SalesListPageState extends State<SalesListPage> {
     }
   }
 
-  Future<void> _deleteProduct(int index) async {
-    // Implement your product deletion logic here
-    setState(() {
-      _salesData.removeAt(index);
-    });
-
-    await fetchSalesOrders(page: 1);
-  }
-
-  Future<void> _confirmDelete(BuildContext context, int index) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirm Delete'),
-          content: const Text('Are you sure you want to delete this product?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-            ),
-            TextButton(
-              child: const Text('Delete'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                _deleteProduct(index); // Delete the product
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   Future<void> loadMore() async {
     if (_isLoading || !_hasMore) return;
 

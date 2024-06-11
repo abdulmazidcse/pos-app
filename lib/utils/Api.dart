@@ -7,13 +7,11 @@ import 'package:pos/Sales/SaleModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Api {
-  // final String url = 'https://inventory.kathergolpo.com/backend/api/';
   // static const String url = 'http://localhost:8000/api/';
   static const String url = 'https://backend.quickpossolution.com/api/';
   // static const String url = 'http://172.30.38.145:8000/api/'; // Office Net
   // static const String url = 'http://192.168.43.18:8000/api/'; // Mobile Net
   // static const String url = 'http://192.168.0.101:8000/api/'; // My Router
-  // static const String url = 'https://inventory.kathergolpo.com/backend/api/';
   final int perPage = 10;
 
   Future<ApiResponse> productSearchFetchData(String searchTerm) async {
@@ -114,7 +112,7 @@ class Api {
     final response = await http.get(urlParam, headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer ' + await _getToken(),
+      'Authorization': 'Bearer ${await _getToken()}',
     });
 
     if (response.statusCode == 200) {
@@ -169,7 +167,6 @@ class Api {
   putData(data, apiUrl) async {
     String fullUrl;
     fullUrl = url + apiUrl;
-    print(fullUrl);
     return await http.put(Uri.parse(fullUrl), body: jsonEncode(data), headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
@@ -203,23 +200,8 @@ class Api {
     return response;
   }
 
-  // Future<void> login(data, apiUrl) async {
-  //   final url = Uri.parse('http://192.168.31.135:8000/api/auth/login');
-  //   try {
-  //     final response = await http.post(url,
-  //         body: jsonEncode(data), headers: _setHeadersWithout());
-  //     if (response.statusCode == 200) {
-  //       return response;
-  //     } else {
-  //       // Handle error
-  //     }
-  //   } catch (e) {
-  //     print('Error: $e');
-  //   }
-  // }
-
   login(data, apiUrl) async {
-    var fullUrl;
+    String fullUrl;
     fullUrl = url + apiUrl;
     return await http.post(Uri.parse(fullUrl),
         body: jsonEncode(data), headers: _setHeadersWithout());

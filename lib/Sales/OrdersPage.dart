@@ -22,13 +22,15 @@ class OrdersPage extends StatelessWidget {
     ),
   ];
 
+  OrdersPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Orders"),
+        title: const Text("Orders"),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {},
         ),
       ),
@@ -65,12 +67,12 @@ class Order {
 class OrderCard extends StatelessWidget {
   final Order order;
 
-  OrderCard({required this.order});
+  OrderCard({super.key, required this.order});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       elevation: 4.0,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -82,9 +84,10 @@ class OrderCard extends StatelessWidget {
               children: [
                 Text(
                   "Order ID: ${order.id}",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 11),
                 ),
-                Chip(
+                const Chip(
                   avatar: Icon(Icons.delivery_dining, color: Colors.green),
                   label: Text(
                     "Regular Delivery",
@@ -93,72 +96,74 @@ class OrderCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Row(
               children: [
-                Icon(Icons.person, color: Colors.green),
-                SizedBox(width: 4.0),
+                const Icon(Icons.person, color: Colors.green),
+                const SizedBox(width: 4.0),
                 Text(
                   order.name,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 12),
                 ),
               ],
             ),
             Row(
               children: [
-                Icon(Icons.phone, color: Colors.green),
-                SizedBox(width: 4.0),
+                const Icon(Icons.phone, color: Colors.green),
+                const SizedBox(width: 4.0),
                 Text(
                   order.phone,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 12),
                 ),
               ],
             ),
             Row(
               children: [
-                Icon(Icons.location_on, color: Colors.grey),
-                SizedBox(width: 8.0),
+                const Icon(Icons.location_on, color: Colors.grey),
+                const SizedBox(width: 8.0),
                 Expanded(child: Text(order.address)),
               ],
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
-                    Icon(Icons.calendar_today, color: Colors.grey),
-                    SizedBox(width: 8.0),
+                    const Icon(Icons.calendar_today, color: Colors.grey),
+                    const SizedBox(width: 8.0),
                     Text("Date: ${order.date}"),
                   ],
                 ),
                 Row(
                   children: [
-                    Icon(Icons.cancel, color: Colors.red),
-                    SizedBox(width: 8.0),
+                    const Icon(Icons.cancel, color: Colors.red),
+                    const SizedBox(width: 8.0),
                     Text(
                       "Status: ${order.status}",
-                      style: TextStyle(color: Colors.red),
+                      style: const TextStyle(color: Colors.red),
                     ),
                   ],
                 ),
               ],
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Amount Payable: ৳${order.amount}",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 ElevatedButton.icon(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                   ),
-                  icon: Icon(Icons.refresh),
-                  label: Text("Order Again"),
+                  icon: const Icon(Icons.refresh),
+                  label: const Text("Order Again"),
                 ),
               ],
             ),

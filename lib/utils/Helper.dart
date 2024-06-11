@@ -52,9 +52,9 @@ class Helper {
         fontSize: 16.0);
   }
 
-  Widget btn(bool _isLoading, VoidCallback createProduct) {
+  Widget btn(bool isLoading, VoidCallback createProduct) {
     return Container(
-      child: _isLoading
+      child: isLoading
           ? const CircularProgressIndicator()
           : ElevatedButton(
               onPressed: createProduct,

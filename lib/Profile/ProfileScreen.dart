@@ -6,7 +6,7 @@ import 'package:pos/profile/UserProfileScreen.dart';
 import '../utils/Drawer.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
   @override
   ProfileScreenPageState createState() => ProfileScreenPageState();
 }
@@ -61,7 +61,7 @@ class ProfileScreenPageState extends State<ProfileScreen> {
               color: Colors.grey.withOpacity(0.2),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: Offset(0, 3),
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -73,9 +73,10 @@ class ProfileScreenPageState extends State<ProfileScreen> {
               backgroundColor: Colors.orange.withOpacity(0.2),
               child: Icon(icon, color: Colors.orange, size: 60),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(label,
-                textAlign: TextAlign.center, style: TextStyle(fontSize: 16)),
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 16)),
           ],
         ),
       ),

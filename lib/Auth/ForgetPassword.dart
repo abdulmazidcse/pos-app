@@ -8,7 +8,7 @@ import 'package:pos/utils/Helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ForgetPassword extends StatefulWidget {
-  const ForgetPassword({Key? key}) : super(key: key);
+  const ForgetPassword({super.key});
   @override
   ForgetPasswordState createState() => ForgetPasswordState();
 }

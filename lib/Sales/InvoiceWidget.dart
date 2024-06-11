@@ -123,7 +123,7 @@ class InvoiceWidget extends StatelessWidget {
                 children: [
                   Text(
                     'Srvd by: ${saleData.createdBy.name}',
-                    style: TextStyle(fontSize: 12),
+                    style: const TextStyle(fontSize: 12),
                   ),
                 ],
               ),
@@ -136,7 +136,7 @@ class InvoiceWidget extends StatelessWidget {
                     style: const TextStyle(fontSize: 13),
                   ),
                   Text(
-                    '${saleData.createdAt}',
+                    saleData.createdAt,
                     style: const TextStyle(fontSize: 13),
                   ),
                 ],
@@ -245,7 +245,7 @@ class InvoiceWidget extends StatelessWidget {
                     unitPrice: item.mrpPrice,
                     discount: item.discount,
                     total: (item.mrpPrice - item.discount),
-                    sub_total: item.subTotal,
+                    subTotal: item.subTotal,
                   );
                 },
               ),
@@ -341,7 +341,7 @@ class InvoiceItemRow extends StatelessWidget {
   final int quantity;
   final num unitPrice;
   final dynamic discount;
-  final num sub_total;
+  final num subTotal;
   // final double vat;
   final num total;
 
@@ -351,88 +351,86 @@ class InvoiceItemRow extends StatelessWidget {
     required this.quantity,
     required this.unitPrice,
     required this.discount,
-    required this.sub_total,
+    required this.subTotal,
     // required this.vat,
     required this.total,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: CustomPaint(
-        painter: DashedBorder(
-          color: Colors.black,
-          strokeWidth: 1.0,
-          dashWidth: 1.0,
-          dashSpace: 3.0,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                flex: 25, // 20%
-                child: Text(
-                  description,
-                  textAlign: TextAlign.start,
-                  style: const TextStyle(
-                    fontSize: 12,
-                  ),
+    return CustomPaint(
+      painter: DashedBorder(
+        color: Colors.black,
+        strokeWidth: 1.0,
+        dashWidth: 1.0,
+        dashSpace: 3.0,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 25, // 20%
+              child: Text(
+                description,
+                textAlign: TextAlign.start,
+                style: const TextStyle(
+                  fontSize: 12,
                 ),
               ),
-              Expanded(
-                flex: 10, // 10%
-                child: Text(
-                  quantity.toString(),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 12,
-                  ),
+            ),
+            Expanded(
+              flex: 10, // 10%
+              child: Text(
+                quantity.toString(),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 12,
                 ),
               ),
-              Expanded(
-                flex: 15, // 10%
-                child: Text(
-                  '\$${unitPrice.toStringAsFixed(2)}',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 12,
-                  ),
+            ),
+            Expanded(
+              flex: 15, // 10%
+              child: Text(
+                '\$${unitPrice.toStringAsFixed(2)}',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 12,
                 ),
               ),
-              Expanded(
-                flex: 15, // 10%
-                child: Text(
-                  '\$${discount.toStringAsFixed(2)}',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 12,
-                  ),
+            ),
+            Expanded(
+              flex: 15, // 10%
+              child: Text(
+                '\$${discount.toStringAsFixed(2)}',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 12,
                 ),
               ),
-              Expanded(
-                flex: 15, // 10%
-                child: Text(
-                  '\$${total.toStringAsFixed(2)}',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 12,
-                  ),
+            ),
+            Expanded(
+              flex: 15, // 10%
+              child: Text(
+                '\$${total.toStringAsFixed(2)}',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 12,
                 ),
               ),
-              Expanded(
-                flex: 20, // 10%
-                child: Text(
-                  '\$${sub_total.toStringAsFixed(2)}',
-                  textAlign: TextAlign.end,
-                  style: const TextStyle(
-                    fontSize: 12,
-                  ),
+            ),
+            Expanded(
+              flex: 20, // 10%
+              child: Text(
+                '\$${subTotal.toStringAsFixed(2)}',
+                textAlign: TextAlign.end,
+                style: const TextStyle(
+                  fontSize: 12,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

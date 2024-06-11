@@ -206,31 +206,31 @@ class Outlet {
   int id;
   dynamic name;
   dynamic address;
-  dynamic outlet_number;
+  dynamic outletNumber;
 
   Outlet({
     required this.id,
     required this.name,
     required this.address,
-    required this.outlet_number,
+    required this.outletNumber,
   });
 
   factory Outlet.fromJson(Map<String, dynamic> json) => Outlet(
         id: json["id"],
         name: json["name"],
         address: json["address"],
-        outlet_number: json["outlet_number"],
+        outletNumber: json["outlet_number"],
       );
 
   @override
   String toString() =>
-      'Customer{ id: $id, name: $name, address: $address, phone: $outlet_number }';
+      'Customer{ id: $id, name: $name, address: $address, phone: $outletNumber }';
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "address": address,
-        "outlet_number": outlet_number,
+        "outlet_number": outletNumber,
       };
 }
 

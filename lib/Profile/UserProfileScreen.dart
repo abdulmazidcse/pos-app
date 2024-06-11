@@ -5,7 +5,8 @@ import 'package:pos/utils/Api.dart';
 import 'package:pos/utils/Drawer.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({Key? key}) : super(key: key);
+  const UserProfileScreen({super.key});
+
   @override
   UserProfileScreenPageState createState() => UserProfileScreenPageState();
 }
@@ -78,11 +79,12 @@ class UserProfileScreenPageState extends State<UserProfileScreen> {
                   const SizedBox(height: 16),
                   Text(
                     userName,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     userPhone,
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   const SizedBox(height: 16),
                   _buildInfoRow('User Name', userName),
