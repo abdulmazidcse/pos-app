@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'HomePage/HomePage.dart';
 import 'Pos/CartProvider.dart';
-// import 'Pos/PosPage.dart';
-// import 'Sales/SalesListPage.dart';
 import 'Auth/Login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'utils/ConnectivityCheck.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
@@ -21,7 +25,8 @@ class MyApp extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
-              child: CircularProgressIndicator()); // Or any loading indicator
+            child: CircularProgressIndicator(),
+          );
         } else {
           if (snapshot.hasError) {
             return MaterialApp(
@@ -31,25 +36,26 @@ class MyApp extends StatelessWidget {
             );
           } else {
             bool isUserLogin = snapshot.data ?? false;
-            var myPageWidget = isUserLogin ? const HomePage() : const Login();
+            // Widget myPageWidget =
+            //     isUserLogin ? const HomePage() : const Login();
 
             return MultiProvider(
               providers: [
                 ChangeNotifierProvider(create: (context) => CartProvider()),
-                // ChangeNotifierProvider( create: (context) => DashboardController()),
               ],
               child: MaterialApp(
                 debugShowCheckedModeBanner: false,
                 home: Scaffold(
                   body: Container(
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/imageedit.jpg'),
-                        fit: BoxFit.cover,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/imageedit.jpg'),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                    child: myPageWidget,
-                  ),
+                      child: isUserLogin ? const HomePage() : const Login()
+                      // child: ConnectivityCheck(child: myPageWidget),
+                      ),
                 ),
                 theme: ThemeData(
                   primarySwatch: Colors.blue,

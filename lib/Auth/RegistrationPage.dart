@@ -128,160 +128,165 @@ class RegistrationState extends State<RegistrationPage> {
           // Glassy login card
           Expanded(
             child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(20.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(20.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.white.withOpacity(0.2),
-                        blurRadius: 10,
-                        offset: const Offset(0, 5),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Center(
-                        child: Container(
-                          margin: const EdgeInsets.only(top: 20.0),
-                          child: const AutoSizeText(
-                            'Registration Page',
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.4),
+                      borderRadius: BorderRadius.circular(20.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.white.withOpacity(0.2),
+                          blurRadius: 10,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Center(
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 20.0),
+                            child: const AutoSizeText(
+                              'Registration Page',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 20.0),
-                      TextField(
-                        style: const TextStyle(color: Colors.black),
-                        decoration: const InputDecoration(
-                          hintText: 'Name',
-                          hintStyle: TextStyle(color: Colors.black),
-                          icon: Icon(Icons.person, color: Colors.black),
+                        const SizedBox(height: 20.0),
+                        TextField(
+                          style: const TextStyle(color: Colors.black),
+                          decoration: const InputDecoration(
+                            hintText: 'Name',
+                            hintStyle: TextStyle(color: Colors.black),
+                            icon: Icon(Icons.person, color: Colors.black),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _name = value;
+                            });
+                          },
                         ),
-                        onChanged: (value) {
-                          setState(() {
-                            _name = value;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 20.0),
-                      TextField(
-                        style: const TextStyle(color: Colors.black),
-                        decoration: const InputDecoration(
-                          hintText: 'Email',
-                          hintStyle: TextStyle(color: Colors.black),
-                          icon: Icon(Icons.email, color: Colors.black),
+                        const SizedBox(height: 20.0),
+                        TextField(
+                          style: const TextStyle(color: Colors.black),
+                          decoration: const InputDecoration(
+                            hintText: 'Email',
+                            hintStyle: TextStyle(color: Colors.black),
+                            icon: Icon(Icons.email, color: Colors.black),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _email = value;
+                            });
+                          },
                         ),
-                        onChanged: (value) {
-                          setState(() {
-                            _email = value;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 20.0),
-                      TextField(
-                        style: const TextStyle(color: Colors.black),
-                        decoration: const InputDecoration(
-                          hintText: 'Phone Number',
-                          hintStyle: TextStyle(color: Colors.black),
-                          icon: Icon(Icons.phone, color: Colors.black),
+                        const SizedBox(height: 20.0),
+                        TextField(
+                          style: const TextStyle(color: Colors.black),
+                          decoration: const InputDecoration(
+                            hintText: 'Phone Number',
+                            hintStyle: TextStyle(color: Colors.black),
+                            icon: Icon(Icons.phone, color: Colors.black),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _phone = value;
+                            });
+                          },
                         ),
-                        onChanged: (value) {
-                          setState(() {
-                            _phone = value;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 20.0),
-                      TextField(
-                        style: const TextStyle(color: Colors.black),
-                        decoration: const InputDecoration(
-                          hintText: 'Password',
-                          hintStyle: TextStyle(color: Colors.black),
-                          icon: Icon(Icons.lock, color: Colors.black),
+                        const SizedBox(height: 20.0),
+                        TextField(
+                          style: const TextStyle(color: Colors.black),
+                          decoration: const InputDecoration(
+                            hintText: 'Password',
+                            hintStyle: TextStyle(color: Colors.black),
+                            icon: Icon(Icons.lock, color: Colors.black),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _password = value;
+                            });
+                          },
+                          obscureText: true,
                         ),
-                        onChanged: (value) {
-                          setState(() {
-                            _password = value;
-                          });
-                        },
-                        obscureText: true,
-                      ),
-                      const SizedBox(height: 20.0),
-                      TextField(
-                        style: const TextStyle(color: Colors.black),
-                        decoration: const InputDecoration(
-                          hintText: 'Confirm Password',
-                          hintStyle: TextStyle(color: Colors.black),
-                          icon: Icon(Icons.lock, color: Colors.black),
+                        const SizedBox(height: 20.0),
+                        TextField(
+                          style: const TextStyle(color: Colors.black),
+                          decoration: const InputDecoration(
+                            hintText: 'Confirm Password',
+                            hintStyle: TextStyle(color: Colors.black),
+                            icon: Icon(Icons.lock, color: Colors.black),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _confirmPassword = value;
+                            });
+                          },
+                          obscureText: true,
                         ),
-                        onChanged: (value) {
-                          setState(() {
-                            _confirmPassword = value;
-                          });
-                        },
-                        obscureText: true,
-                      ),
-                      const SizedBox(height: 20.0),
-                      Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            const Padding(padding: EdgeInsets.only(top: 10.0)),
-                            _isLoading // Check the _isLoading flag
-                                ? const CircularProgressIndicator()
-                                : ElevatedButton(
-                                    onPressed: registerUser,
-                                    style: ElevatedButton.styleFrom(
+                        const SizedBox(height: 20.0),
+                        Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const Padding(
+                                  padding: EdgeInsets.only(top: 10.0)),
+                              _isLoading // Check the _isLoading flag
+                                  ? const CircularProgressIndicator()
+                                  : ElevatedButton(
+                                      onPressed: registerUser,
+                                      style: ElevatedButton.styleFrom(
                                         elevation: 9.0,
                                         backgroundColor: Colors.green,
-                                        fixedSize: const Size(300, 50),
+                                        fixedSize: const Size(200, 40),
                                         shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(75))),
-                                    child: const Text(
-                                      'Registration',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 13,
-                                          color: Colors.white),
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        'Registration',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 13,
+                                            color: Colors.white),
+                                      ),
                                     ),
-                                  ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 20.0),
-                      Container(
-                          padding: const EdgeInsets.all(20),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Login()),
-                              );
-                            },
-                            child: const Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Text(
-                                "Already Member ? Login..",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
+                        const SizedBox(height: 20.0),
+                        Container(
+                            padding: const EdgeInsets.all(20),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const Login()),
+                                );
+                              },
+                              child: const Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Text(
+                                  "Already Member ? Login..",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
-                            ),
-                          ))
-                    ],
+                            ))
+                      ],
+                    ),
                   ),
                 ),
               ),

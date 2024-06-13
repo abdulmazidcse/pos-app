@@ -11,10 +11,11 @@ class DashboardController {
         final resData = data['data'];
         return DashboardModel.fromJson(resData);
       } else {
+        print('Failed to fetch data: ${response.statusCode}');
         throw Exception('Failed to load data');
       }
     } catch (error) {
-      // print("Error fetching data: $error");
+      print("Error fetching data: $error");
       rethrow;
     }
   }

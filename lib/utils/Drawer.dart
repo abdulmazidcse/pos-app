@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class MyDrawer extends StatefulWidget {
-  const MyDrawer({Key? key}) : super(key: key);
+  const MyDrawer({super.key});
   @override
   MyDrawerState createState() => MyDrawerState();
 }

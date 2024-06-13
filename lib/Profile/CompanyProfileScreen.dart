@@ -16,12 +16,13 @@ class CompanyProfileScreen extends StatefulWidget {
 
 class CompanyProfileScreenState extends State<CompanyProfileScreen> {
   late Future<Company> _companyFuture;
-
   int companyId = 0;
 
   @override
   void initState() {
     super.initState();
+    // Initialize with a placeholder future
+    _companyFuture = Future.error('Company data not loaded');
     userData();
   }
 
@@ -31,9 +32,9 @@ class CompanyProfileScreenState extends State<CompanyProfileScreen> {
     if (decodeInfo != null) {
       setState(() {
         companyId = decodeInfo['company_id'];
+        _companyFuture = OutletController().fetchCompany(companyId);
       });
     }
-    _companyFuture = OutletController().fetchCompany(companyId);
   }
 
   @override
@@ -54,7 +55,7 @@ class CompanyProfileScreenState extends State<CompanyProfileScreen> {
               } else if (snapshot.hasError) {
                 return Center(child: Text('Error: ${snapshot.error}'));
               } else if (!snapshot.hasData) {
-                return const Center(child: Text('No outlet found.'));
+                return const Center(child: Text('No company found.'));
               } else {
                 final data = snapshot.data!;
                 return Card(
@@ -105,64 +106,55 @@ class CompanyProfileScreenState extends State<CompanyProfileScreen> {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        ...[
-                          const SizedBox(height: 16),
-                          // const Text(
-                          //   'Company Information',
-                          //   style: TextStyle(
-                          //     fontSize: 18,
-                          //     fontWeight: FontWeight.bold,
-                          //   ),
-                          // ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    data.name,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  data.name,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  Text(
-                                    data.contactPersonName,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.grey,
-                                    ),
+                                ),
+                                Text(
+                                  data.contactPersonName,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey,
                                   ),
-                                ],
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () async {
-                                  final updatedOutlet = await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          EditCompanyScreen(company: data),
-                                    ),
-                                  );
-                                  if (updatedOutlet != null) {
-                                    setState(() {
-                                      _companyFuture =
-                                          Future.value(updatedOutlet);
-                                    });
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                          _buildInfoRow('Company Name', data.name),
-                          _buildInfoRow('Company Address', data.address),
-                          _buildInfoRow(
-                              'Company Contact', data.contactPersonName),
-                          _buildInfoRow(
-                              'Contact Number', data.contactPersonNumber),
-                        ],
+                                ),
+                              ],
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () async {
+                                final updatedCompany = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditCompanyScreen(company: data),
+                                  ),
+                                );
+                                if (updatedCompany != null) {
+                                  setState(() {
+                                    _companyFuture =
+                                        Future.value(updatedCompany);
+                                  });
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                        _buildInfoRow('Company Name', data.name),
+                        _buildInfoRow('Company Address', data.address),
+                        _buildInfoRow(
+                            'Company Contact', data.contactPersonName),
+                        _buildInfoRow(
+                            'Contact Number', data.contactPersonNumber),
                       ],
                     ),
                   ),

@@ -133,128 +133,130 @@ class ProductPageState extends State<ProductPage> {
 
           // Glassy login card
           Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20.0),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.4),
-                  borderRadius: BorderRadius.circular(20.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.white.withOpacity(0.2),
-                      blurRadius: 10,
-                      offset: const Offset(0, 5),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Center(
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 20.0),
-                        child: const AutoSizeText(
-                          'Create Product',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(20.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white.withOpacity(0.2),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Center(
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 20.0),
+                          child: const AutoSizeText(
+                            'Create Product',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    ElevatedButton(
-                        onPressed: () => scanBarcodeNormal(),
-                        child: const Text('Start barcode scan')),
-                    const SizedBox(height: 20.0),
-                    TextField(
-                      style: const TextStyle(color: Colors.black),
-                      decoration: const InputDecoration(
-                        hintText: 'Product Name',
-                        hintStyle: TextStyle(color: Colors.black),
-                        icon: Icon(Icons.email, color: Colors.black),
+                      ElevatedButton(
+                          onPressed: () => scanBarcodeNormal(),
+                          child: const Text('Start barcode scan')),
+                      const SizedBox(height: 20.0),
+                      TextField(
+                        style: const TextStyle(color: Colors.black),
+                        decoration: const InputDecoration(
+                          hintText: 'Product Name',
+                          hintStyle: TextStyle(color: Colors.black),
+                          icon: Icon(Icons.email, color: Colors.black),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            productName = value;
+                          });
+                        },
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          productName = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 20.0),
-                    TextField(
-                      controller: productCodeController,
-                      style: const TextStyle(color: Colors.black),
-                      decoration: const InputDecoration(
-                        hintText: 'Product Code',
-                        hintStyle: TextStyle(color: Colors.black),
-                        icon: Icon(Icons.barcode_reader, color: Colors.black),
+                      const SizedBox(height: 20.0),
+                      TextField(
+                        controller: productCodeController,
+                        style: const TextStyle(color: Colors.black),
+                        decoration: const InputDecoration(
+                          hintText: 'Product Code',
+                          hintStyle: TextStyle(color: Colors.black),
+                          icon: Icon(Icons.barcode_reader, color: Colors.black),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            productCode = value;
+                          });
+                        },
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          productCode = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 20.0),
-                    TextField(
-                      style: const TextStyle(color: Colors.black),
-                      decoration: const InputDecoration(
-                        hintText: 'Cost Price',
-                        hintStyle: TextStyle(color: Colors.black),
-                        icon: Icon(Icons.price_check, color: Colors.black),
+                      const SizedBox(height: 20.0),
+                      TextField(
+                        style: const TextStyle(color: Colors.black),
+                        decoration: const InputDecoration(
+                          hintText: 'Cost Price',
+                          hintStyle: TextStyle(color: Colors.black),
+                          icon: Icon(Icons.price_check, color: Colors.black),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            costPrice = double.parse(value);
+                          });
+                        },
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          costPrice = double.parse(value);
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 20.0),
-                    TextField(
-                      style: const TextStyle(color: Colors.black),
-                      decoration: const InputDecoration(
-                        hintText: 'Sale Price',
-                        hintStyle: TextStyle(color: Colors.black),
-                        icon: Icon(Icons.price_check, color: Colors.black),
+                      const SizedBox(height: 20.0),
+                      TextField(
+                        style: const TextStyle(color: Colors.black),
+                        decoration: const InputDecoration(
+                          hintText: 'Sale Price',
+                          hintStyle: TextStyle(color: Colors.black),
+                          icon: Icon(Icons.price_check, color: Colors.black),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            mrpPrice = double.parse(value);
+                          });
+                        },
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          mrpPrice = double.parse(value);
-                        });
-                      },
-                    ),
-                    const SizedBox(height: 20.0),
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          const Padding(padding: EdgeInsets.only(top: 10.0)),
-                          _isLoading
-                              ? const CircularProgressIndicator()
-                              : ElevatedButton(
-                                  onPressed: createProduct,
-                                  style: ElevatedButton.styleFrom(
-                                      elevation: 9.0,
-                                      backgroundColor: Colors.green,
-                                      fixedSize: const Size(300, 50),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(75))),
-                                  child: const Text(
-                                    'Save',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 13,
-                                        color: Colors.white),
+                      const SizedBox(height: 20.0),
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            const Padding(padding: EdgeInsets.only(top: 10.0)),
+                            _isLoading
+                                ? const CircularProgressIndicator()
+                                : ElevatedButton(
+                                    onPressed: createProduct,
+                                    style: ElevatedButton.styleFrom(
+                                        elevation: 9.0,
+                                        backgroundColor: Colors.green,
+                                        fixedSize: const Size(200, 40),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15))),
+                                    child: const Text(
+                                      'Save',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                          color: Colors.white),
+                                    ),
                                   ),
-                                ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 20.0),
-                  ],
+                      const SizedBox(height: 20.0),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -498,6 +498,11 @@ class PosPageState extends State<PosPage> {
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.5), // Transparent white
               borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(
+                color:
+                    Colors.green.withOpacity(0.8), // Border color with opacity
+                width: 1.0, // Border width
+              ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -514,8 +519,9 @@ class PosPageState extends State<PosPage> {
                           itemAsString: (Customer c) => c.name,
                           dropdownDecoratorProps: const DropDownDecoratorProps(
                             dropdownSearchDecoration: InputDecoration(
+                              border: InputBorder.none,
                               hintStyle: TextStyle(color: Colors.white),
-                              labelStyle: TextStyle(color: Colors.blue),
+                              labelStyle: TextStyle(color: Colors.black),
                               labelText: "Customer",
                               hintText: "Select a customer",
                             ),
@@ -553,6 +559,10 @@ class PosPageState extends State<PosPage> {
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.5), // Transparent white
         borderRadius: BorderRadius.circular(10.0),
+        border: Border.all(
+          color: Colors.green.withOpacity(0.8), // Border color with opacity
+          width: 1.0, // Border width
+        ),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
@@ -571,6 +581,7 @@ class PosPageState extends State<PosPage> {
               ),
               filled: true,
               fillColor: Colors.transparent,
+              border: InputBorder.none, // Remove bottom border
             ),
           ),
         ),
@@ -741,6 +752,12 @@ class PosPageState extends State<PosPage> {
                   onPressed: () {
                     _handleSubmitOrder(context);
                   },
+                  style: ElevatedButton.styleFrom(
+                      elevation: 9.0,
+                      backgroundColor: Colors.green.withOpacity(0.5),
+                      fixedSize: const Size(138, 40),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15))),
                   child: const Text('Submit Order',
                       style: TextStyle(color: Color.fromARGB(255, 3, 104, 55))),
                 ),
