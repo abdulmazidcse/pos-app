@@ -1,5 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:pos/utils/Api.dart';
+import 'package:pos/utils/Helper.dart';
+import 'dart:convert';
 import 'Login.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -17,9 +20,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
   late TextEditingController _passwordController;
   late TextEditingController _confirmPasswordController;
 
+  dynamic last8Digits = '';
+  bool checkInternet = false;
+
+  Helper helper = Helper(); // Helper instance
+
   @override
   void initState() {
     super.initState();
+    checkInternetConnection();
     _nameController = TextEditingController();
     _emailController = TextEditingController();
     _phoneController = TextEditingController();
@@ -37,17 +46,105 @@ class _RegistrationPageState extends State<RegistrationPage> {
     super.dispose();
   }
 
-  void registerUser() async {
-    setState(() {
-      _isLoading = true;
-    });
+  checkInternetConnection() async {
+    var interNet = await helper.checkConnectivity();
+    if (interNet) {
+      setState(() {
+        checkInternet = true;
+      });
+    } else {
+      setState(() {
+        checkInternet = false;
+      });
+    }
+  }
 
-    // Your registration logic here
-    // Make API call, process response, etc.
-
+  registerUser() async {
     setState(() {
-      _isLoading = false;
+      _isLoading = true; // Show loading indicator
     });
+    if ((_phoneController.text != '') && (_phoneController.text.isNotEmpty)) {
+      last8Digits =
+          _phoneController.text.substring(_phoneController.text.length - 8);
+    }
+
+    var user = {
+      'name': _nameController.text,
+      'user_code': last8Digits, // Set userCode if generated on server
+      'phone': _phoneController.text, // Include if required by your API
+      'email': _emailController.text,
+      'password': _passwordController.text,
+      'password_confirmation': _confirmPasswordController.text,
+    };
+
+    try {
+      checkInternetConnection();
+      if (!checkInternet) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No Internet Connection')),
+        );
+      } else {
+        var response = await Api().postData(user, 'auth/register');
+
+        if (response.statusCode == 200) {
+          final responseData = jsonDecode(response.body);
+          helper.successToast(responseData['message']);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(responseData['message'])),
+          );
+          setState(() {
+            _isLoading = false;
+          });
+          navigateToLogin();
+        } else if (response.statusCode == 422) {
+          final responseData = json.decode(response.body);
+          List<String> errors = [];
+
+          if (responseData.containsKey('name') && responseData['name'] != '') {
+            errors.add(responseData['name'][0]);
+          }
+
+          if (responseData.containsKey('email') &&
+              responseData['email'] != '') {
+            errors.add(responseData['email'][0]);
+          }
+
+          if (responseData.containsKey('phone') &&
+              responseData['phone'] != '') {
+            errors.add(responseData['phone'][0]);
+          }
+
+          if (responseData.containsKey('password') &&
+              responseData['password'] != '') {
+            errors.add(responseData['password'][0]);
+          }
+
+          if (errors.isNotEmpty) {
+            String allErrors =
+                errors.join('\n'); // Combine errors with line breaks
+            helper.validationToast(true, allErrors);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(allErrors)),
+            );
+          }
+          setState(() {
+            _isLoading = false;
+          });
+        } else {}
+      }
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void navigateToLogin() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => const Login()), // Navigate to login page
+    );
   }
 
   @override

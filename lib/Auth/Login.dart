@@ -19,15 +19,30 @@ class LoginState extends State<Login> {
   bool _isLoading = false;
   String username = '';
   String password = '';
+  bool checkInternet = false;
 
   Helper helper = Helper(); // Create an instance of the Helper class
 
   @override
-  void initState() {
+  initState() {
     super.initState();
+    checkInternetConnection();
   }
 
-  void storeUserDataAndToken(Map<String, dynamic> body) async {
+  checkInternetConnection() async {
+    var interNet = await helper.checkConnectivity();
+    if (interNet) {
+      setState(() {
+        checkInternet = true;
+      });
+    } else {
+      setState(() {
+        checkInternet = false;
+      });
+    }
+  }
+
+  storeUserDataAndToken(Map<String, dynamic> body) async {
     var user = body['data']['user'];
     var token = body['data']['access_token'];
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -65,33 +80,33 @@ class LoginState extends State<Login> {
   }
 
   handleLoginButtonPress() async {
-    bool isLoggedIn = false;
-    if ((username == '') || (password == '')) {
-      helper.validationToast(true, 'Username & Password required field');
-    } else {
-      var data = {'email': username, 'password': password};
-      await fetchData(data);
-      isLoggedIn = await checkAuth();
-    }
-
-    if (isLoggedIn) {
-      helper.successToast('Login Success');
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
+    checkInternetConnection();
+    if (!checkInternet) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No Internet Connection')),
       );
+    } else {
+      bool isLoggedIn = false;
+      if ((username == '') || (password == '')) {
+        helper.validationToast(true, 'Username & Password required field');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Username & Password required field')),
+        );
+      } else {
+        var data = {'email': username, 'password': password};
+        await fetchData(data);
+        isLoggedIn = await checkAuth();
+      }
+
+      if (isLoggedIn) {
+        helper.successToast('Login Success');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
     }
   }
-
-  // _handleLoginButtonPress() async {
-  //   setState(() {
-  //     _isLoading = true; // Set loading indicator while processing
-  //   });
-  //   await userLogin(); // Perform asynchronous login operation
-  //   setState(() {
-  //     _isLoading = false; // Hide loading indicator after completion
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {

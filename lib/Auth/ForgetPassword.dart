@@ -16,12 +16,27 @@ class ForgetPassword extends StatefulWidget {
 class ForgetPasswordState extends State<ForgetPassword> {
   bool _isLoading = false;
   String email = '';
+  bool checkInternet = false;
 
   Helper helper = Helper(); // Create an instance of the Helper class
 
   @override
   void initState() {
     super.initState();
+    checkInternetConnection();
+  }
+
+  checkInternetConnection() async {
+    var interNet = await helper.checkConnectivity();
+    if (interNet) {
+      setState(() {
+        checkInternet = true;
+      });
+    } else {
+      setState(() {
+        checkInternet = false;
+      });
+    }
   }
 
   void storeUserDataAndToken(Map<String, dynamic> body) async {
@@ -34,31 +49,41 @@ class ForgetPasswordState extends State<ForgetPassword> {
     setState(() {
       _isLoading = true; // Show loading indicator
     });
-    var res = await Api().postData(data, 'auth/send-otp');
-    // var body = json.decode(res.body);
-    setState(() {
-      _isLoading = false; // Hide loading indicator
-    });
-    if (res.statusCode == 200) {
-      dynamic body = data;
-      storeUserDataAndToken(body);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const SetNewPassword()),
-      );
-    } else {
-      // helper.validationToast(true, 'Given data is invalid');
+    checkInternetConnection();
+    if (!checkInternet) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Given data is invalid')),
+        const SnackBar(content: Text('No Internet Connection')),
       );
+      setState(() {
+        _isLoading = false; // Hide loading indicator
+      });
+    } else {
+      var res = await Api().postData(data, 'auth/send-otp');
+      // var body = json.decode(res.body);
+      setState(() {
+        _isLoading = false; // Hide loading indicator
+      });
+      if (res.statusCode == 200) {
+        dynamic body = data;
+        storeUserDataAndToken(body);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const SetNewPassword()),
+        );
+      } else {
+        // helper.validationToast(true, 'Given data is invalid');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Given data is invalid')),
+        );
+      }
     }
   }
 
   void _handleSubmit(context) async {
     if (email == '') {
-      helper.validationToast(true, 'required is field');
+      helper.validationToast(true, 'Field is required');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Email & Password required field')),
+        const SnackBar(content: Text('Field is required')),
       );
     } else {
       var data = {'email': email};

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class Helper {
   dialogBox(context, title, msg) {
@@ -51,6 +52,20 @@ class Helper {
         textColor: Colors.black,
         fontSize: 16.0);
   }
+
+  Future<bool> checkConnectivity() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    return connectivityResult[0] != ConnectivityResult.none;
+  }
+
+  // checkConnectivity() async {
+  //   dynamic connectivityResult = await Connectivity().checkConnectivity();
+  //   if (connectivityResult[0] == ConnectivityResult.none) {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
 
   Widget btn(bool isLoading, VoidCallback createProduct) {
     return Container(

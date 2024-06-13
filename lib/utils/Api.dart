@@ -7,8 +7,8 @@ import 'package:pos/Sales/SaleModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Api {
-  // static const String url = 'http://localhost:8000/api/';
-  static const String url = 'https://backend.quickpossolution.com/api/';
+  static const String url = 'http://localhost:8000/api/';
+  // static const String url = 'https://backend.quickpossolution.com/api/';
   // static const String url = 'http://172.30.38.145:8000/api/'; // Office Net
   // static const String url = 'http://192.168.43.18:8000/api/'; // Mobile Net
   // static const String url = 'http://192.168.0.101:8000/api/'; // My Router
