@@ -382,73 +382,122 @@ class PosPageState extends State<PosPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Add New Customer'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                style: const TextStyle(color: Colors.black),
-                decoration: const InputDecoration(
-                  hintText: 'Customer Name',
-                  hintStyle: TextStyle(color: Colors.black),
-                  icon: Icon(Icons.person, color: Colors.black),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    customerName = value;
-                  });
-                },
+          title: Center(child: const Text('New Customer')),
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.90,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    style: const TextStyle(color: Colors.black),
+                    decoration: const InputDecoration(
+                      hintText: 'Customer Name',
+                      hintStyle: TextStyle(color: Colors.black),
+                      icon: Icon(Icons.person, color: Colors.black),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 10.0), // Adjust padding
+                      border: OutlineInputBorder(
+                        // Use OutlineInputBorder for border
+                        borderSide: BorderSide(
+                            color: Colors.green,
+                            width: 1.0), // Optional: Add border radius
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        customerName = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 10.0),
+                  TextField(
+                    style: const TextStyle(color: Colors.black),
+                    decoration: const InputDecoration(
+                      hintText: 'Customer Code',
+                      hintStyle: TextStyle(color: Colors.black),
+                      icon: Icon(Icons.qr_code, color: Colors.black),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 10.0), // Adjust padding
+                      border: OutlineInputBorder(
+                        // Use OutlineInputBorder for border
+                        borderSide: BorderSide(
+                            color: Colors.green,
+                            width: 1.0), // Optional: Add border radius
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        customerCode = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 10.0),
+                  TextField(
+                    style: const TextStyle(color: Colors.black),
+                    decoration: const InputDecoration(
+                      hintText: 'Phone Number',
+                      hintStyle: TextStyle(color: Colors.black),
+                      icon: Icon(Icons.phone, color: Colors.black),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 10.0), // Adjust padding
+                      border: OutlineInputBorder(
+                        // Use OutlineInputBorder for border
+                        borderSide: BorderSide(
+                            color: Colors.green,
+                            width: 1.0), // Optional: Add border radius
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        phoneNumber = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 10.0),
+                  TextField(
+                    style: const TextStyle(color: Colors.black),
+                    decoration: const InputDecoration(
+                      hintText: 'Address',
+                      hintStyle: TextStyle(color: Colors.black),
+                      icon: Icon(Icons.home, color: Colors.black),
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 10.0), // Adjust padding
+                      border: OutlineInputBorder(
+                        // Use OutlineInputBorder for border
+                        borderSide: BorderSide(
+                            color: Colors.green,
+                            width: 1.0), // Optional: Add border radius
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        address = value;
+                      });
+                    },
+                  ),
+                ],
               ),
-              const SizedBox(height: 20.0),
-              TextField(
-                style: const TextStyle(color: Colors.black),
-                decoration: const InputDecoration(
-                  hintText: 'Customer Code',
-                  hintStyle: TextStyle(color: Colors.black),
-                  icon: Icon(Icons.qr_code, color: Colors.black),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    customerCode = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 20.0),
-              TextField(
-                style: const TextStyle(color: Colors.black),
-                decoration: const InputDecoration(
-                  hintText: 'Phone Number',
-                  hintStyle: TextStyle(color: Colors.black),
-                  icon: Icon(Icons.phone, color: Colors.black),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    phoneNumber = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 20.0),
-              TextField(
-                style: const TextStyle(color: Colors.black),
-                decoration: const InputDecoration(
-                  hintText: 'Address',
-                  hintStyle: TextStyle(color: Colors.black),
-                  icon: Icon(Icons.home, color: Colors.black),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    address = value;
-                  });
-                },
-              ),
-            ],
+            ),
           ),
           actions: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton(
-                  child: const Text('Cancel'),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      elevation: 9.0,
+                      backgroundColor: Colors.redAccent.withOpacity(0.8),
+                      fixedSize: const Size(100, 30),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15))),
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                        color: Colors.white),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -458,10 +507,10 @@ class PosPageState extends State<PosPage> {
                     : ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             elevation: 9.0,
-                            backgroundColor: Colors.green,
+                            backgroundColor: Colors.green.withOpacity(0.8),
                             fixedSize: const Size(100, 30),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(75))),
+                                borderRadius: BorderRadius.circular(15))),
                         child: const Text(
                           'Save',
                           style: TextStyle(
@@ -739,10 +788,20 @@ class PosPageState extends State<PosPage> {
         children: [
           Consumer<CartProvider>(
             builder: (context, cartProvider, child) {
-              return Text(
-                'Net Amount: ${cartProvider.netAmount.toString()}',
-                style: const TextStyle(
-                    fontSize: 14, color: Color.fromARGB(255, 3, 104, 55)),
+              return Container(
+                decoration: BoxDecoration(
+                  // color: Colors.green, // Background color
+                  borderRadius:
+                      BorderRadius.circular(10), // Optional: Add border radius
+                ),
+                padding: EdgeInsets.all(10), // Optional: Add padding
+                child: Text(
+                  'Net Amount: ${cartProvider.netAmount.toString()}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Color.fromARGB(255, 3, 104, 55),
+                  ),
+                ),
               );
             },
           ),
@@ -753,13 +812,17 @@ class PosPageState extends State<PosPage> {
                     _handleSubmitOrder(context);
                   },
                   style: ElevatedButton.styleFrom(
-                      elevation: 9.0,
-                      backgroundColor: Colors.green.withOpacity(0.5),
-                      fixedSize: const Size(138, 40),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15))),
-                  child: const Text('Submit Order',
-                      style: TextStyle(color: Color.fromARGB(255, 3, 104, 55))),
+                    elevation: 9.0,
+                    backgroundColor: Colors.green.withOpacity(0.8),
+                    fixedSize: const Size(138, 40),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Text(
+                    'Submit Order',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
         ],
       ),

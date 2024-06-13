@@ -1,67 +1,90 @@
 import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:pos/Auth/SetNewPassword.dart';
+import 'package:pos/HomePage/HomePage.dart';
 import 'package:pos/Auth/Login.dart';
 import 'package:pos/utils/Api.dart';
 import 'package:pos/utils/Helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ForgetPassword extends StatefulWidget {
-  const ForgetPassword({super.key});
+class SetNewPassword extends StatefulWidget {
+  const SetNewPassword({super.key});
   @override
-  ForgetPasswordState createState() => ForgetPasswordState();
+  SetNewPasswordState createState() => SetNewPasswordState();
 }
 
-class ForgetPasswordState extends State<ForgetPassword> {
+class SetNewPasswordState extends State<SetNewPassword> {
   bool _isLoading = false;
-  String email = '';
+  dynamic email = '';
+  String otp = '';
+  String password = '';
+  String passwordConfirmation = '';
 
   Helper helper = Helper(); // Create an instance of the Helper class
-
   @override
   void initState() {
     super.initState();
+    localStorageData();
   }
 
-  void storeUserDataAndToken(Map<String, dynamic> body) async {
-    var user = body['email'];
+  void localStorageData() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
-    localStorage.setString('forget_password_user', user);
+    dynamic userEmail =
+        localStorage.getString('forget_password_user').toString();
+    if (userEmail != null) {
+      setState(() {
+        email = userEmail;
+      });
+    }
   }
 
   fetchData(context, data) async {
     setState(() {
       _isLoading = true; // Show loading indicator
     });
-    var res = await Api().postData(data, 'auth/send-otp');
-    // var body = json.decode(res.body);
+    var res = await Api().postData(data, 'auth/reset-password');
+    var body = json.decode(res.body);
     setState(() {
       _isLoading = false; // Hide loading indicator
     });
     if (res.statusCode == 200) {
-      dynamic body = data;
-      storeUserDataAndToken(body);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(body['message'])),
+      );
+      helper.successToast(body['message']);
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const SetNewPassword()),
+        MaterialPageRoute(builder: (context) => const Login()),
       );
     } else {
-      // helper.validationToast(true, 'Given data is invalid');
+      helper.validationToast(true, body['message']);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Given data is invalid')),
+        SnackBar(content: Text(body['message'])),
       );
     }
   }
 
-  void _handleSubmit(context) async {
-    if (email == '') {
-      helper.validationToast(true, 'required is field');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Email & Password required field')),
-      );
+  checkAuth() async {
+    var isLoggedIn = '';
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    isLoggedIn = localStorage.getString('token').toString();
+    if ((isLoggedIn == 'null') || (isLoggedIn.isEmpty)) {
+      return false; // User is logged in
     } else {
-      var data = {'email': email};
+      return true; // User is not logged in
+    }
+  }
+
+  void _handleSubmit(context) async {
+    if ((otp == '') || (passwordConfirmation == '') || (password == '')) {
+      helper.validationToast(true, 'Username & Password required field');
+    } else {
+      var data = {
+        'email': email,
+        'otp': otp,
+        'password_confirmation': passwordConfirmation,
+        'password': password
+      };
       await fetchData(context, data);
     }
   }
@@ -107,7 +130,7 @@ class ForgetPasswordState extends State<ForgetPassword> {
                         child: Container(
                           margin: const EdgeInsets.only(top: 20.0),
                           child: const AutoSizeText(
-                            'Forget Password Page',
+                            'Reset Your Password',
                             style: TextStyle(
                               fontSize: 20.0,
                               color: Colors.black,
@@ -118,15 +141,41 @@ class ForgetPasswordState extends State<ForgetPassword> {
                       ),
                       const SizedBox(height: 20.0),
                       TextField(
+                          style: const TextStyle(color: Colors.black),
+                          decoration: const InputDecoration(
+                            hintText: 'OTP',
+                            hintStyle: TextStyle(color: Colors.black),
+                            icon: Icon(Icons.lock, color: Colors.black),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              otp = value;
+                            });
+                          }),
+                      const SizedBox(height: 20.0),
+                      TextField(
+                          style: const TextStyle(color: Colors.black),
+                          decoration: const InputDecoration(
+                            hintText: 'New Password',
+                            hintStyle: TextStyle(color: Colors.black),
+                            icon: Icon(Icons.lock, color: Colors.black),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              password = value;
+                            });
+                          }),
+                      const SizedBox(height: 20.0),
+                      TextField(
                         style: const TextStyle(color: Colors.black),
                         decoration: const InputDecoration(
-                          hintText: 'Email',
+                          hintText: 'Confirm Password',
                           hintStyle: TextStyle(color: Colors.black),
-                          icon: Icon(Icons.email, color: Colors.black),
+                          icon: Icon(Icons.lock, color: Colors.black),
                         ),
                         onChanged: (value) {
                           setState(() {
-                            email = value;
+                            passwordConfirmation = value;
                           });
                         },
                       ),
