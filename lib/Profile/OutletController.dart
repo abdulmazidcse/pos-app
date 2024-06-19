@@ -47,7 +47,7 @@ class OutletController {
 
   Future<Company> fetchCompany(companyId) async {
     String url = 'companies/$companyId';
-    // print(url);
+    print(url);
     final response = await Api().getData(url);
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);

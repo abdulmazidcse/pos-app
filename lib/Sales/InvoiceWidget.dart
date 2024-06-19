@@ -10,6 +10,181 @@ class InvoiceWidget extends StatelessWidget {
 
   InvoiceWidget({required this.saleData});
 
+  invoiceTableHeader() {
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: Colors.black, // Border color
+            width: 1.0, // Border width
+          ),
+        ),
+        color: Colors.white,
+      ),
+      child: const Padding(
+        padding: EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              flex: 25, // 20%
+              child: Text(
+                'Item Name',
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 10, // 10%
+              child: Text(
+                'Qty',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 15, // 10%
+              child: Text(
+                'MRP',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 15, // 10%
+              child: Text(
+                'Dis',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 15, // 10%
+              child: Text(
+                'Value',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 20,
+
+              /// 10%
+              child: Text(
+                'Total',
+                textAlign: TextAlign.end,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  invoiceBottomPart(subTotalSum, TotalAmount) {
+    final currencyFormatter = NumberFormat.currency(symbol: '\$');
+    return Container(
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Sub Total:',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                currencyFormatter
+                    .format(subTotalSum), // Display calculated subTotalSum
+                style:
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Discount:',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                currencyFormatter.format(saleData.orderDiscountValue),
+                style:
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Total Amount:',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                currencyFormatter.format(TotalAmount), // Use currency formatter
+                style:
+                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          const Row(
+            children: [
+              Text('Payment Description:'),
+            ],
+          ),
+          const SizedBox(height: 8),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Description'),
+              Text('Amount'),
+            ],
+          ),
+          const Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('cash'),
+              Text(saleData.collectionAmount.toString()),
+            ],
+          ),
+          Center(
+            child: BarcodeWidget(
+              barcode: Barcode.code128(),
+              data: saleData.invoiceNumber,
+              width: 120,
+              height: 50,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final currencyFormatter =
@@ -40,54 +215,49 @@ class InvoiceWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Center(
-                          child: Container(
-                            margin: const EdgeInsets.only(top: 15.0),
-                            child: AutoSizeText(
-                              saleData.outlet.name, // 'Retail Shop',
-                              style: const TextStyle(
-                                fontSize: 20.0,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
+              Column(
+                children: [
+                  Center(
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 15.0),
+                      child: AutoSizeText(
+                        saleData.outlet.name,
+                        style: const TextStyle(
+                          fontSize: 20.0,
+                          color: Colors.black,
                         ),
-                        const SizedBox(height: 10),
-                        Center(
-                          child: Expanded(
-                              child: Text(
-                            '${saleData.outlet.address}',
-                            style: const TextStyle(
-                              fontSize: 12,
-                            ),
-                          )),
-                        ),
-                        const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Invoice',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.black),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                  Center(
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 1.0),
+                      child: AutoSizeText(
+                        saleData.outlet.address, // 'Retail Shop',
+                        style: const TextStyle(
+                          fontSize: 12.0,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 1.0),
+                      child: const AutoSizeText(
+                        'Invoice', // 'Retail Shop',
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 6),
 
+              //
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -143,94 +313,7 @@ class InvoiceWidget extends StatelessWidget {
               ),
 
               const SizedBox(height: 6),
-
-              Container(
-                decoration: const BoxDecoration(
-                  border: Border(
-                    top: BorderSide(
-                      color: Colors.black, // Border color
-                      width: 1.0, // Border width
-                    ),
-                  ),
-                  color: Colors.white,
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        flex: 25, // 20%
-                        child: Text(
-                          'Item Name',
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 10, // 10%
-                        child: Text(
-                          'Qty',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 15, // 10%
-                        child: Text(
-                          'MRP',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 15, // 10%
-                        child: Text(
-                          'Dis',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 15, // 10%
-                        child: Text(
-                          'Value',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 20,
-
-                        /// 10%
-                        child: Text(
-                          'Total',
-                          textAlign: TextAlign.end,
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              invoiceTableHeader(),
               // Invoice Description Table Body - List of Items
               ListView.builder(
                 shrinkWrap: true, // Makes the list view non-scrollable
@@ -252,82 +335,7 @@ class InvoiceWidget extends StatelessWidget {
               const SizedBox(height: 16),
 
               // Invoice Totals - Net Total, VAT, Total Due
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Sub Total:',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    currencyFormatter
-                        .format(subTotalSum), // Display calculated subTotalSum
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Discount:',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    currencyFormatter.format(saleData.orderDiscountValue),
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Total Amount:',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    currencyFormatter
-                        .format(TotalAmount), // Use currency formatter
-                    style: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              const Row(
-                children: [
-                  Text('Payment Description:'),
-                ],
-              ),
-              const SizedBox(height: 8),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Description'),
-                  Text('Amount'),
-                ],
-              ),
-              const Divider(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('cash'),
-                  Text(saleData.collectionAmount.toString()),
-                ],
-              ),
-              Center(
-                child: BarcodeWidget(
-                  barcode: Barcode.code128(),
-                  data: saleData.invoiceNumber,
-                  width: 120,
-                  height: 50,
-                ),
-              ),
+              invoiceBottomPart(subTotalSum, TotalAmount)
             ],
           ),
         ),

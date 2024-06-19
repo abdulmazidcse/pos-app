@@ -58,6 +58,43 @@ class Helper {
     return connectivityResult[0] != ConnectivityResult.none;
   }
 
+  noItemFound() {
+    return Center(
+      child: Card(
+        margin: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(6.0),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(11.0),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    //   AssetImage('assets/images/imageedit.jpg')
+                    const SizedBox(height: 16),
+                    Image.asset(
+                      'assets/images/no-item-found.png',
+                      height: 200,
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Your item is empty',
+                      style: TextStyle(fontSize: 18, color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ]),
+        ),
+      ),
+    );
+  }
+
   // checkConnectivity() async {
   //   dynamic connectivityResult = await Connectivity().checkConnectivity();
   //   if (connectivityResult[0] == ConnectivityResult.none) {

@@ -50,6 +50,7 @@ dependencies:
   fl_chart: ^0.68.0
   flutter_charts: ^0.5.2
   connectivity_plus: ^6.0.3
+  flutter_launcher_icons: ^0.13.1
   # flutter_blue: ^0.8.0
 
 

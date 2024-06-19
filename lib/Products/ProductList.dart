@@ -154,6 +154,7 @@ class ProductListState extends State<ProductList> {
           ),
 
           // Glassy card and product list
+
           Column(
             children: [
               Expanded(
@@ -163,172 +164,364 @@ class ProductListState extends State<ProductList> {
                     onRefresh: refresh,
                     child: _isLoading && _products.isEmpty
                         ? const Center(child: CircularProgressIndicator())
-                        : ListView.builder(
-                            controller: _scrollController,
-                            itemCount: _products.length + (_hasMore ? 1 : 0),
-                            itemBuilder: (context, index) {
-                              if (index == _products.length) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-                              final product = _products[index];
-                              return Dismissible(
-                                key: Key(product.id.toString()),
-                                direction: DismissDirection.endToStart,
-                                confirmDismiss: (direction) async {
-                                  _confirmDelete(context, index);
-                                  return null;
-                                },
-                                background: Container(
-                                  alignment: Alignment.centerRight,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  color: Colors.red,
-                                  child: const Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                child: Card(
-                                  margin: const EdgeInsets.symmetric(
-                                      vertical: 4.0, horizontal: 8.0),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(6.0),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(11.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.receipt_long_outlined,
-                                                    color: Colors.green,
-                                                    size: 20,
-                                                  ),
-                                                  const SizedBox(width: 8.0),
-                                                  Text(
-                                                    'P.Name: ${product.productName}',
-                                                    style: const TextStyle(
-                                                      color: Colors.green,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 13,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            IconButton(
-                                              icon: const Icon(Icons.edit,
-                                                  color: Colors.blue),
-                                              onPressed: () async {
-                                                final updatedProduct =
-                                                    await Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        EditProductPage(
-                                                            product: product),
-                                                  ),
-                                                );
-                                                if (updatedProduct != null) {
-                                                  setState(() {
-                                                    _products[index] =
-                                                        updatedProduct;
-                                                  });
-                                                }
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 8.0),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                const Icon(Icons.attach_money,
-                                                    color: Colors.brown,
-                                                    size: 20),
-                                                const SizedBox(width: 8.0),
-                                                Text(
-                                                  'MRP Price: ${product.mrpPrice}',
-                                                  style: const TextStyle(
-                                                    color: Colors.brown,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                const Icon(Icons.money_rounded,
-                                                    color: Colors.indigo,
-                                                    size: 20),
-                                                const SizedBox(width: 8.0),
-                                                Text(
-                                                  'Cost Price: ${product.costPrice}',
-                                                  style: const TextStyle(
-                                                      fontSize: 11,
-                                                      color: Colors.indigo),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 8.0),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                const Icon(Icons.barcode_reader,
-                                                    color: Colors.blue,
-                                                    size: 20),
-                                                const SizedBox(width: 8.0),
-                                                Text(
-                                                  'P.Code: ${product.productCode}',
-                                                  style: const TextStyle(
-                                                      fontSize: 12),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                BarcodeWidget(
-                                                  barcode: Barcode.code128(),
-                                                  data: product.productCode,
-                                                  width: 120,
-                                                  height: 40,
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                        : _products.isEmpty
+                            ? helper.noItemFound()
+                            : ListView.builder(
+                                controller: _scrollController,
+                                itemCount:
+                                    _products.length + (_hasMore ? 1 : 0),
+                                itemBuilder: (context, index) {
+                                  if (index == _products.length) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                  final product = _products[index];
+                                  return Dismissible(
+                                    key: Key(product.id.toString()),
+                                    direction: DismissDirection.endToStart,
+                                    confirmDismiss: (direction) async {
+                                      _confirmDelete(context, index);
+                                      return null;
+                                    },
+                                    background: Container(
+                                      alignment: Alignment.centerRight,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      color: Colors.red,
+                                      child: const Icon(
+                                        Icons.delete,
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
+                                    child: Card(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 4.0, horizontal: 8.0),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(6.0),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(11.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Expanded(
+                                                  child: Row(
+                                                    children: [
+                                                      const Icon(
+                                                        Icons
+                                                            .receipt_long_outlined,
+                                                        color: Colors.green,
+                                                        size: 20,
+                                                      ),
+                                                      const SizedBox(
+                                                          width: 8.0),
+                                                      Text(
+                                                        'P.Name: ${product.productName}',
+                                                        style: const TextStyle(
+                                                          color: Colors.green,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 13,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                IconButton(
+                                                  icon: const Icon(Icons.edit,
+                                                      color: Colors.blue),
+                                                  onPressed: () async {
+                                                    final updatedProduct =
+                                                        await Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            EditProductPage(
+                                                                product:
+                                                                    product),
+                                                      ),
+                                                    );
+                                                    if (updatedProduct !=
+                                                        null) {
+                                                      setState(() {
+                                                        _products[index] =
+                                                            updatedProduct;
+                                                      });
+                                                    }
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 8.0),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                        Icons.attach_money,
+                                                        color: Colors.brown,
+                                                        size: 20),
+                                                    const SizedBox(width: 8.0),
+                                                    Text(
+                                                      'MRP Price: ${product.mrpPrice}',
+                                                      style: const TextStyle(
+                                                        color: Colors.brown,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 13,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                        Icons.money_rounded,
+                                                        color: Colors.indigo,
+                                                        size: 20),
+                                                    const SizedBox(width: 8.0),
+                                                    Text(
+                                                      'Cost Price: ${product.costPrice}',
+                                                      style: const TextStyle(
+                                                          fontSize: 11,
+                                                          color: Colors.indigo),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 8.0),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                        Icons.barcode_reader,
+                                                        color: Colors.blue,
+                                                        size: 20),
+                                                    const SizedBox(width: 8.0),
+                                                    Text(
+                                                      'P.Code: ${product.productCode}',
+                                                      style: const TextStyle(
+                                                          fontSize: 12),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    BarcodeWidget(
+                                                      barcode:
+                                                          Barcode.code128(),
+                                                      data: product.productCode,
+                                                      width: 120,
+                                                      height: 40,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                   ),
                 ),
               ),
             ],
           ),
+
+          // Column(
+          //   children: [
+          //     Expanded(
+          //       child: SizedBox(
+          //         width: double.infinity,
+          //         child: RefreshIndicator(
+          //           onRefresh: refresh,
+          //           child: _isLoading && _products.isEmpty
+          //               ? const Center(child: CircularProgressIndicator())
+          //               : ListView.builder(
+          //                   controller: _scrollController,
+          //                   itemCount: _products.length + (_hasMore ? 1 : 0),
+          //                   itemBuilder: (context, index) {
+          //                     if (index == _products.length) {
+          //                       return const Center(
+          //                         child: CircularProgressIndicator(),
+          //                       );
+          //                     }
+          //                     final product = _products[index];
+          //                     return Dismissible(
+          //                       key: Key(product.id.toString()),
+          //                       direction: DismissDirection.endToStart,
+          //                       confirmDismiss: (direction) async {
+          //                         _confirmDelete(context, index);
+          //                         return null;
+          //                       },
+          //                       background: Container(
+          //                         alignment: Alignment.centerRight,
+          //                         padding: const EdgeInsets.symmetric(
+          //                             horizontal: 10),
+          //                         color: Colors.red,
+          //                         child: const Icon(
+          //                           Icons.delete,
+          //                           color: Colors.white,
+          //                         ),
+          //                       ),
+          //                       child: Card(
+          //                         margin: const EdgeInsets.symmetric(
+          //                             vertical: 4.0, horizontal: 8.0),
+          //                         shape: RoundedRectangleBorder(
+          //                           borderRadius: BorderRadius.circular(6.0),
+          //                         ),
+          //                         child: Padding(
+          //                           padding: const EdgeInsets.all(11.0),
+          //                           child: Column(
+          //                             crossAxisAlignment:
+          //                                 CrossAxisAlignment.start,
+          //                             children: [
+          //                               Row(
+          //                                 mainAxisAlignment:
+          //                                     MainAxisAlignment.spaceBetween,
+          //                                 children: [
+          //                                   Expanded(
+          //                                     child: Row(
+          //                                       children: [
+          //                                         const Icon(
+          //                                           Icons.receipt_long_outlined,
+          //                                           color: Colors.green,
+          //                                           size: 20,
+          //                                         ),
+          //                                         const SizedBox(width: 8.0),
+          //                                         Text(
+          //                                           'P.Name: ${product.productName}',
+          //                                           style: const TextStyle(
+          //                                             color: Colors.green,
+          //                                             fontWeight:
+          //                                                 FontWeight.bold,
+          //                                             fontSize: 13,
+          //                                           ),
+          //                                         ),
+          //                                       ],
+          //                                     ),
+          //                                   ),
+          //                                   IconButton(
+          //                                     icon: const Icon(Icons.edit,
+          //                                         color: Colors.blue),
+          //                                     onPressed: () async {
+          //                                       final updatedProduct =
+          //                                           await Navigator.push(
+          //                                         context,
+          //                                         MaterialPageRoute(
+          //                                           builder: (context) =>
+          //                                               EditProductPage(
+          //                                                   product: product),
+          //                                         ),
+          //                                       );
+          //                                       if (updatedProduct != null) {
+          //                                         setState(() {
+          //                                           _products[index] =
+          //                                               updatedProduct;
+          //                                         });
+          //                                       }
+          //                                     },
+          //                                   ),
+          //                                 ],
+          //                               ),
+          //                               const SizedBox(height: 8.0),
+          //                               Row(
+          //                                 mainAxisAlignment:
+          //                                     MainAxisAlignment.spaceBetween,
+          //                                 children: [
+          //                                   Row(
+          //                                     children: [
+          //                                       const Icon(Icons.attach_money,
+          //                                           color: Colors.brown,
+          //                                           size: 20),
+          //                                       const SizedBox(width: 8.0),
+          //                                       Text(
+          //                                         'MRP Price: ${product.mrpPrice}',
+          //                                         style: const TextStyle(
+          //                                           color: Colors.brown,
+          //                                           fontWeight: FontWeight.bold,
+          //                                           fontSize: 13,
+          //                                         ),
+          //                                       ),
+          //                                     ],
+          //                                   ),
+          //                                   Row(
+          //                                     children: [
+          //                                       const Icon(Icons.money_rounded,
+          //                                           color: Colors.indigo,
+          //                                           size: 20),
+          //                                       const SizedBox(width: 8.0),
+          //                                       Text(
+          //                                         'Cost Price: ${product.costPrice}',
+          //                                         style: const TextStyle(
+          //                                             fontSize: 11,
+          //                                             color: Colors.indigo),
+          //                                       ),
+          //                                     ],
+          //                                   ),
+          //                                 ],
+          //                               ),
+          //                               const SizedBox(height: 8.0),
+          //                               Row(
+          //                                 mainAxisAlignment:
+          //                                     MainAxisAlignment.spaceBetween,
+          //                                 children: [
+          //                                   Row(
+          //                                     children: [
+          //                                       const Icon(Icons.barcode_reader,
+          //                                           color: Colors.blue,
+          //                                           size: 20),
+          //                                       const SizedBox(width: 8.0),
+          //                                       Text(
+          //                                         'P.Code: ${product.productCode}',
+          //                                         style: const TextStyle(
+          //                                             fontSize: 12),
+          //                                       ),
+          //                                     ],
+          //                                   ),
+          //                                   Row(
+          //                                     children: [
+          //                                       BarcodeWidget(
+          //                                         barcode: Barcode.code128(),
+          //                                         data: product.productCode,
+          //                                         width: 120,
+          //                                         height: 40,
+          //                                       ),
+          //                                     ],
+          //                                   ),
+          //                                 ],
+          //                               ),
+          //                             ],
+          //                           ),
+          //                         ),
+          //                       ),
+          //                     );
+          //                   },
+          //                 ),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     );
