@@ -28,19 +28,20 @@ void navigateToInvoiceScreen(BuildContext context, InvoiceModel saleData) {
                 },
               ),
             ),
-            Positioned(
-              top: 10.0,
-              left: 10.0,
-              child: IconButton(
-                icon: const Icon(
-                  Icons.print,
-                  color: Colors.blue,
-                ),
-                onPressed: () {
-                  // Add your print functionality here
-                },
-              ),
-            ),
+            // Positioned(
+            //   top: 10.0,
+            //   left: 10.0,
+            //   child: IconButton(
+            //     icon: const Icon(
+            //       Icons.print,
+            //       color: Colors.blue,
+            //     ),
+            //     onPressed: () {
+            //       // Add your print functionality here
+            //     },
+            //   ),
+            // ),
+
             Padding(
               padding: const EdgeInsets.only(top: 50.0), // Adjust for buttons
               child: SingleChildScrollView(
