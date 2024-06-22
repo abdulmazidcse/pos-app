@@ -83,7 +83,7 @@ class Product {
       mrpPrice: json['mrp_price'],
       taxMethod: json['tax_method'],
       productTax: json['product_tax'],
-      measuringUnit: json['measuring_unit'],
+      measuringUnit: json['measuring_unit'] ?? '',
       weight: json['weight'],
       itemDiscount: json['item_discount'],
       discount: json['discount'],
