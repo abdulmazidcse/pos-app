@@ -100,96 +100,88 @@ class InvoiceWidget extends StatelessWidget {
     );
   }
 
-  invoiceBottomPart(subTotalSum, TotalAmount) {
+  invoiceBottomPart(subTotalSum, totalAmount) {
     final currencyFormatter = NumberFormat.currency(symbol: '\$');
-    return Container(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Sub Total:',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                currencyFormatter
-                    .format(subTotalSum), // Display calculated subTotalSum
-                style:
-                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Discount:',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                currencyFormatter.format(saleData.orderDiscountValue),
-                style:
-                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Total Amount:',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                currencyFormatter.format(TotalAmount), // Use currency formatter
-                style:
-                    const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          const Row(
-            children: [
-              Text('Payment Description:'),
-            ],
-          ),
-          const SizedBox(height: 8),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Description'),
-              Text('Amount'),
-            ],
-          ),
-          const Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('cash'),
-              Text(saleData.collectionAmount.toString()),
-            ],
-          ),
-          Center(
-            child: BarcodeWidget(
-              barcode: Barcode.code128(),
-              data: saleData.invoiceNumber,
-              width: 120,
-              height: 50,
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Sub Total:',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
             ),
+            Text(
+              currencyFormatter
+                  .format(subTotalSum), // Display calculated subTotalSum
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Discount:',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              currencyFormatter.format(saleData.orderDiscountValue),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Total Amount:',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              currencyFormatter.format(totalAmount), // Use currency formatter
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        const Row(
+          children: [
+            Text('Payment Description:'),
+          ],
+        ),
+        const SizedBox(height: 8),
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Description'),
+            Text('Amount'),
+          ],
+        ),
+        const Divider(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('cash'),
+            Text(saleData.collectionAmount.toString()),
+          ],
+        ),
+        Center(
+          child: BarcodeWidget(
+            barcode: Barcode.code128(),
+            data: saleData.invoiceNumber,
+            width: 120,
+            height: 50,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final currencyFormatter =
-        NumberFormat.currency(symbol: '\$'); // Currency formatting
-
     // Calculate the sum of sub_total values
     final double subTotalSum =
         saleData.salesItems.fold(0, (sum, item) => sum + item.subTotal);

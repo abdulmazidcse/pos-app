@@ -130,7 +130,9 @@ class RegistrationPageState extends State<RegistrationPage> {
           setState(() {
             _isLoading = false;
           });
-        } else {}
+        } else {
+          // print(response.toString());
+        }
       }
     } finally {
       setState(() {

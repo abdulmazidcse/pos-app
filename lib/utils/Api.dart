@@ -159,8 +159,7 @@ class Api {
         .post(Uri.parse(fullUrl), body: jsonEncode(data), headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
-      // ignore: prefer_interpolation_to_compose_strings
-      'Authorization': 'Bearer ' + await _getToken()
+      'Authorization': 'Bearer ${await _getToken()}',
     });
   }
 
@@ -170,8 +169,7 @@ class Api {
     return await http.put(Uri.parse(fullUrl), body: jsonEncode(data), headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
-      // ignore: prefer_interpolation_to_compose_strings
-      'Authorization': 'Bearer ' + await _getToken()
+      'Authorization': 'Bearer ${await _getToken()}',
     });
   }
 
@@ -194,8 +192,7 @@ class Api {
     final response = await http.get(uri, headers: {
       'Content-type': 'application/json',
       'Accept': 'application/json',
-      // ignore: prefer_interpolation_to_compose_strings
-      'Authorization': 'Bearer ' + await _getToken()
+      'Authorization': 'Bearer ${await _getToken()}',
     });
     return response;
   }
